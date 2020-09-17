@@ -1,0 +1,161 @@
+ledger_card,oracle_natural_account,danaos_name,danaos_description_details,danaos_description_sub,danaos_description_main,account_group,acct_grouping_level4,acct_grouping_level3,acct_grouping_level2,acct_grouping_level1
+98240,634322,Legal Fees,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98215,634314,Technician/Inspectors/Surveyor Expenses,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,TTP
+97310,633998,Oil Pollution Insurance,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98310,634324,Bank Charges,Financial expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98255,634302,Ship to Shore,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98257,634304,Shore based (Telephone recoveries),Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98260,634316,Postage - Courier,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98270,634308,Masters Ports Expenses,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98290,634998,Other Administration Expenses,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98291,634318,Audit Fee and Tax Fee - Statutory Report,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98510,690002,Income Tax,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+EXDF,685016,SYSTEM EXCHANGE DIFFERENCES,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+98210,634312,Superintendents Expenses,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Superintendent Expenses
+98230,657004,Annual Taxes & Consul Fees,Administration expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Admin Expenses-Others
+94272,625502,Major Oil Company Inspection,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Major Oil Inspection
+94375,625104,Underwater Inspection,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Audit and Inspection
+94273,625102,SQA - ISO Audits,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Audit and Inspection
+94271,625108,Safety Inspection,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Audit and Inspection
+94400,625502,MOC Requirements,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Major Oil Inspection
+94270,625612,Survey-Bunker & Cargo Operations,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Audit and Inspection,Survey-Bunker & Cargo
+91235,622108,Crew Conveyance / Travel Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93017,622102,Crew Helicopter Cost,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93018,622114,Crew Family Tavel,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93019,622102,Crew Travel - Airfare,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93020,622102,Crew Travel,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93021,622106,Crew Travel - Hotel,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93022,622104,Crew Travel - Land Transport,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93023,623154,Crew Travel - Launch,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+93024,623154,Crew Office Briefing Travel,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Hotel & Travel
+91041,624302,Crew - Long Service Awards + Payments,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+91240,624312,Crew Entertainment,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93010,624206,Crew Medical - Doctor visits,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93012,624202,Crew Medical - Prejoining,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93015,624204,Crew Medical - Injuries / Illness,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93030,624104,Crew Handling Fees,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93033,624106,Crew Processing Fees,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93035,624102,Crew Recruitment Fees/Monthly Manning Fees,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93040,624108,ITF Annual Fees / SMOU /SOS,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93045,624112,Crew Licenses,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93050,622102,Other Crew Expenses,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93070,624306,Philhealth/SSS Contribution,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93071,624308,SWFS (India) Contributions,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93080,624304,Crew Slopchest,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Expenses,Crew Other Expenses
+93032,623152,Crew Training - Singapore Office Training,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93031,623108,Crew Training - Seminars/Workshops,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93029,623104,UK Cadet Training,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93028,623156,Crew Training - Wages & allowances,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93027,623154,Crew Training - Travel,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93025,623102,Crew Training -  Cadets,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+93026,623106,Crew Training - Course Fee,Crew expenses,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew Training,Crew Training
+92030,625302,Forwarding - Provision Barging,Crew victualling,Crew running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Crew Running Costs,Crew Victualling,Crew Victualling
+92010,625302,Crew Victualling,Crew victualling,Crew running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Crew Running Costs,Crew Victualling,Crew Victualling
+91081,621602,Crew Cargo Hold Cleaning Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91120,621604,Crew Laundry Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91140,621612,Crew Carpentry/Sounding Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91143,621608,Crew Grit Blasting,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91147,621606,Crew Tanker Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91150,621122,Crew Sick Pay,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91155,621608,Crew Super Cert Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91157,621608,Crew Additional Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91158,621102,Crew consolidated other wages ,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91170,621114,Crew rejoining/Loyality leave pay (LLP),Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91180,621116,Crew Pension,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91200,621102,Crew Other Pay,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91220,621608,Crew Uniform Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91225,621608,Crew Baking Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91080,621606,Crew Tank Cleaning Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91050,621112,Crew Overtime (Fixed & Variable),Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91040,621106,Crew Seniority,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91030,621118,Crew Bonus,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91021,621108,Crew Leave Pay Wages,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91020,621104,Crew Basic Wages,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91195,621608,Lashing Allowance,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91055,629502,Project Crew Costs,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91152,621608,Crew Allowance - GMDSS,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+91190,621608,Crew Korean Medical & Insurance Allowanc,Crew payroll,Crew running costs,Daily running costs,Crew Costs,Operating Costs,Crew Running Costs,Crew payroll,Crew Wages
+97120,633012,War Risks Insurance,Hull and machinery,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,H & M Insurance,H & M Insurance
+97110,633002,Hull & Machinery Insurance,Hull and machinery,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,H & M Insurance,H & M Insurance
+95010,631006,Lubricants : MES,Lubricants,Technical running costs,Daily running costs,Technical Costs - Lube Oil,Operating Costs,Technical Running Costs,Lubricants,Lubricants
+95020,631004,Lubricants : MEC,Lubricants,Technical running costs,Daily running costs,Technical Costs - Lube Oil,Operating Costs,Technical Running Costs,Lubricants,Lubricants
+95045,631998,Forwarding - Lub Oil Barging Cost,Lubricants,Technical running costs,Daily running costs,Technical Costs - Lube Oil,Operating Costs,Technical Running Costs,Lubricants,Lubricants
+95040,631008,Lubricants : Others,Lubricants,Technical running costs,Daily running costs,Technical Costs - Lube Oil,Operating Costs,Technical Running Costs,Lubricants,Lubricants
+95030,631002,Lubricants : AUX,Lubricants,Technical running costs,Daily running costs,Technical Costs - Lube Oil,Operating Costs,Technical Running Costs,Lubricants,Lubricants
+94500,625602,Operation Related Expenses,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Operation Related Expenses
+94224,627116,Automation Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94530,625604,Garbage Disposal,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Operation Related Expenses
+94540,625608,Operation -Sludge Disposal (if not voyage),Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Operation Related Expenses
+94290,626108,Other Sundry Spares & Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94310,626108,General Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94315,626102,Fire Safety Equipment Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94317,626114,Liferaft Services,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94320,626116,A/Engine Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94321,626106,Main Engine Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94322,626112,Aux/Mach Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94323,626122,Boilers Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94325,626124,Electrical Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94340,626104,Radio & Navigation Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94360,626998,Forwarding Expenses - Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94370,626118,Engineering Cost,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94380,111102,Scrubbers,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94381,626126,Ballast water treatment system,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94210,627108,Deck Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94211,111102,Mooring equipment spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94212,111102,Deck crane spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94213,627118,Cargo equipment,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94220,627104,A/Engine Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94221,627106,Main Engine Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94222,627102,Auxillary,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94223,627114,Boilers Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94225,111102,Main Engine Turbocharger,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94226,111102,A/E Turbochargers,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94227,627122,Electric Motors,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94240,627112,Radio & Navigation Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94245,111102,Scrubbers,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94246,627126,Ballast water treatment system,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94260,627994,Forwarding Expenses-Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94262,627996,Forwarding - Freight,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94264,627998,Forwarding - Custom Clearance / Handling,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94218,626108,Rental - Others,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94230,628114,Cabin Spares,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Spares
+94324,626128,Automation Repairs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Repairs & Rental
+94274,625204,Technical Survey,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Class Survey
+94275,625204,Technical Certificate,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Class Survey
+94277,625202,Technical - Block Fees,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Class Survey
+94520,625606,Operation -Slop Disposal (if not voyage),Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Maintenance And Repairs,Operation Related Expenses
+97330,633998,Other Insurance,Other insurance,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,Other Insurance,Other Insurance
+97320,633008,Loss Of Earnings Insurance,Other insurance,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,Other Insurance,Other Insurance
+97210,633004,P & I Advance Calls,P & I advance calls,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,P & I Insurance,P & I Insurance
+97230,633006,FD & D,P & I advance calls,Insurance running costs,Daily running costs,Insurance Costs,Operating Costs,Insurance Running Costs,P & I Insurance,P & I Insurance
+94250,629102,New Equipment (Uncapitalised),Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Uncapitalised Expenditure
+94800,625402,IT Development Cost,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,IT Development Costs
+94620,629502,Project Costs - Logistics,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94630,629502,Project Costs - Travel & Accomodation,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94640,629502,Project - Class Fees,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94510,628126,Operation-Tank Cleaning (if not voyage),Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94610,629502,Project Costs - Manpower,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94600,629502,Project Costs - Materials - Supplies,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94350,629502,Project Costs,Maintenance and repairs,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Project Costs,Project Costs
+94160,625902,Paints (Sea Stock),Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Paints
+94197,628118,Sodium Hydroxide,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94163,625904,Paints (Ballast Tanks),Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Paints
+94110,628102,Deck Stores,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94120,628104,Engine Stores,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94130,628114,Cabin Stores,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94140,628122,Radio & Navigation Stores,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94141,628106,Charts and Publications,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94150,628108,Mooring Ropes,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94151,111102,Mooring wires and tails,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94152,111102,Crane wires,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94153,111102,Other wires and ropes,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94170,628124,Fresh Water ,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94180,628116,Welding Materials,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94185,628126,Chemicals for Hold and Tanks cleaning,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94186,628112,Refrigerants & Chemicals,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94187,628996,Forwarding Expenses-Stores,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94188,628128,Other Consumables,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94194,627994,Forwarding - Major Store supplies,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94196,627998,Forwarding - Land Transport,Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Stores & Consumables
+94161,111102,Paints (Cargo Holds),Stores and consumables,Technical running costs,Daily running costs,Technical Costs-M&R,Operating Costs,Technical Running Costs,Stores & Consumables,Paints
+98110,634102,Management Fees,Management expenses,Administration Running Costs,Daily running costs,Administrative Costs,Operating Costs,Administration Running Costs,Administration Expenses,Management Expenses
