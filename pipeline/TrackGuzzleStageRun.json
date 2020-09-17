@@ -1,0 +1,133 @@
+{
+	"name": "TrackGuzzleStageRun",
+	"properties": {
+		"activities": [
+			{
+				"name": "WaitUntilStageFinish",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@if(variables('statusChangedToRunning'), not(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'RUNNING')), or(or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'SUCCESS'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'WARNING')), or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'FAILED'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'ABORTED'))))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Wait2minutes",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 120
+							}
+						},
+						{
+							"name": "GetStageStatus",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Wait2minutes",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "select @{pipeline().parameters.stage} from dbo.batch_control where batch_id=@{pipeline().parameters.batch_id}",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "GuzzleDB",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "If Status Changed To RUNNING",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "GetStageStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(not(variables('statusChangedToRunning')), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'RUNNING'))",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Set status changed to RUNNING",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "statusChangedToRunning",
+											"value": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "0.04:00:00"
+				}
+			},
+			{
+				"name": "RaiseExceptionIfFailed",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "WaitUntilStageFinish",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "status",
+					"value": {
+						"value": "@if(or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'SUCCESS'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'WARNING')), 'SUCCESS', 1)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"stage": {
+				"type": "string"
+			},
+			"batch_id": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"status": {
+				"type": "String"
+			},
+			"statusChangedToRunning": {
+				"type": "Boolean"
+			}
+		},
+		"annotations": []
+	}
+}

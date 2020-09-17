@@ -1,0 +1,17 @@
+{
+	"name": "Run_Stage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HttpServer1GuzzleService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "api/batches/run_stage?mode=default"
+			}
+		}
+	}
+}

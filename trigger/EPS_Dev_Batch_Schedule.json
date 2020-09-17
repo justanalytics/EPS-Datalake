@@ -1,0 +1,24 @@
+{
+	"name": "EPS_Dev_Batch_Schedule",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "EPSDL_Master_Pipeline_incremental",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2020-09-12T21:30:00.000Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

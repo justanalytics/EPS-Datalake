@@ -1,0 +1,17 @@
+{
+	"name": "OracleTable_Single_Use",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Oracle1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "DANAOS",
+			"table": "BP_PORTS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
