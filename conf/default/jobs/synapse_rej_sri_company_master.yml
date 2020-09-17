@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_company_master.child_value,\nrej_sri_company_master.danaos_co_code,\nrej_sri_company_master.database,\nrej_sri_company_master.company,\nrej_sri_company_master.short_name,\nrej_sri_company_master.name,\nrej_sri_company_master.managed_by,\nrej_sri_company_master.company_group,\nrej_sri_company_master.chart,\nrej_sri_company_master.company_type,\nrej_sri_company_master.base_currency,\nrej_sri_company_master.remarks,\nrej_sri_company_master.group_flag_1,\nrej_sri_company_master.group_flag_2,\nrej_sri_company_master.official_currency,\nrej_sri_company_master.global_vessel_id,\nrej_sri_company_master.create_intercompanies,\nrej_sri_company_master.is_filing,\nrej_sri_company_master.active_flag,\nrej_sri_company_master.company_level,\nrej_sri_company_master.bank_ledger,\nrej_sri_company_master.group_details_from,\nrej_sri_company_master.group_details_to,\nrej_sri_company_master.tonnage_tax_from,\nrej_sri_company_master.tonnage_tax_to,\nrej_sri_company_master.vat_group_from,\nrej_sri_company_master.vat_group_to,\nrej_sri_company_master.incexp_managed_by,\nrej_sri_company_master.integration_key,\nrej_sri_company_master._validation_error as validation_error,\nrej_sri_company_master.w_source_system,\nrej_sri_company_master.w_src_file_name,\nrej_sri_company_master.w_refresh_ts,\nrej_sri_company_master.w_job_instance_id,\nrej_sri_company_master.w_business_dt,\nrej_sri_company_master.w_location,\nrej_sri_company_master.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_company_master rej_sri_company_master"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_company_master"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

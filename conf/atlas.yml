@@ -1,0 +1,7 @@
+atlas:
+  password: admin
+  url: http://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:21000
+  username: admin
+hdfs:
+  name_node: sandbox-hdp.hortonworks.com:8020
+version: 1

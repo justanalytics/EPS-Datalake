@@ -1,0 +1,6 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "dim_department"
+parallel: 1

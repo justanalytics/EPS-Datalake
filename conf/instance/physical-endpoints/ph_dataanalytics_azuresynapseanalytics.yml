@@ -1,0 +1,11 @@
+version: 1
+technology: "azure-synapse-analytics"
+url: "jdbc:sqlserver://epsdlsqlserver.database.windows.net:1433;database=epsdlsynapse;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=300;"
+database: "epsdlplp"
+username: "epsdladmin"
+password: "{ENC}YBYBTd+l3rZ0GJZBHyRV3g=="
+tempDir: "abfss://epsdldelta@epsdldatalakestoragegen2.dfs.core.windows.net/epsdlplp"
+storageAccountName: "epsdldatalakestoragegen2"
+storageAccountAccessKey: "uH4WlnKzNZcSnL9dGuOs6yjitXhuIuGfytIVIk7/PC+BjImYLu6+GkmylcwRA/8B6xDx9jNRwyud7G/jE+zFxQ=="
+useAzureMSI: true
+

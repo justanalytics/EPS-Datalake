@@ -1,0 +1,24 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "sri_danaos_documents"
+- "sri_cubic_documents"
+- "sri_company_master"
+- "sri_company_hierarchy"
+- "sri_budget_opex_monitor"
+- "sri_account"
+- "sri_service_hierarchy"
+- "sri_reporting_lines"
+- "sri_qct_documents"
+- "sri_penwood_documents"
+- "sri_item_ledgers"
+- "sri_expected_call_da"
+- "sri_vessel_team_map"
+- "sri_vessel_master"
+- "sri_vessel_hierarchy"
+- "sri_vessel_dry_dock_details"
+- "sri_department"
+- "sri_data_security"
+- "sri_account_mapping"
+parallel: 9

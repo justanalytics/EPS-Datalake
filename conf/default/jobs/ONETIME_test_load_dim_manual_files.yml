@@ -1,0 +1,119 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    charset: "UTF-8"
+    source_file_pattern: "archive/company_dimension_manual_file*.csv"
+    format_properties:
+      source_name_as_column: true
+      infer_schema: false
+      quote_delimiter: "\""
+      column_delimiter: ","
+      escape_char: "\\\\"
+      contains_header: true
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "w_refresh_ts"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "current_timestamp"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "business_date"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "'${business_date}'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_job_instance_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "${job_instance_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_batch_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "bigint"
+      discard: false
+    transform_sql:
+      value: "${batch_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_location"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ALL'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_data_src_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ONETIME'"
+    primary_key:
+      value: false
+      discard: false
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.company_dimension_manual_file"
+  operation: "append"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "rej_company_dimension_manual_file"
+  failure_threshold: 99

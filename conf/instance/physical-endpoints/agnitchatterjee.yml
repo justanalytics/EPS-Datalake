@@ -1,0 +1,10 @@
+technology: "jdbc"
+type: "standard"
+vendor: "sqlserver"
+driver_class: "abcd"
+hostname: "abcd"
+port: "1111"
+database: "dba"
+username: "uname"
+password: "{ENC}YBYBTd+l3rZ0GJZBHyRV3g=="
+version: 1

@@ -1,0 +1,6 @@
+version: 1
+technology: azuresql
+url: "epsdlsqlserver.database.windows.net"
+database: "epsdlsynapse"
+password: "{ENC}YBYBTd+l3rZ0GJZBHyRV3g=="
+username: "epsdladmin"

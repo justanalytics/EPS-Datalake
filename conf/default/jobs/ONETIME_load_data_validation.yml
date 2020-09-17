@@ -1,0 +1,28 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "parquet"
+    charset: "UTF-8"
+    source_file_pattern: "landing/expected_call.*parquet"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.sri_expected_call"
+  operation: "overwrite"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.rej_sri_expected_call"
+  failure_threshold: 99

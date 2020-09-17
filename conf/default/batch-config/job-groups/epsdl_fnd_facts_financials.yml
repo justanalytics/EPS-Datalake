@@ -1,0 +1,9 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "fact_gl_transactions"
+- "fact_gl_budget"
+- "fact_ship_days"
+- "fact_dry_dock_details"
+parallel: 4

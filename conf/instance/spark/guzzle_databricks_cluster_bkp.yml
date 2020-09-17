@@ -1,0 +1,8 @@
+version: 1
+run_mode: "azure-databricks"
+properties:
+  dbfs_guzzle_dir: "dbfs:/mnt/guzzle"
+  api_url: "https://southeastasia.azuredatabricks.net"
+  type: "data-analytics"
+  auth_token: "{ENC}Nk3lavEuFXy0HDiMhMLdNGjGgMR9QRsixHUigJTBtYrDhzIYoU/5FniBJ/Aksuam"
+  cluster_id: "0625-131513-wadi281"

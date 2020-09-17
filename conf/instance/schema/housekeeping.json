@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "job": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["housekeeping"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+    "import": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "string"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["job", "housekeeping"]
+            }
+          }
+        },
+        "required": ["parent"],
+        "additionalProperties": false
+    },
+    "housekeeping": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "housekeeping_column": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string",
+          "enum": ["move", "delete"]
+        },
+        "reference_point": {
+          "type": "object",
+          "properties": {
+            "reference_type" : {
+              "type": "string",
+              "enum": ["value", "max_value", "current_time"]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": ["reference_type"],
+          "additionalProperties": false
+        },
+        "retention_strategies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "partitions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "patternProperties": {
+                    "^*$": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "retention_strategy" : {
+                "type": "string"
+              },
+              "day_of_week": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "strict_retention_period_end": {
+                "type": "boolean"
+              },
+              "strict_retention_grain": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["partitions", "retention_strategy"],
+            "additionalProperties": false
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "secondary_table": {
+              "type": "string"
+            },
+            "table_dependency": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["table"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["endpoint", "housekeeping_column", "retention_strategies", "reference_point", "properties"],
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "required": ["job", "housekeeping"],
+  "additionalProperties": false
+}

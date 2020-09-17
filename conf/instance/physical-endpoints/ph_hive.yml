@@ -1,0 +1,5 @@
+database: test
+driver_class: com.simba.spark.jdbc41.Driver
+jdbc_url: jdbc:spark://southeastasia.azuredatabricks.net:443/default;transportMode=http;ssl=1;httpPath=sql/protocolv1/o/1403602383092450/0616-053845-welt202;AuthMech=3;UID=token;PWD=dapief50145f9b8d40455b961765c65709c1
+technology: hive
+version: 1

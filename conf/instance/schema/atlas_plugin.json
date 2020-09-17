@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "atlas": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["url","username","password"],
+      "additionalProperties": false
+    },
+    "hdfs": {
+      "type": "object",
+      "properties": {
+        "name_node": {
+          "type": "string"
+        }
+      },
+      "required": ["name_node"],
+      "additionalProperties": false
+    },
+    "job_configs": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "properties": {
+            "merge_process_node": {
+              "type": "boolean"
+            },
+            "job_parameters": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".*": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "parameters": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "patternProperties": {
+                  ".*": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "required": ["atlas", "hdfs"],
+  "additionalProperties": false
+}

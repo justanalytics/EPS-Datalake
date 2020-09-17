@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_service_hierarchy.service_code,\nrej_sri_service_hierarchy.service_description,\nrej_sri_service_hierarchy.parent1_code,\nrej_sri_service_hierarchy.parent1_description,\nrej_sri_service_hierarchy.parent2_code,\nrej_sri_service_hierarchy.parent2_description,\nrej_sri_service_hierarchy.parent3_code,\nrej_sri_service_hierarchy.parent3_description,\nrej_sri_service_hierarchy.parent4_code,\nrej_sri_service_hierarchy.parent4_description,\nrej_sri_service_hierarchy.parent5_code,\nrej_sri_service_hierarchy.parent5_description,\nrej_sri_service_hierarchy.parent6_code,\nrej_sri_service_hierarchy.parent6_description,\nrej_sri_service_hierarchy.parent7_code,\nrej_sri_service_hierarchy.parent7_description,\nrej_sri_service_hierarchy.parent8_code,\nrej_sri_service_hierarchy.parent8_description,\nrej_sri_service_hierarchy.parent9_code,\nrej_sri_service_hierarchy.parent9_description,\nrej_sri_service_hierarchy.integration_key,\nrej_sri_service_hierarchy._validation_error as validation_error,\nrej_sri_service_hierarchy.w_source_system,\nrej_sri_service_hierarchy.w_src_file_name,\nrej_sri_service_hierarchy.w_refresh_ts,\nrej_sri_service_hierarchy.w_job_instance_id,\nrej_sri_service_hierarchy.w_business_dt,\nrej_sri_service_hierarchy.w_location,\nrej_sri_service_hierarchy.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_service_hierarchy rej_sri_service_hierarchy"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_service_hierarchy"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

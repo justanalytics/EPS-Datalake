@@ -1,0 +1,12 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "dim_gl_account"
+- "dim_gl_company"
+- "dim_gl_reporting_lines"
+- "dim_gl_service"
+- "dim_gl_vessel"
+- "dim_data_security"
+- "dim_gl_department"
+parallel: 7

@@ -1,0 +1,4 @@
+path: "/dbfs/mnt/guzzle/epsdl/data"
+technology: "file"
+type: "lfs"
+version: 1

@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "job": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["recon"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+    "import": {
+      "type": "object",
+      "properties": {
+        "parent": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["job", "source", "target", "recon"]
+          }
+        }
+      },
+      "required": ["parent"],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "primary_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "table":{
+              "type": "string"
+            },
+            "filter":{
+              "type": "string"
+            },
+            "sql":{
+              "type": "string"
+            },
+            "table_dependency": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["endpoint", "primary_keys", "properties"],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "primary_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "table":{
+              "type": "string"
+            },
+            "filter":{
+              "type": "string"
+            },
+            "sql":{
+              "type": "string"
+            },
+            "table_dependency": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["endpoint", "primary_keys", "properties"],
+      "additionalProperties": false
+    },
+    "recon": {
+      "type": "object",
+      "properties": {
+        "execution_site": {
+          "type": "string"
+        },
+        "grouping_columns": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "recon_metrics": {
+          "type": "object",
+          "patternProperties": {
+            "^*$": {
+              "type": "object",
+              "properties": {
+                "aggregation": {
+                  "type": "string"
+                },
+                "source_aggregation": {
+                  "type": "string"
+                },
+                "target_aggregation": {
+                  "type": "string"
+                },
+                "detail_check_enabled": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["recon_metrics"],
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "required": ["job", "source", "target", "recon"],
+  "additionalProperties": false
+}
