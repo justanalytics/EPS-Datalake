@@ -1,9 +1,0 @@
-provider: "github"
-client_id: "ab962a98af14903d8a2d"
-client_secret: "{ENC}t5Pic2hzP8nvLMapg3Wcv7p+w8JWGANRQ83UfesWmsrqh9mdR7FMSb2ff+8kw55B"
-redirect_uri: "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:8082/integration/git"
-owner: "justanalytics"
-owner_type: "user"
-repository: "EPS-Datalake"
-collaboration_branch: "Sprint1_Dev"
-branch_timeout: 20
