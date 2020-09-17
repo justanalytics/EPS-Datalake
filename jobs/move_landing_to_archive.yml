@@ -1,7 +1,0 @@
-version: 1
-job:
-  type: "external"
-config:
-  endpoint: "lo_shell"
-  properties:
-    script: "mv /guzzle/epsdl/data/landing/*parquet /guzzle/epsdl/data/archive"
