@@ -1,6 +1,0 @@
-description: ""
-version: 1
-properties: {}
-jobs:
-- "external_testing"
-parallel: 1

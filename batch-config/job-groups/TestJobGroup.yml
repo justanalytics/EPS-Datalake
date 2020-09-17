@@ -1,6 +1,0 @@
-description: ""
-version: 1
-properties: {}
-jobs:
-- "sri_vessel_team_map"
-parallel: 1

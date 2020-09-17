@@ -1,8 +1,0 @@
-description: ""
-version: 1
-properties: {}
-jobs:
-- plp_adls_synapse:
-    job_parameters:
-      p_table_name: "dim_gl_account"
-parallel: 1
