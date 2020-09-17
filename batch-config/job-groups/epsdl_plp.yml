@@ -4,6 +4,9 @@ properties: {}
 jobs:
 - plp_adls_synapse:
     job_parameters:
+      p_table_name: "dim_period"
+- plp_adls_synapse:
+    job_parameters:
       p_table_name: "fact_os_po"
 - plp_adls_synapse:
     job_parameters:
