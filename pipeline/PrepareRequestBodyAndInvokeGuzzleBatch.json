@@ -496,6 +496,36 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "powerbi_refresh",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SuccessNotification",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": {
+							"value": "@pipeline().parameters.emails",
+							"type": "Expression"
+						},
+						"Datetime": {
+							"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {

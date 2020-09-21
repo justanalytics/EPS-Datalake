@@ -1,5 +1,5 @@
 {
-	"name": "EPSDL_Master_Pipeline_incremental",
+	"name": "EPSDL_Master_Pipeline_Full_Extract_BKP_20200918",
 	"properties": {
 		"activities": [
 			{
@@ -178,6 +178,36 @@
 				}
 			},
 			{
+				"name": "Invoke_Power_BI_refresh",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Guzzle_Invokation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": {
+							"value": "@activity('Get_Email_Details').output.firstRow.email",
+							"type": "Expression"
+						},
+						"Datetime": {
+							"value": "@variables('business_date')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
 				"name": "Copy_Oracle_Source_Data",
 				"type": "ExecutePipeline",
 				"dependsOn": [
@@ -191,7 +221,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "GetTableListAndTriggerCopyData_incremental",
+						"referenceName": "GetTableListAndTriggerCopyData",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
