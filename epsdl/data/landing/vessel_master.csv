@@ -1,0 +1,269 @@
+vessel_code,owning_entity,owning_entity_codes,ownership,vessel_type,vessel_group,dwt,built_year,sold_date,vessel_class,period,company_structure_in_danaos,qps_ownership,qct_ownership,managed_by_eps,ownership_type,built,date_built,useful_life,lwt,start_date,journal_start_date,journal_end_date,qct_start_date,addl_attribute1,addl_attribute2,addl_attribute3,last_updated_date,last_updated_by,include_in_drc
+283,Harike Shipping Inc.,5648,Sold,Tankers,Aframax,104884,1999,2018-08-03,,31-Dec,C,QPS,QCT,EPS SG,Owned,1999,1999-03-22,20,16831,1999-03-22,,,2013-01-01,,,,,,1
+905,Fairell Shipping Corporation,5643,Owned,Tankers,Aframax,105588,2000,2020-06-18,,31-Dec,C,QPS,QCT,EPS SG,Owned,2000,2000-04-01,20,17152,2000-04-01,,,2013-01-01,,,,,,1
+962,Crystal Carriers Shipping Pte. Ltd.,,Sold,Bulkers,VLOC,211320,1996,2018-03-21,,31-Dec,,QPS,,,Chinese Charterers,1996,1996-01-09,20,25450,2012-01-01,,,,,,,,,1
+992,Ronsal Shipping Inc,5667,Owned,Tankers,Aframax,105665.9,2003,,,31-Dec,C,QPS,QCT,EPS SG,Owned,2003,2003-10-23,20,17074,2003-10-23,,,2013-01-01,,,,,,1
+1101,Moray Marine S.A.,5658,Sold,Tankers,VLCC,299364,2000,2018-10-05,,31-Dec,C,QPS,QCT,EPS SG,Owned,2000,2000-05-01,20,41947,2000-05-01,,,2013-01-01,,,,,,1
+1131,Crum Shipping Inc.,5628,Sold,Tankers,MR - Conventional,46001,2002,2019-09-24,,31-Dec,P,QPS,QCT,EPS SG,Owned,2002,2002-08-22,20,8673,2002-08-22,,,,,,,,,0
+1139,Jensal Shipping Inc.,4343,Sold,Tankers,Handy,47172,1996,2016-01-14,,31-Dec,P,QPS,,EPS SG,Owned,1996,1996-04-18,20,9302,1996-04-18,,,,,,,,,1
+1147,Gesteq Shipping Inc,,Sold,LNG,Small - LPG,13453,1990,,,,,,,,,,,,,,,,,,,,,,0
+1214,Latrix Shipping Inc.,5653,Owned,Tankers,Aframax,115191,2010,,,31-Dec,C,QPS,QCT,EPS SG,Owned,2010,2010-04-16,20,16439,2010-04-16,,,2013-01-01,,,,,,1
+1238,Barty Shipping S.A.,5619,Owned,Tankers,Aframax,114542,2011,,,31-Dec,C,QPS,QCT,EPS SG,Owned,2011,2011-07-20,20,17759,2011-07-20,,,2013-01-01,,,,,,1
+1255,Tanker Pacific Chartering (2) Limited,5672,BBCP In,Tankers,MR - Conventional,47917,2010,,,31-Dec,P,QPS,,EPS SG,BB-IN,2010,,,,2013-01-04,,,,,,,,,1
+1257,Tanker Pacific Chartering (2) Limited,5672,BBCP In,Tankers,MR - Conventional,70000,2011,,,31-Dec,P,QPS,,EPS SG,BB-IN,2011,,,,2013-01-04,,,,,,,,,1
+1304,Tanker Pacific Chartering (2) Limited,5672,BBCP In,Tankers,MR - Conventional,50015,2013,,,31-Dec,P,QPS,,EPS SG,BB-IN,2013,,,,2013-01-04,,,,,,,,,1
+1315,Tanker Pacific Chartering (2) Limited,5672,BBCP In,Tankers,MR - Conventional,49996,2013,,,31-Dec,P,QPS,,EPS SG,BB-IN,2013,,,,2013-03-27,,,,,,,,,1
+1340,Orpile Marine Inc.,6205,Sold,Container,6000,81819,1997,,,,,,,,,,,,,,,,,,,,,,0
+1344,Modmal Shipping Limited,5657,BBCP In,Tankers,Suezmax - Conventional,160095,2012,,,31-Dec,C,QPS,QCT,EPS SG,BB-IN,2012,2012-01-05,20,25201,2012-01-05,,,2013-01-01,,,,,,1
+1349,Kitfol Shipping Limited,5651,BBCP In,Tankers,Suezmax - Conventional,160250,2013,,,31-Dec,C,QPS,QCT,EPS SG,BB-IN,2013,2012-10-31,20,25406,2013-07-01,,,2013-01-01,,,,,,1
+1398,Beryl Maritime Pte. Ltd.,5992,Owned,Tankers,MR - Conventional,47377,2010,,,31-Dec,P,QPS,QCT,EPS SG,Owned,2010,2010-01-03,20,8881,2010-01-03,,,,,,,,,1
+1422,Olvimbion Shipping Ltd,4155,Owned,Tankers,Aframax,105576,2007,,,31-Dec,C,QPS,,EPS SG,BB-IN,2007,,,,2012-07-13,,,2013-01-01,,,,,,1
+2011,Iztale Shipping Inc,6185,Sold,Container,VLCS,141398,2011,,,,,,,,,,,,,,,,,,,,,,0
+2013,Cisslow Shipping Inc,5005,Owned,Bulkers,Capesize,175231.9,2012,,,31-Dec,W,QPS,,EPS SG,Owned,2012,2012-04-27,20,27385,2012-04-27,,,,,,,,,1
+2016,Dresto Shipping Inc,5006,Owned,Bulkers,Handysize,28202,2011,,,31-Dec,W,QPS,,EPS SG,Owned,2011,2011-03-30,20,6564,2011-03-30,,,,,,,,,1
+2017,Pride Shipping & Trading Inc.*,6208,Owned,Container,Panamax,50760,2003,,,31-Dec,W,QPS,,EPS SG,Owned,2003,2003-12-05,25,16511,2003-12-05,,,,,,,,,1
+2018,Fristane Shipping Inc,6179,Owned,Container,2500,34252,2009,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2009,2009-05-02,20,12034,2009-05-02,,,,,,,,,1
+2022,Fristane Shipping Inc,6179,Owned,Container,2500,34324,2008,,,31-Dec,W,QPS,,EPS SG,Owned,2008,2008-10-31,20,12034,2008-10-31,,,,,,,,,1
+2023,Dunfred Shipping Inc,,Sold,Container,Panamax,58814,2002,2016-09-23,,31-Dec,W,QPS,,EPS SG,Owned,2002,2002-08-03,20,18844,2002-08-03,,,,,,,,,1
+2024,Citron Transport Inc.,6175,Owned,Container,Panamax,50812,2003,,,31-Dec,W,QPS,,EPS SG,Owned,2003,2003-03-21,25,16460,2003-03-21,,,,,,,,,1
+2025,Sky Shipholding S.A.*,6212,Owned,Container,Panamax,50785,2003,,,31-Dec,W,QPS,,EPS SG,Owned,2003,2003-04-17,25,15485,2003-04-17,,,,,,,,,1
+2026,Respirus Shipping Ltd,5025,Owned,Bulkers,Panamax,75384,2013,,,31-Dec,W,QPS,,EPS SG,Owned,2013,2013-11-15,20,13293,2013-11-15,,,,,,,,,1
+2027,Hastay Marine Ltd,6184,Owned,Container,Panamax,51100,2013,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2013,2013-10-21,20,15300,2013-10-21,,,,,,,,,1
+2028,Sharmen Shipping Inc,5026,Owned,Bulkers,Panamax,75384,2014,,,31-Dec,W,QPS,,EPS SG,Owned,2014,2014-07-01,20,13293,2014-07-01,,,,,,,,,1
+2029,Sokset Shipping Inc.,6213,Owned,Container,6000,78700,2013,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2013,2013-07-29,20,22262,2013-07-29,,,,,,,,,1
+2030,Graso Shipping Limited,5017,Owned,Bulkers,Capesize,181124,2013,,,31-Dec,W,QPS,,EPS SG,Owned,2013,2013-11-11,20,26254,2013-11-11,,,,,,,,,1
+2031,Tressby Shipping Inc,6218,Owned,Container,9000,115860,2013,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2013,2013-12-20,20,30655,2013-12-30,,,,,,,,,1
+2032,Gellap Marine Ltd.,5016,Owned,Bulkers,Ultramax,61517,2014,,,31-Dec,W,QPS,,EPS SG,Owned,2014,2014-08-21,20,,2014-08-21,,,,,,,,,1
+2033,Eastern Pacific Chartering Inc,5501,BBCP In,PCTC,6000,18200,2015,,,31-Dec,W,QPS,,EPS SG,BB-IN,2015,2015-01-27,,,2015-01-27,,,,,,,,,1
+2034,"Laver Shipping Ltd, BVI",,Sold,Container,VLCS,186650,2015,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2036,Eastern Pacific Chartering (7) Inc,4153,BBCP In,Bulkers,Capesize,177005,2005,,,31-Dec,P,QPS,,EPS SG,BB-IN,2005,,,,2013-09-01,,,,,,,,,1
+2037,Furwinn Shipping Company,6181,BBCP Out,Container,9000,110875,2013,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,2013,2013-04-15,20,31401,,,,,,,,,,0
+2038,Kalam Maritime Inc.,,Sold,Container,Panamax,59367,1989,,,31-Dec,W,QPS,,EPS SG,BB-OUT,1989,1989-06-30,20,19441,,,,,,,,,,0
+2039,Melip Marine Ltd.,6201,BBCP Out,Container,6000,68519,1996,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,1996,1996-01-07,20,22876,,,,,,,,,,0
+2040,Marsint Shipping Inc,6198,BBCP Out,Container,6000,68537,1996,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,1996,1996-01-05,20,22874,,,,,,,,,,0
+2041,Marzol Shipping Inc.,,Sold,Container,Panamax,61153,1992,,,31-Dec,W,QPS,,EPS SG,BB-OUT,1992,1992-06-30,20,22002,,,,,,,,,,0
+2043,Vectis Navigation Inc.,,Sold,Container,Panamax,63014,1995,,,31-Dec,W,QPS,,EPS SG,BB-OUT,1995,1995-02-24,20,24036,,,,,,,,,,0
+2045,Berde Shipping (No.2) Inc.,5004,Owned,Bulkers,VLOC,266076,1994,2020-07-07,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,1994,1994-09-30,27,38047,1994-09-30,,,,,,,,,1
+2046,Monwry Shipping Ltd.,,Sold,Bulkers,VLOC,273670,1989,2017-04-21,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,1989,1989-12-22,27,37993,1989-12-22,,,,,,,,,1
+2047,Bargel Shipping (No.2) Inc.,,Sold,Bulkers,VLOC,298085,2013,2016-12-22,,31-Dec,W,,,EPS SG,Chinese Charterers,2013,2013-01-01,20,37583,1950-01-01,,,,,,,,,1
+2048,Bart Maritime (No.2) Inc.,5003,Owned,Bulkers,VLOC,290169,1993,2020-05-26,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,1993,1993-12-01,27,39462,1993-12-01,,,,,,,,,1
+2049,Lambar Maritime (No.2) Inc.,,Sold,Bulkers,VLOC,264484,1992,2016-01-27,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,1992,1992-01-28,28,36724,1992-01-28,,,,,,,,,1
+2050,Barcas Shipping (No. 2) Inc.,,Owned,Bulkers,VLOC,298559.9,2012,,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,2012,2012-02-24,20,36886,2012-05-22,,,,,,,,,1
+2051,Eastern Pacific Chartering Inc,5501,BBCP In,Bulkers,Newcastlemax Ð Conventional,203185,2007,,,31-Dec,P,QPS,,EPS SG,BB-IN,2007,,,,2013-06-15,,,,,,,,,1
+2052,Nefstep Marine Inc.,5023,Owned,Bulkers,Capesize,180181,2004,,,31-Dec,W,QPS,,EPS SG,Owned,2004,2004-04-21,20,21905,2013-11-24,,,,,,,,,1
+2057,Latoma Shipping Pte. Ltd,,Sold,Bulkers,Capesize,17013,1997,2016-01-29,,31-Dec,W,QPS,,EPS SG,Chinese Charterers,1997,1997-10-04,20,21899,2013-08-28,,,,,,,,,1
+2059,Leforne Shipping Inc,5022,Owned,Bulkers,Supramax,53477,2010,2020-06-30,,31-Dec,W,QPS,,EPS SG,Owned,2010,2010-12-07,20,8488,2010-12-07,,,,,,,,,1
+2060,Finewon Shipping Inc,5015,Owned,Bulkers,Handysize,28183,2010,2020-08-25,,31-Dec,W,QPS,,EPS SG,Owned,2010,2010-09-22,20,6570,2010-09-22,,,,,,,,,1
+2061,Larchep Shipping Inc,5021,Owned,Bulkers,Handysize,28221,2011,,,31-Dec,W,QPS,,EPS SG,Owned,2011,2011-12-01,20,6532,2011-12-01,,,,,,,,,1
+2062,Feltied Shipping Inc,4789,Owned,Chemicals,J-19s,19802,2012,,,31-Dec,W,QPS,,EPS SG,Owned,2012,2012-12-09,20,5254,2012-12-09,,,,,,,,,1
+2063,Bodanz Shipping Inc*,5503,Sold,Chemicals,J-19s,19937,2003,2018-09-05,,31-Dec,W,QPS,,EPS SG,Owned,2003,2003-06-06,25,5344,2003-06-06,,,,,,,,,1
+2064,Bivtez Shipping Inc,5502,Sold,Chemicals,J-19s,19940,2003,2018-04-18,,31-Dec,W,QPS,,EPS SG,Owned,2003,2003-08-26,25,5341,2003-08-26,,,,,,,,,1
+2065,Sebrink Marine Inc.,4793,Owned,Chemicals,J-19s,19991,2011,,,31-Dec,W,QPS,,EPS SG,Owned,2011,2011-03-22,20,5505.1,2013-01-23,,,,,,,,,1
+2066,Evtor Shipping Inc,4788,Owned,Chemicals,J-19s,19801,2013,,,31-Dec,W,QPS,,EPS SG,Owned,2013,2013-06-02,20,5254.4,2013-02-28,,,,,,,,,1
+2067,Nitizo Marine Ltd.,4792,Owned,Chemicals,J-19s,19998.6,2008,2019-04-25,,31-Dec,W,QPS,,EPS SG,Owned,2008,2008-07-29,20,5309.6,2008-07-29,,,,,,,,,0
+2070,Eastern Pacific Chartering (7) Inc,4153,BBCP In,LNG,MGC,26438,2007,,,31-Dec,W,QPS,,EPS SG,BB-IN,2007,,,,2013-02-08,,,,,,,,,1
+2071,Zipton Shipping (UK) Limited*,4481,Owned,Container,6000,72982,2009,,,31-Dec,U,QPS,,EPS UK,Owned,2009,2009-11-05,25,26595,2012-01-01,,,,,,,,,1
+2072,Nipstan Maritime Inc.,4157,Sold,Container,6000,81819,1998,2017-11-05,,31-Dec,Q,QPS,,EPS SG,Owned,1998,1998-10-01,20,26362,2017-01-03,,,,,,,,,1
+2073,Lefrroll Shipping Pte. Ltd.,6462,Sold,Container,VLCS,140700,2011,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2011,2011-06-15,20,43386,,,,,,,,,,0
+2074,Illevto Shipping Pte. Ltd.,6452,Sold,Container,VLCS,141406,2011,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2011,2011-04-05,20,43314,,,,,,,,,,0
+2075,Breeza Sea Carriers Shipping (UK) Limited*,4762,Owned,Container,6000,72982,2009,,,31-Dec,U,QPS,,EPS UK,Owned,2010,2009-06-01,25,26595,2012-01-01,,,,,,,,,1
+2076,Lergow Shipping Inc,6196,Owned,Container,9000,99043,2009,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2009,2009-02-19,20,35264,2009-02-19,,,,,,,,,1
+2077,Arzel Shipping Inc.,6161,Owned,Container,9000,95810,2009,,,31-Dec,Q,QPS,QUBIC,EPS UK,Owned,2009,2009-03-02,20,35307,2012-01-01,,,,,,,,,1
+2078,Sempti Marine S.A.,6209,Owned,Container,6000,72982,2009,,,31-Dec,Q,QPS,QUBIC,EPS SG,Owned,2009,2009-07-31,20,26595,2009-07-31,,,,,,,,,1
+2079,Merman Shipping (UK) Limited*,4763,Sold,Container,6000,72982,2009,2016-06-28,,31-Dec,U,QPS,,EPS UK,Owned,2010,2009-02-23,25,26595,2012-01-01,,,,,,,,,1
+2082,Ozrow Shipping Inc.,,Sold,Container,6000,82275,1998,2017-04-28,,31-Dec,Q,QPS,,EPS SG,Owned,1998,1998-06-30,20,28440,1950-01-01,,,,,,,,,1
+2085,Latina Maritime (UK) Limited*,4475,Owned,Container,Panamax,50607.5,2007,,,31-Dec,U,QPS,,EPS UK,Owned,2007,2007-10-31,25,16697,2012-01-01,,,,,,,,,1
+2086,Danestead Shipping (UK) Limited*,4473,Owned,Container,Panamax,66763,2004,,,31-Dec,U,QPS,,EPS UK,Owned,2004,2004-07-19,25,19837,2012-01-01,,,,,,,,,1
+2088,Odessos Shipping (UK) Limited*,4476,Owned,PCTC,Midsize,12323,2007,,,31-Dec,U,QPS,,EPS UK,Owned,2007,2007-06-14,25,14735,2012-01-01,,,,,,,,,1
+2089,Eastern Pacific Chartering Inc,5501,BBCP In,PCTC,6000,17245,2009,,,31-Dec,W,QPS,,EPS SG,BB-IN,2009,,,,2013-01-04,,,,,,,,,1
+2090,Abatan Shipping (UK) Limited*,4472,Owned,PCTC,Midsize,12323,2006,,,31-Dec,U,QPS,,EPS UK,Owned,2006,2006-03-11,25,14809,2012-01-01,,,,,,,,,1
+2091,Whit Shipping (UK) Limited*,4478,Owned,PCTC,Midsize,12601,2006,,,31-Dec,U,QPS,,EPS UK,Owned,2006,2006-01-17,25,14458,2012-01-01,,,,,,,,,1
+2092,Kosted Shipping Inc,5404,Owned,PCTC,Midsize,12322,2009,,,31-Dec,W,QPS,,EPS SG,Owned,2009,2009-09-06,20,14778,2009-09-06,,,,,,,,,1
+2093,Jamris Maritime (UK) Limited*,4474,Owned,PCTC,Midsize,12323,2008,,,31-Dec,U,QPS,,EPS UK,Owned,2008,2008-08-05,25,13371,2012-01-01,,,,,,,,,1
+2094,Fertecks Shipping Inc,5644,Sold,Tankers,Aframax,115567,2005,2017-08-14,,31-Dec,C,QPS,QCT,EPS SG,Owned,2005,2005-11-21,20,16063,2013-09-24,,,2013-09-24,,,,,,1
+2100,Levtol Shipping Pte. Ltd.,,Sold,Chemicals,J-19s,19983,2016,2016-07-01,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2016-07-01,,,,,,,,,1
+2101,Temsop Marine Pte. Ltd.,,Sold,Chemicals,J-19s,19900,2016,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,,,,,,,,,,0
+2102,Eastern Pacific Chartering Inc,5501,BBCP In,Bulkers,Capesize,181196,2010,,,31-Dec,W,QPS,,EPS SG,BB-IN,2010,2010-08-25,20,25234,2014-01-29,,,,,,,,,1
+2103,Milizen Marine Ltd.,5206,Owned,LNG,MGC,26427,2006,,,31-Dec,W,QPS,,EPS SG,Owned,2006,2006-02-23,20,10697,2014-10-03,,,,,,,,,1
+2104,Eastern Pacific Chartering Inc,5501,BBCP In,Bulkers,Handysize,28050,2015,,,31-Dec,W,QPS,,EPS SG,BB-IN,2015,,,,2015-02-04,,,,,,,,,1
+2105,Tepnan Marine S.A.,5208,Owned,LNG,MGC,28572,2016,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2016-10-26,,,,,,,,,1
+2106,Zemtol Marine S.A.,5213,Owned,LNG,MGC,28572,2016,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2016-11-30,,,,,,,,,1
+2107,Tydep Maritime S.A.,5681,Owned,Tankers,Suezmax - Conventional,164028,2010,,,31-Dec,C,QPS,QCT,EPS SG,Owned,2010,2010-07-29,20,27594,2014-02-05,,,2014-01-01,,,,,,1
+2108,Voniki Marine Ltd.,5211,Owned,LNG,MGC,28543,2017,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2017-02-16,,,,,,,,,1
+2109,Watoup Marine Ltd.,5212,Owned,LNG,MGC,28543,2017,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2017-04-28,,,,,,,,,1
+2110,Sorpiz Maritime Inc.,5027,Sold,Bulkers,Ultramax,60950,2014,2018-11-30,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2016-09-11,,,,,,,,,1
+2111,QCT Chartering Ltd,5613,BBCP In,Tankers,Aframax,105936,2016,,,31-Dec,C,QPS,QCT,EPS SG,BB-IN,,,,,2016-07-27,,,,,,,,,1
+2112,QCT Chartering Ltd,5613,BBCP In,Tankers,Aframax,105936,2016,,,31-Dec,C,QPS,QCT,EPS SG,BB-IN,,,,,2016-10-11,,,,,,,,,1
+2113,Larnelon Shipping Ltd.,5652,Owned,Tankers,Suezmax - Conventional,157463,2016,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2016-06-21,,,,,,,,,1
+2114,Ramdibi Seas Inc.,5662,Owned,Tankers,Suezmax - Conventional,157463,2016,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2016-10-09,,,,,,,,,1
+2115,Rikape Maritime Ltd.,5666,Owned,Tankers,Suezmax - Conventional,157781,2017,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2017-01-16,,,,,,,,,1
+2116,Eastern Pacific Chartering Inc,5501,BBCP In,Bulkers,Capesize,176943,2008,,,31-Dec,P,QPS,,EPS SG,BB-IN,2008,,,,2014-08-08,,,,,,,,,1
+2117,Eastern Pacific Chartering Inc,5501,BBCP In,Bulkers,Capesize,181464,2011,,,31-Dec,P,QPS,,EPS SG,BB-IN,2011,,,,2014-09-09,,,,,,,,,1
+2118,Timal Shipping Inc,5675,Owned,Tankers,Aframax,105611,2003,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-09-22,,,2014-01-01,,,,,,1
+2119,Goluna Marine Inc.,5647,Owned,Tankers,Aframax,105522,2005,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-09-23,,,2014-01-01,,,,,,1
+2120,Kelnip Maritime Ltd.,5649,Owned,Tankers,Aframax,105244,2009,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-09-24,,,2014-01-01,,,,,,1
+2121,Beerdy Shipping Inc,5621,Owned,Tankers,Aframax,116715,2011,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-12-18,,,2014-01-01,,,,,,1
+2122,Tonzip Maritime Ltd.,5678,Owned,Tankers,Aframax,116619,2012,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-10-31,,,2014-01-01,,,,,,1
+2123,Marlop Shipping Ltd,5656,Owned,Tankers,Aframax,105370,2008,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2014-05-12,,,2014-01-01,,,,,,1
+2124,Tiny Box Shipping Company Limited,6522,BBCP Out,Container,ULCS,199800,2016,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2125,Jumbo Box Shipping Company Limited,6523,BBCP Out,Container,ULCS,199800,2016,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2126,Mega Box Shipping Company Limited,6524,BBCP Out,Container,ULCS,199900,2016,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2127,Giant Box Shipping Company Limited,6525,BBCP Out,Container,ULCS,202036,2016,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2128,Titan Box Shipping Company Limited,6526,BBCP Out,Container,ULCS,202036,2017,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2129,Giga Box Shipping Company Limited,6527,BBCP Out,Container,ULCS,202036,2017,,,31-Dec,Q,QPS,QUBIC,EPS SG,BB-OUT,,,,,,,,,,,,,,0
+2130,Relibate Shipping Inc,5664,Owned,Tankers,Aframax,106062,2005,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2015-04-29,,,2015-01-01,,,,,,1
+2131,Wone Shipping Inc,5683,Owned,Tankers,Aframax,105905,2008,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2015-01-06,,,2015-01-01,,,,,,1
+2132,Braze Shipping Ltd,5622,Owned,Tankers,Aframax,105860,2009,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2015-05-06,,,2015-01-01,,,,,,1
+2133,Eastern Pacific Chartering (22) Inc,5639,BBCP In,Tankers,MR - IMO 2/3,49997,2019,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-01-08,,,,,,,,,1
+2134,Eastern Pacific Chartering (23) Inc,5641,BBCP In,Tankers,MR - IMO 2/3,49998,2019,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-04-23,,,,,,,,,1
+2135,Eastern Pacific Chartering (1) Inc,5007,BBCP In,Bulkers,Capesize,181513,2014,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2015-04-12,,,,,,,,,1
+2136,Eastern Pacific Chartering (2) Inc,5008,BBCP In,Bulkers,Capesize,177656,2006,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2015-09-12,,,,,,,,,1
+2137,Eastern Pacific Chartering (3) Inc,5009,BBCP In,Bulkers,Capesize,178623,2010,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2015-07-12,,,,,,,,,1
+2138,Eastern Pacific Chartering (4) Inc,5011,BBCP In,Bulkers,Capesize,182503,2016,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2016-01-26,,,,,,,,,1
+2139,Eastern Pacific Chartering (5) Inc,5012,BBCP In,Bulkers,Capesize,181070,2016,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2016-03-30,,,,,,,,,1
+2140,Tamist Shipping Inc.,6216,Owned,Container,2500,32190,2006,,,31-Dec,P,QPS,,EPS SG,Owned,,,,,2016-07-28,,,,,,,,,1
+2141,Eastern Pacific Chartering (9) Inc,5013,BBCP In,Bulkers,Ultramax,63496,2017,,,31-Dec,P,QPS,,EPS SG,Owned,,,,,2017-08-30,,,,,,,,,1
+2142,Eastern Pacific Chartering (6) Inc,5631,BBCP In,Tankers,Aframax,114218,2018,,,31-Dec,,QPS,,EPS SG,BB-IN,2018,,,,2018-11-17,,,,,,,,,1
+2143,Eastern Pacific Chartering (8) Inc,5632,BBCP In,Tankers,Aframax,114218,2018,,,31-Dec,P,QPS,,EPS SG,BB-IN,2018,,,,2018-11-13,,,,,,,,,1
+2144,Tebtale Marine Inc,,Sold,Bulkers,Capesize,179147,2017,2017-07-20,,31-Dec,P,QPS,,EPS SG,Owned,2007,,,,2017-02-13,,,,,,,,,1
+2145,Eastern Pacific Chartering (10) Inc,4154,BBCP In,Bulkers,Capesize,177003,2007,,,31-Dec,P,QPS,,EPS SG,BB-IN,,,,,2017-06-30,,,,,,,,,1
+2148,Tostoli Shipping Inc.,5679,Owned,Tankers,Aframax,114218,2019,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2019-01-14,,,,,,,,,1
+2149,Vastop Marine Inc.,5682,Owned,Tankers,Aframax,114218,2019,,,31-Dec,C,QPS,QCT,EPS SG,Owned,,,,,2019-01-23,,,,,,,,,1
+2150,Jena Maritime Inc.,4791,BBCP In,Chemicals,J-19s,21000,2020,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2020-02-27,,,,,,,,,1
+2151,Makatel Shipping S.A.,6474,Owned,Container,Panamax,65950.5,2007,,,31-Dec,P,QPS,,EPS SG,Owned,2018,,,,2018-04-02,,,,,,,,,1
+2152,Tilran Shipping Inc.,6475,Owned,Container,Panamax,65950.5,2007,,,31-Dec,P,QPS,,EPS SG,Owned,2018,,,,2018-01-23,,,,,,,,,1
+2153,Lacnox Shipping Inc.,6473,Owned,Container,2500,34566,2007,,,31-Dec,P,QPS,,EPS SG,Owned,2018,,,,2018-04-25,,,,,,,,,1
+2154,Ibtro Shipping Inc.,6472,Owned,Container,2500,39580,2008,,,31-Dec,P,QPS,,EPS SG,Owned,2008,,,,2018-10-15,,,,,,,,,1
+2155,Tivdev Shipping Inc.,6476,Owned,Container,6000,80282,2007,,,31-Dec,P,QPS,,EPS SG,Owned,2008,,,,2018-11-09,,,,,,,,,1
+2156,Moresby Marine Ltd.,5506,Sold,Bulkers,Ultramax,61094,2019,,,,,,,,,,,,,,,,,,,,,,0
+2157,Padstow Shipping Company,5024,Owned,Bulkers,Ultramax,61143,2019,,,,,,,,,,,,,2019-03-15,,,,,,,,,1
+2158,Vazope Maritime Singapore Pte. Ltd.,4991,Owned,Chemicals,J-19s,19983,2017,2019-05-13,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2017-08-12,,,,,,,,,0
+2159,Bivrant Marine Inc,6174,Owned,Container,VLCS,156983,2019,,,31-Dec,Q,QPS,QUBIC,EPS SG,,,,,,2019-07-01,,,,,,,,,1
+2160,Halma Shipping Inc,6183,Owned,Container,VLCS,156983,2019,,,31-Dec,Q,QPS,QUBIC,EPS SG,,,,,,2019-07-19,,,,,,,,,1
+2161,Plannby Marine Inc,6207,Owned,Container,VLCS,156983,2019,,,31-Dec,Q,QPS,QUBIC,EPS SG,,,,,,2019-09-24,,,,,,,,,1
+2162,Sorelution Shipping Inc,6215,Owned,Container,VLCS,158800,2019,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2019-12-20,,,,,,,,,1
+2165,Eastern Pacific Chartering (13) Inc,5202,BBCP In,LNG,MGC,28627,2019,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-10-23,,,,,,,,,1
+2166,Eastern Pacific Chartering (14) Inc,5203,BBCP In,LNG,MGC,28627,2020,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2020-01-09,,,,,,,,,1
+2167,Eastern Pacific Chartering (15) Inc,4782,BBCP In,Chemicals,J-19s,19950,2020,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2020-03-23,,,,,,,,,1
+2174,Eastern Pacific Chartering (18) Inc,4783,BBCP In,Chemicals,J-19s,19950,2020,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2020-02-19,,,,,,,,,1
+2180,Eastern Pacific Chartering (16) Inc,5635,BBCP In,Tankers,MR - IMO 2/3,49500,2020,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2020-01-06,,,,,,,,,1
+2181,Eastern Pacific Chartering (17) Inc,5636,BBCP In,Tankers,MR - IMO 2/3,49500,2020,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2020-01-31,,,,,,,,,1
+2182,Eastern Pacific Chartering (24) Inc,4784,BBCP In,Chemicals,J-19s,19989,2016,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2019-07-23,,,,,,,,,1
+2183,Eastern Pacific Chartering (25) Inc,4785,BBCP In,Chemicals,J-19s,19994,2017,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2019-09-17,,,,,,,,,1
+2184,Eastern Pacific Chartering (26) Inc,4786,BBCP In,Chemicals,J-19s,19974,2018,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2019-10-18,,,,,,,,,1
+2185,Eastern Pacific Chartering (27) Inc,4787,BBCP In,Chemicals,J-19s,19976,2018,,,31-Dec,W,QPS,,EPS SG,BB-IN,,,,,2019-12-30,,,,,,,,,1
+2191,Elletsir Marine Ltd,5204,Owned,LNG,LGC,43601,2009,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-09-11,,,,,,,,,1
+2192,Knarf Marine Ltd,5205,Owned,LNG,LGC,43601,2009,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-10-17,,,,,,,,,1
+2193,Nerak Marine Ltd,5207,Owned,LNG,LGC,43601,2009,,,31-Dec,W,QPS,,EPS SG,Owned,,,,,2019-12-30,,,,,,,,,1
+2068,,,,,,,,2015-01-09,,,,,,,,,,,,2012-09-24,,,,,,,,,1
+2087,,,,,,,,2015-10-13,,,,,,,,,,,,1994-01-07,,,,,,,,,1
+2019,,,,,,,,2015-02-24,,,,,,,,,,,,1993-11-01,,,,,,,,,1
+2054,,,,,,,,2015-05-01,,,,,,,,,,,,2013-10-07,,,,,,,,,1
+2015,,,,,,,,2015-06-02,,,,,,,,,,,,2013-05-26,,,,,,,,,1
+2055,,,,,,,,2015-12-03,,,,,,,,,,,,1996-06-28,,,,,,,,,1
+1098,,,,,,,,2015-11-19,,,,,,,,,,,,1997-06-30,,,,,,,,,1
+2069,,,,,,,,2017-05-24,,,,,,,,,,,,1990-01-19,,,,,,,,,1
+1352,,,,,,,,2015-08-31,,,,,,,,,,,,2013-07-15,,,,,,,,,1
+2020,,,,,,,,2015-06-03,,,,,,,,,,,,1996-01-30,,,,,,,,,1
+2044,,,,,,,,2018-03-21,,,,,,,,,,,,2013-09-20,,,,,,,,,1
+2056,,,,,,,,2015-05-02,,,,,,,,,,,,1996-02-14,,,,,,,,,1
+2042,,,,,,,,2015-05-02,,,,,,,,,,,,2013-08-06,,,,,,,,,1
+2080,,,,,,,,2017-10-04,,,,,,,,,,,,1997-10-31,,,,,,,,,1
+2084,,,,,,,,2014-12-11,,,,,,,,,,,,1997-01-10,,,,,,,,,1
+2053,,,,,,,,2014-12-24,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+2006,,,,,,,,,,,,,,,,,,,,2013-09-01,,,,,,,,,1
+LK2170,,,,,,,,,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+2171,,,,,,,,,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+12,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+4,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+5,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+50,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+35,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+30,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+1,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+2,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+14,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+101,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+102,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+103,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+104,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+105,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9999,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+1054,,,,,,,,2013-09-07,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+224,,,,,,,,2013-05-25,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+973,,,,,,,,2013-07-06,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+971,,,,,,,,2013-08-27,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+980,,,,,,,,2010-12-31,,,,,,,,,,,,2010-01-01,,,,,,,,,1
+294,,,,,,,,2010-12-31,,,,,,,,,,,,2010-01-01,,,,,,,,,1
+T10,,,,,,,,2019-12-31,,,,,,,,,,,,2014-03-11,,,,,,,,,0
+38,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+60,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+267,,,,,,,,2010-12-31,,,,,,,,,,,,2010-01-01,,,,,,,,,1
+49,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+61,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+68,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+1203,,,,,,,,2010-12-31,,,,,,,,,,,,2010-01-01,,,,,,,,,1
+66,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+70,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+67,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+75,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+41,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+64,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+77,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+59,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9998,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9000,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9993,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+20,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+21,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9989,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+2000,,,,,,,,2016-06-28,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+81,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+82,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+83,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+84,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9987,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+9988,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+52,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+55,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+2003,,,,,,,,2016-12-22,,,,,,,,,,,,2013-10-01,,,,,,,,,1
+2004,,,,,,,,2017-11-05,,,,,,,,,,,,1998-10-01,,,,,,,,,1
+2005,,,,,,,,2017-04-28,,,,,,,,,,,,1998-06-30,,,,,,,,,1
+9990,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+2165F ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0
+1207,,,,,,,,2012-04-18,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1135,,,,,,,,2012-07-03,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1209,,,,,,,,2012-04-19,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1208,,,,,,,,2012-02-24,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1171,,,,,,,,2012-02-19,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+288,,,,,,,,2012-04-27,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1172,,,,,,,,2012-11-07,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1176,,,,,,,,2012-04-20,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+925,,,,,,,,2012-04-09,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+923,,,,,,,,2012-09-30,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+265,,,,,,,,2012-09-05,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1079,,,,,,,,2012-12-03,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+989,,,,,,,,2012-03-05,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+978,,,,,,,,2012-12-22,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1300,,,,,,,,2012-09-30,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+2014,,,,,,,,2013-10-25,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1362,,,,,,,,2013-07-05,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+981,,,,,,,,2013-10-01,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+2021,,,,,,,,2013-10-17,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1050,,,,,,,,2013-09-04,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+1115,,,,,,,,2013-06-18,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+2058,,,,,,,,2013-09-13,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+975,,,,,,,,2013-05-14,,,,,,,,,,,,2012-01-01,,,,,,,,,1
+46,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+48,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+47,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+40,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+13,,,,,,,,,,,,,,,,,,,,1950-01-01,,,,,,,,,1
+2163,,,,,,,,,,,,,,,,,,,,2020-05-22,,,,,,,,,1
+2164,,,,,,,,,,,,,,,,,,,,2020-06-26,,,,,,,,,1
+2172,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1
+2169,,,,,,,,,,,,,,,,,,,,2020-11-30,,,,,,,,,0
+2168,,,,,,,,,,,,,,,,,,,,2020-05-22,,,,,,,,,1
+2067MTM ,,,,,,,,,,,,,,,,,,,,2019-04-26,,,,,,,,,1
+2158MTM ,,,,,,,,,,,,,,,,,,,,2019-05-14,,,,,,,,,1
+CB2161,,,,,,,,2019-09-24,,,,,,,,,,,,,,,,,,,,,1
