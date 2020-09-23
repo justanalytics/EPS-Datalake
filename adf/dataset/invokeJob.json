@@ -1,0 +1,18 @@
+{
+	"name": "invokeJob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HttpServer1GuzzleService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "/api/execute/job"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

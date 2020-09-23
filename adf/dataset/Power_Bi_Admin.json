@@ -1,0 +1,27 @@
+{
+	"name": "Power_Bi_Admin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"api": {
+				"type": "string",
+				"defaultValue": "activityevents"
+			},
+			"params": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('v1.0/myorg/admin/', dataset().api, '?', dataset().params)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}

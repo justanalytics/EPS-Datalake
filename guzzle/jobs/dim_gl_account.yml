@@ -1,0 +1,54 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \nsri_account.oracle_natural_account\n,coalesce(sri_account_mapping.ledger_card,'000000') as ledger_card\n,sri_account.description\n,sri_account.parent1_code\n,sri_account.parent1_description\n,sri_account.parent2_code\n,sri_account.parent2_description\n,sri_account.parent3_code\n,sri_account.parent3_description\n,sri_account.parent4_code\n,sri_account.parent4_description\n,sri_account.parent5_code\n,sri_account.parent5_description\n,sri_account.financial_category\n,sri_account.financial_sub_category\n,sri_account.danaos_name\n,sri_account.danaos_description_details\n,sri_account.danaos_description_sub\n,sri_account.danaos_description_main\n,coalesce(sri_account_mapping.source_system,'default') as source_system\n,sri_account.integration_key\n,sha2(coalesce(sri_account.oracle_natural_account,'')||coalesce(sri_account_mapping.ledger_card,'000000')||coalesce(sri_account_mapping.source_system,'default'), 512) as account_id\n,null as w_x_custom\n,sri_account.w_job_instance_id\n,sri_account.w_refresh_ts\n,null as w_curr_rec_flg\n,sri_account.w_source_system as w_data_src_id\n,sri_account.w_location\n,sri_account.w_batch_id\n,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_account sri_account\nleft join ${p_epsdl_sri_db}.sri_account_mapping sri_account_mapping \n    on sri_account.oracle_natural_account = sri_account_mapping.oracle_natural_account \n    and sri_account_mapping.w_business_dt='${business_date}'\nwhere sri_account.w_business_dt='${business_date}' and sri_account.oracle_natural_account is not null"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  - "ledger_card"
+  - "source_system"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_account"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_account where account_id is null"
+  merge_columns:
+  - "oracle_natural_account"
+  - "parent1_code"
+  - "parent1_description"
+  - "parent2_code"
+  - "parent2_description"
+  - "parent3_code"
+  - "parent3_description"
+  - "parent4_code"
+  - "parent4_description"
+  - "parent5_code"
+  - "parent5_description"
+  - "financial_category"
+  - "financial_sub_category"
+  - "account_id"
+  - "danaos_name"
+  - "danaos_description_details"
+  - "danaos_description_sub"
+  - "danaos_description_main"
+  - "description"
+  endpoint: "lo_delta_tables"

@@ -1,0 +1,41 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \nsri_budget_opex_monitor.vessel_code\n, dim_period.date as matching_date\n, sri_budget_opex_monitor.ledger_card\n, case when sri_budget_opex_monitor.total_period=1 then 2019 when sri_budget_opex_monitor.total_period=2 then 2020 else sri_budget_opex_monitor.total_period end as year\n, sri_budget_opex_monitor.budget_value as tot_book_debit\n, null as tot_book_credit\n,sri_budget_opex_monitor.integration_key\n,coalesce(dim_vessel.vessel_id,'0000') as vessel_id\n,coalesce(Dim_gl_company_vessel.company_id,Dim_gl_company.company_id,'0000') as company_id\n,coalesce(dim_gl_account.account_id,'000000') as account_id\n,coalesce(dim_gl_reporting_lines.account_id,'000000') as reporting_lines_id\n,null as w_x_custom\n,sri_budget_opex_monitor.w_job_instance_id\n,sri_budget_opex_monitor.w_refresh_ts\n,null as w_curr_rec_flg\n,sri_budget_opex_monitor.w_source_system as w_data_src_id\n,sri_budget_opex_monitor.w_location\n,sri_budget_opex_monitor.w_batch_id\n,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_budget_opex_monitor sri_budget_opex_monitor\nleft join\n${p_epsdl_db}.dim_gl_vessel dim_vessel\non\ndim_vessel.vessel_code=sri_budget_opex_monitor.vessel_code\n\nleft join\n(select * from ${p_epsdl_db}.Dim_gl_company where database is not null) Dim_gl_company_vessel\non\nDim_gl_company_vessel.child_value=dim_vessel.owning_entity_codes\nand coalesce(Dim_gl_company_vessel.database,'default')='DANAOS'\n\nleft join\n(select * from ${p_epsdl_db}.Dim_gl_company where database is not null) Dim_gl_company\non\nDim_gl_company.company=sri_budget_opex_monitor.vessel_code\nand coalesce(Dim_gl_company.database,'default')='DANAOS'\n\nleft join\n${p_epsdl_db}.dim_gl_account dim_gl_account\non\ndim_gl_account.ledger_card=sri_budget_opex_monitor.ledger_card\nand dim_gl_account.source_system='DANAOS'\nleft join\n${p_epsdl_db}.dim_gl_reporting_lines dim_gl_reporting_lines\non\ndim_gl_reporting_lines.account_id=dim_gl_account.account_id\nleft join\n${p_epsdl_db}.dim_period dim_period\non\ndim_period.date between coalesce(dim_vessel.start_date,dim_period.date) and coalesce(dim_vessel.sold_date,dim_period.date)\nwhere sri_budget_opex_monitor.w_business_dt='${business_date}'\nand year(dim_period.date)=(case when sri_budget_opex_monitor.total_period=1 then 2019 when sri_budget_opex_monitor.total_period=2 then 2020 else sri_budget_opex_monitor.total_period end)"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  primary_key_columns:
+  - "matching_date"
+  - "integration_key"
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_gl_budget"
+  merge_columns:
+  - "tot_book_debit"
+  - "tot_book_credit"
+  - "vessel_id"
+  - "vessel_code"
+  - "ledger_card"
+  - "year"
+  - "account_id"
+  - "reporting_lines_id"
+  - "company_id"
+  endpoint: "lo_delta_tables"

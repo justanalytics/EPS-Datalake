@@ -1,0 +1,56 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_period"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_os_po"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_gl_transactions"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_gl_account"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_gl_company"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_gl_reporting_lines"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_gl_budget"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_gl_service"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_gl_vessel"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_ship_days"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_dry_dock_details"
+- "synapse_rej_sri_account_mapping"
+- "synapse_rej_sri_budget_opex_monitor"
+- "synapse_rej_sri_company_hierarchy"
+- "synapse_rej_sri_company_master"
+- "synapse_rej_sri_del_departments"
+- "synapse_rej_sri_dept_mapping"
+- "synapse_rej_sri_documents"
+- "synapse_rej_sri_expected_call_da"
+- "synapse_rej_sri_item_ledgers"
+- "synapse_rej_sri_order_details"
+- "synapse_rej_sri_reporting_lines"
+- "synapse_rej_sri_requisitions"
+- "synapse_rej_sri_service_hierarchy"
+- "synapse_rej_sri_supply_items"
+- "synapse_rej_sri_vessel_dry_dock_details"
+- "synapse_rej_sri_vessel_hierarchy"
+- "synapse_rej_sri_vessel_team_map"
+- "synapse_rej_sri_vessel_master"
+parallel: 6

@@ -1,0 +1,10 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "fact_os_po"
+- "fact_gl_transactions"
+- "fact_ship_days"
+- "fact_dry_dock_details"
+- "fact_gl_budget"
+parallel: 5

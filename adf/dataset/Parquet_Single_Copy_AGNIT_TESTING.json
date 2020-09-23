@@ -1,0 +1,128 @@
+{
+	"name": "Parquet_Single_Copy_AGNIT_TESTING",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('supply_items_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": "epsdl/data/landing",
+				"container": "epsdlcontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "COMPANY",
+				"type": "UTF8"
+			},
+			{
+				"name": "SHORT_NAME",
+				"type": "UTF8"
+			},
+			{
+				"name": "NAME",
+				"type": "UTF8"
+			},
+			{
+				"name": "MANAGED_BY",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMPANY_GROUP",
+				"type": "UTF8"
+			},
+			{
+				"name": "CHART",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMPANY_TYPE",
+				"type": "UTF8"
+			},
+			{
+				"name": "BASE_CURRENCY",
+				"type": "UTF8"
+			},
+			{
+				"name": "REMARKS",
+				"type": "UTF8"
+			},
+			{
+				"name": "GROUP_FLAG_1",
+				"type": "UTF8"
+			},
+			{
+				"name": "GROUP_FLAG_2",
+				"type": "UTF8"
+			},
+			{
+				"name": "OFFICIAL_CURRENCY",
+				"type": "UTF8"
+			},
+			{
+				"name": "GLOBAL_VESSEL_ID",
+				"type": "UTF8"
+			},
+			{
+				"name": "CREATE_INTERCOMPANIES",
+				"type": "UTF8"
+			},
+			{
+				"name": "IS_FILING",
+				"type": "UTF8"
+			},
+			{
+				"name": "ACTIVE_FLAG",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMPANY_LEVEL",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "BANK_LEDGER",
+				"type": "UTF8"
+			},
+			{
+				"name": "GROUP_DETAILS_FROM",
+				"type": "INT96"
+			},
+			{
+				"name": "GROUP_DETAILS_TO",
+				"type": "INT96"
+			},
+			{
+				"name": "TONNAGE_TAX_FROM",
+				"type": "INT96"
+			},
+			{
+				"name": "TONNAGE_TAX_TO",
+				"type": "INT96"
+			},
+			{
+				"name": "VAT_GROUP_FROM",
+				"type": "INT96"
+			},
+			{
+				"name": "VAT_GROUP_TO",
+				"type": "INT96"
+			},
+			{
+				"name": "INCEXP_MANAGED_BY",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

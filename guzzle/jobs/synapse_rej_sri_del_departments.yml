@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_del_departments.name,\nrej_sri_del_departments.code,\nrej_sri_del_departments.form_type,\nrej_sri_del_departments.dept_reference,\nrej_sri_del_departments.office_code,\nrej_sri_del_departments.integration_key,\nrej_sri_del_departments._validation_error as validation_error,\nrej_sri_del_departments.w_source_system,\nrej_sri_del_departments.w_src_file_name,\nrej_sri_del_departments.w_refresh_ts,\nrej_sri_del_departments.w_job_instance_id,\nrej_sri_del_departments.w_business_dt,\nrej_sri_del_departments.w_location,\nrej_sri_del_departments.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_del_departments rej_sri_del_departments"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_del_departments"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

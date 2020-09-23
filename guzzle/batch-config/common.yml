@@ -1,0 +1,81 @@
+version: 1
+context_stage_mappings:
+- context:
+    system: "FINANCIAL"
+    location: "ALL"
+  rerun_batch: false
+  period: 1
+  stages:
+  - name: "STG"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epdl_sri_financial"
+  - name: "FND"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epsdl_fnd_facts_financials"
+    - "epsdl_fnd_dims_financials"
+- context:
+    system: "PURCHASING"
+    location: "ALL"
+  rerun_batch: false
+  period: 1
+  stages:
+  - name: "STG"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epsdl_sri_purchasing"
+- context:
+    system: "dummy"
+    location: "dummy"
+  rerun_batch: false
+  period: 1
+  stages:
+  - name: "STG"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "TestJobGroup"
+  - name: "FND"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "TestJobGroupFBD"
+    - "external_testing"
+  - name: "PLP"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "TestJobGroupPLP"
+- context:
+    system: "FINANCIAL_FACTS"
+  rerun_batch: false
+  period: 1
+  stages: []
+- context:
+    system: "ALL"
+    location: "ALL"
+  rerun_batch: false
+  period: 1
+  stages:
+  - name: "STG"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epdl_sri_financial"
+    - "epsdl_sri_purchasing"
+  - name: "FND"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epsdl_fnd_dims_financials"
+    - "epsdl_fnd_facts_combined"
+  - name: "PLP"
+    rerun_batch: false
+    partial_load: false
+    job_groups:
+    - "epsdl_plp"
+    - "epsdl_housekeep"

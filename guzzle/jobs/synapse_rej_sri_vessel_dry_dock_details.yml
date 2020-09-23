@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_vessel_dry_dock_details.vessel_code,\nrej_sri_vessel_dry_dock_details.project_id,\nrej_sri_vessel_dry_dock_details.all_invoices_closed,\nrej_sri_vessel_dry_dock_details.yard_awarded,\nrej_sri_vessel_dry_dock_details.project_status,\nrej_sri_vessel_dry_dock_details.vessel_id,\nrej_sri_vessel_dry_dock_details.project_date,\nrej_sri_vessel_dry_dock_details.supt_in_charge,\nrej_sri_vessel_dry_dock_details.planned_total,\nrej_sri_vessel_dry_dock_details.supt_in_charge_signed,\nrej_sri_vessel_dry_dock_details.business_mgr_signed,\nrej_sri_vessel_dry_dock_details.approve1,\nrej_sri_vessel_dry_dock_details.approve3,\nrej_sri_vessel_dry_dock_details.a_supt_in_charge_signed,\nrej_sri_vessel_dry_dock_details.a_business_mgr_signed,\nrej_sri_vessel_dry_dock_details.a_approve1,\nrej_sri_vessel_dry_dock_details.a_approve3,\nrej_sri_vessel_dry_dock_details.actual_total,\nrej_sri_vessel_dry_dock_details.created_by,\nrej_sri_vessel_dry_dock_details.create_date,\nrej_sri_vessel_dry_dock_details.actual_is_null,\nrej_sri_vessel_dry_dock_details.variance_total,\nrej_sri_vessel_dry_dock_details.variance_pct,\nrej_sri_vessel_dry_dock_details.planned_entry,\nrej_sri_vessel_dry_dock_details.actual_entry,\nrej_sri_vessel_dry_dock_details.dt_planned_entry,\nrej_sri_vessel_dry_dock_details.dt_actual_entry,\nrej_sri_vessel_dry_dock_details.uwild_status,\nrej_sri_vessel_dry_dock_details.tech_manager,\nrej_sri_vessel_dry_dock_details.user_name,\nrej_sri_vessel_dry_dock_details.planned_exit,\nrej_sri_vessel_dry_dock_details.actual_exit,\nrej_sri_vessel_dry_dock_details.dt_actual_exit,\nrej_sri_vessel_dry_dock_details.vessel_short_name,\nrej_sri_vessel_dry_dock_details.fleet,\nrej_sri_vessel_dry_dock_details.integration_key,\nrej_sri_vessel_dry_dock_details._validation_error as validation_error,\nrej_sri_vessel_dry_dock_details.w_source_system,\nrej_sri_vessel_dry_dock_details.w_src_file_name,\nrej_sri_vessel_dry_dock_details.w_refresh_ts,\nrej_sri_vessel_dry_dock_details.w_job_instance_id,\nrej_sri_vessel_dry_dock_details.w_business_dt,\nrej_sri_vessel_dry_dock_details.w_location,\nrej_sri_vessel_dry_dock_details.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_vessel_dry_dock_details rej_sri_vessel_dry_dock_details"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_vessel_dry_dock_details"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"
