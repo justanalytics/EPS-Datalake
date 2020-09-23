@@ -348,10 +348,10 @@ null,
 null,
 null,
 null
-)
+);
 
 insert into epsdld.dim_gl_service
-(
+-- (
 -- service_code,
 -- service_description,
 -- parent1_code,
@@ -382,7 +382,7 @@ insert into epsdld.dim_gl_service
 -- w_job_instance_id,
 -- w_curr_rec_flg,
 -- w_location
-)
+-- )
 VALUES
 (
 '00',

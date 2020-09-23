@@ -1,3 +1,6 @@
+CREATE SCHEMA epsdlplp;  
+GO
+
 CREATE TABLE epsdlplp.dim_gl_account
 (
  oracle_natural_account varchar(1000),
