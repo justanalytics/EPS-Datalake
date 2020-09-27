@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+					"url": "https://prod-02.southeastasia.logic.azure.com:443/workflows/8395e91fe6b24c40b09c26a73d301d88/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3XVHGLAz5GIWm8Gukxt2hEAJH-t6FAdNlqu-C148Adc",
 					"method": "POST",
 					"headers": {
 						"Content-Type": "application/json"
