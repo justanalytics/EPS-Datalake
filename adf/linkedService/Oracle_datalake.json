@@ -6,7 +6,7 @@
 		"type": "Oracle",
 		"typeProperties": {
 			"connectionString": "host=192.168.166.207;port=1521;servicename=PDBORCL;user id=EBI_TEST_QUBIC",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIzYzMxMGVlMC0wMWQzLTQ0MGMtODNmZS0yMDAzODM0YzliNDciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmNmE5NTY4Ni0yMDliLTQ5ZDEtYmI2NC05ZDRmNGQ4Y2Q0MDMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "epsdlselfhostedintegrationruntime",
