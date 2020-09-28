@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "eps-adf-datalake-prod-001"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"value": ""
+		},
+		"FileServer1_password": {
+			"value": ""
+		},
+		"HttpServer1GuzzleService_password": {
+			"value": ""
+		},
+		"Oracle1_connectionString": {
+			"value": ""
+		},
+		"Oracle_Danaos_Production_connectionString": {
+			"value": ""
+		},
+		"Oracle_datalake_connectionString": {
+			"value": ""
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"value": "203.92.109.65"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"value": "vendor1.POC1"
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_url": {
+			"value": "https://vmdatalakeprod2001.southeastasia.cloudapp.azure.com:9090/"
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://api.powerbi.com/"
+		},
+		"epsdlselfhostedintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
+		}
+	}
+}

@@ -1,0 +1,170 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "eps-adf-datalake-prod-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Pause_Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-prod-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-prod-001/databases/eps-sqldw-datalake-prod-001/pause?api-version=2017-10-01-preview",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-type": "application/json",
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('Oauth2 Login').output.access_token)",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json('')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/cc3f0441-9868-4f81-a6f2-6d91c68fe354/oauth2/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&client_id=eb6ec5eb-0393-4913-9957-5d97c7149c26&client_secret=RDuan8_w5uC2.LJK-cpzzN6JpGW.3l4dE_&resource=https://management.azure.com/",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-08-28T00:32:58Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Resume_Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-prod-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-prod-001/databases/eps-sqldw-datalake-prod-001/resume?api-version=2017-10-01-preview",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-type": "application/json",
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('Oauth2 Login').output.access_token)",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json('')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/cc3f0441-9868-4f81-a6f2-6d91c68fe354/oauth2/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&client_id=eb6ec5eb-0393-4913-9957-5d97c7149c26&client_secret=RDuan8_w5uC2.LJK-cpzzN6JpGW.3l4dE_&resource=https://management.azure.com/",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-08-28T00:32:58Z"
+			},
+			"dependsOn": []
+		}
+	]
+}
