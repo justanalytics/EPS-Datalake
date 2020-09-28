@@ -50,7 +50,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "HttpServerLocation",
-						"relativeUrl": "api/batches/initialize?mode=default"
+						"relativeUrl": "/api/batches/initialize?mode=default"
 					}
 				},
 				"schema": {}
