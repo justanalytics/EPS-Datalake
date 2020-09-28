@@ -2,7 +2,7 @@
 	"name": "EPS_Dev_Batch_Schedule",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
