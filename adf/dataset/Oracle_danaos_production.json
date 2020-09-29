@@ -9,7 +9,7 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "TPMOFF",
+			"schema": "EPS_CHARTER",
 			"table": "DOCUMENTS"
 		}
 	},
