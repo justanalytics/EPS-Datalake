@@ -294,6 +294,8 @@
 				"defaultValue": "Unknown"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-09-15T01:15:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

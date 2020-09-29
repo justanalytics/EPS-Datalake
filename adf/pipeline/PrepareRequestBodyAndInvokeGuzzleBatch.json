@@ -594,6 +594,8 @@
 				"type": "Array"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-09-18T06:45:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

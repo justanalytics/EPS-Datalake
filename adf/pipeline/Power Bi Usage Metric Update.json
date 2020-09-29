@@ -276,6 +276,8 @@
 				"defaultValue": "dbo"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-09-01T08:03:14Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

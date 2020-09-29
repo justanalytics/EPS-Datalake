@@ -284,6 +284,8 @@
 				"defaultValue": "1900-01-01 00:00:00"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-09-18T06:45:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

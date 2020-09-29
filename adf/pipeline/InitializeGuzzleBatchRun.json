@@ -175,7 +175,8 @@
 										"value": "select count(*) as count from dbo.batch_control where business_date='@{pipeline().parameters.business_date}' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
 										"type": "Expression"
 									},
-									"queryTimeout": "02:00:00"
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"dataset": {
 									"referenceName": "GuzzleDB",
@@ -252,7 +253,8 @@
 							"value": "select batch_id from dbo.batch_control where system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))} and (batch_status='OPEN' or batch_status='FAILED') order by business_date",
 							"type": "Expression"
 						},
-						"queryTimeout": "02:00:00"
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "GuzzleDB",
@@ -392,6 +394,8 @@
 				"type": "String"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-08-06T15:39:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

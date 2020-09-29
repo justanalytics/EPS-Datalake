@@ -9,8 +9,9 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "TANKPAC",
-			"table": "REQUISITIONS"
+			"schema": "NSLADMIN",
+			"table": "DELIVERY_POINT"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

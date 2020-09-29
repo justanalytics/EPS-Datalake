@@ -13,5 +13,6 @@
 				"relativeUrl": "api/batches/run_stage?mode=default"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

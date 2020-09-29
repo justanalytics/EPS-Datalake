@@ -688,6 +688,8 @@
 				"defaultValue": "pbtest"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-09-01T08:03:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

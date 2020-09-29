@@ -1,12 +1,12 @@
 {
-	"name": "GuzzleDB",
+	"name": "RestResource1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
+			"referenceName": "IMOS_Rest",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "AzureSqlTable",
+		"type": "RestResource",
 		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

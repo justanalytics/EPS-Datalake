@@ -48,7 +48,8 @@
 										"value": "select @{pipeline().parameters.stage} from dbo.batch_control where batch_id=@{pipeline().parameters.batch_id}",
 										"type": "Expression"
 									},
-									"queryTimeout": "02:00:00"
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"dataset": {
 									"referenceName": "GuzzleDB",
@@ -128,6 +129,8 @@
 				"type": "Boolean"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2020-07-17T16:07:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

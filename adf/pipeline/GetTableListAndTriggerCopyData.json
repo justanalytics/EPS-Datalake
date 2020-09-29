@@ -21,7 +21,8 @@
 							"value": "select tablename, filename from dbo.JBS_JOB",
 							"type": "Expression"
 						},
-						"queryTimeout": "02:00:00"
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "AzureSqlTable1",
@@ -57,7 +58,8 @@
 				}
 			}
 		],
-		"annotations": []
+		"annotations": [],
+		"lastPublishTime": "2020-07-19T04:33:04Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

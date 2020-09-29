@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('requisitions','.parquet')",
+					"value": "@concat('delivery_point','.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "epsdl/data/landing/",

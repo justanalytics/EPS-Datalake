@@ -12,5 +12,6 @@
 			"schema": "EBI_UAT",
 			"table": "REQUISITIONS_CATEGORY"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
