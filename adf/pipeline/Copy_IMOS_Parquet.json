@@ -41,7 +41,7 @@
 						"mappings": [
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 1
 								},
 								"sink": {
@@ -51,7 +51,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 2
 								},
 								"sink": {
@@ -61,7 +61,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 3
 								},
 								"sink": {
@@ -71,7 +71,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 4
 								},
 								"sink": {
@@ -91,7 +91,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 6
 								},
 								"sink": {
@@ -121,7 +121,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 9
 								},
 								"sink": {
@@ -151,7 +151,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 12
 								},
 								"sink": {
@@ -161,7 +161,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 13
 								},
 								"sink": {
@@ -171,7 +171,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 14
 								},
 								"sink": {
@@ -181,7 +181,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 15
 								},
 								"sink": {
@@ -191,7 +191,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 16
 								},
 								"sink": {
@@ -201,7 +201,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 17
 								},
 								"sink": {
@@ -211,7 +211,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 18
 								},
 								"sink": {
@@ -221,7 +221,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 19
 								},
 								"sink": {
@@ -231,7 +231,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 20
 								},
 								"sink": {
@@ -241,7 +241,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 21
 								},
 								"sink": {
@@ -251,7 +251,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 22
 								},
 								"sink": {
@@ -271,7 +271,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 24
 								},
 								"sink": {
@@ -291,7 +291,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "DateTime",
 									"ordinal": 26
 								},
 								"sink": {
@@ -311,7 +311,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 28
 								},
 								"sink": {
@@ -321,7 +321,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 29
 								},
 								"sink": {
@@ -331,7 +331,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 30
 								},
 								"sink": {
@@ -341,7 +341,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 31
 								},
 								"sink": {
@@ -351,7 +351,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 32
 								},
 								"sink": {
@@ -361,7 +361,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 33
 								},
 								"sink": {
@@ -371,7 +371,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 34
 								},
 								"sink": {
@@ -381,7 +381,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 35
 								},
 								"sink": {
@@ -391,7 +391,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 36
 								},
 								"sink": {
@@ -401,7 +401,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 37
 								},
 								"sink": {
@@ -411,7 +411,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 38
 								},
 								"sink": {
@@ -421,7 +421,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 39
 								},
 								"sink": {
@@ -441,11 +441,11 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 41
 								},
 								"sink": {
-									"name": "ColumnunPort_Exp_Exch_Ratedefined",
+									"name": "Port_Exp_Exch_Rate",
 									"physicalType": "UTF8"
 								}
 							},
@@ -471,7 +471,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 44
 								},
 								"sink": {
@@ -491,7 +491,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 46
 								},
 								"sink": {
@@ -501,7 +501,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 47
 								},
 								"sink": {
@@ -511,7 +511,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 48
 								},
 								"sink": {
@@ -531,7 +531,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 50
 								},
 								"sink": {
@@ -561,7 +561,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 53
 								},
 								"sink": {
@@ -571,7 +571,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 54
 								},
 								"sink": {
@@ -581,7 +581,7 @@
 							},
 							{
 								"source": {
-									"type": "String",
+									"type": "Decimal",
 									"ordinal": 55
 								},
 								"sink": {
@@ -675,8 +675,7 @@
 									"ordinal": 64
 								},
 								"sink": {
-									"name": "Columnundefined",
-									"type": "String",
+									"name": "Name",
 									"physicalType": "UTF8"
 								}
 							}
