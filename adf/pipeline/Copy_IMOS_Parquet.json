@@ -42,7 +42,6 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 1
 								},
 								"sink": {
@@ -86,7 +85,7 @@
 									"ordinal": 5
 								},
 								"sink": {
-									"name": "Area",
+									"name": "Arr_Dep_Status",
 									"physicalType": "UTF8"
 								}
 							},
@@ -96,7 +95,7 @@
 									"ordinal": 6
 								},
 								"sink": {
-									"name": "Arr_Dep_Status",
+									"name": "Arrival_Local",
 									"physicalType": "UTF8"
 								}
 							},
@@ -106,7 +105,7 @@
 									"ordinal": 7
 								},
 								"sink": {
-									"name": "Arrival_Local",
+									"name": "Ballast_Laden_From_Port",
 									"physicalType": "UTF8"
 								}
 							},
@@ -116,7 +115,7 @@
 									"ordinal": 8
 								},
 								"sink": {
-									"name": "Ballast_Laden_From_Port",
+									"name": "Ballast_Laden_to_Port",
 									"physicalType": "UTF8"
 								}
 							},
@@ -126,7 +125,7 @@
 									"ordinal": 9
 								},
 								"sink": {
-									"name": "Ballast_Laden_to_Port",
+									"name": "Berth_to_Pilot",
 									"physicalType": "UTF8"
 								}
 							},
@@ -136,7 +135,7 @@
 									"ordinal": 10
 								},
 								"sink": {
-									"name": "Berth_to_Pilot",
+									"name": "Cargo_Inspector",
 									"physicalType": "UTF8"
 								}
 							},
@@ -146,7 +145,7 @@
 									"ordinal": 11
 								},
 								"sink": {
-									"name": "Cargo_Inspector",
+									"name": "Cargo_Scheduler",
 									"physicalType": "UTF8"
 								}
 							},
@@ -156,27 +155,6 @@
 									"ordinal": 12
 								},
 								"sink": {
-									"name": "Cargo_Scheduler",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 13
-								},
-								"sink": {
-									"name": "Country"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 14
-								},
-								"sink": {
 									"name": "Dem_Des_Days",
 									"physicalType": "UTF8"
 								}
@@ -184,8 +162,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 15
+									"ordinal": 13
 								},
 								"sink": {
 									"name": "Dem_Des_Rate",
@@ -195,8 +172,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 16
+									"ordinal": 14
 								},
 								"sink": {
 									"name": "Departure_Local",
@@ -206,8 +182,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 17
+									"ordinal": 15
 								},
 								"sink": {
 									"name": "Est_Cost_Base",
@@ -217,8 +192,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 18
+									"ordinal": 16
 								},
 								"sink": {
 									"name": "Eta_Gmt",
@@ -228,8 +202,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 19
+									"ordinal": 17
 								},
 								"sink": {
 									"name": "ETB",
@@ -239,8 +212,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 20
+									"ordinal": 18
 								},
 								"sink": {
 									"name": "Etd_Gmt",
@@ -250,8 +222,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 21
+									"ordinal": 19
 								},
 								"sink": {
 									"name": "Extra_Port_Days",
@@ -261,8 +232,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 22
+									"ordinal": 20
 								},
 								"sink": {
 									"name": "Extra_Sea_Days",
@@ -272,8 +242,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 23
+									"ordinal": 21
 								},
 								"sink": {
 									"name": "Fixture_No",
@@ -283,8 +252,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 24
+									"ordinal": 22
 								},
 								"sink": {
 									"name": "Idle_Days",
@@ -294,8 +262,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 25
+									"ordinal": 23
 								},
 								"sink": {
 									"name": "Instructed_SAT_Local",
@@ -305,8 +272,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 26
+									"ordinal": 24
 								},
 								"sink": {
 									"name": "Instructed_Speed",
@@ -316,8 +282,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 27
+									"ordinal": 25
 								},
 								"sink": {
 									"name": "Is_Current_Port_Call",
@@ -327,8 +292,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 28
+									"ordinal": 26
 								},
 								"sink": {
 									"name": "Last_Update_Gmt",
@@ -338,8 +302,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 29
+									"ordinal": 27
 								},
 								"sink": {
 									"name": "Last_User_ID",
@@ -349,8 +312,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 30
+									"ordinal": 28
 								},
 								"sink": {
 									"name": "Low_Speed_Days",
@@ -360,8 +322,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 31
+									"ordinal": 29
 								},
 								"sink": {
 									"name": "Low_Speed_Miles",
@@ -371,19 +332,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 32
-								},
-								"sink": {
-									"name": "Low_Sulfur_ECA",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 33
+									"ordinal": 30
 								},
 								"sink": {
 									"name": "LS_Miles",
@@ -393,8 +342,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 34
+									"ordinal": 31
 								},
 								"sink": {
 									"name": "LS_Port_Days",
@@ -404,8 +352,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 35
+									"ordinal": 32
 								},
 								"sink": {
 									"name": "LS_Sea_Days",
@@ -415,8 +362,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 36
+									"ordinal": 33
 								},
 								"sink": {
 									"name": "Master_Seq",
@@ -426,8 +372,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 37
+									"ordinal": 34
 								},
 								"sink": {
 									"name": "Miles",
@@ -437,8 +382,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 38
+									"ordinal": 35
 								},
 								"sink": {
 									"name": "Order",
@@ -448,8 +392,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 39
+									"ordinal": 36
 								},
 								"sink": {
 									"name": "Pilot_to_Berth",
@@ -459,8 +402,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 40
+									"ordinal": 37
 								},
 								"sink": {
 									"name": "Port_Days",
@@ -470,8 +412,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 41
+									"ordinal": 38
 								},
 								"sink": {
 									"name": "Port_Exp_Amount_Base",
@@ -481,8 +422,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 42
+									"ordinal": 39
 								},
 								"sink": {
 									"name": "Port_Exp_Amount_Local",
@@ -492,8 +432,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 43
+									"ordinal": 40
 								},
 								"sink": {
 									"name": "Port_Exp_Curr",
@@ -503,19 +442,17 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 44
+									"ordinal": 41
 								},
 								"sink": {
-									"name": "Port_Exp_Exch_Rate",
+									"name": "ColumnunPort_Exp_Exch_Ratedefined",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 45
+									"ordinal": 42
 								},
 								"sink": {
 									"name": "Port_Func",
@@ -525,8 +462,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 46
+									"ordinal": 43
 								},
 								"sink": {
 									"name": "Port_Name",
@@ -536,8 +472,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 47
+									"ordinal": 44
 								},
 								"sink": {
 									"name": "Port_No",
@@ -547,30 +482,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 48
-								},
-								"sink": {
-									"name": "Port_Range",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 49
-								},
-								"sink": {
-									"name": "Port_Region",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 50
+									"ordinal": 45
 								},
 								"sink": {
 									"name": "Port_Status_Code",
@@ -580,30 +492,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 51
-								},
-								"sink": {
-									"name": "Remarks_Fixture",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 52
-								},
-								"sink": {
-									"name": "Remarks_Operations",
-									"physicalType": "UTF8"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 53
+									"ordinal": 46
 								},
 								"sink": {
 									"name": "Sea_Days",
@@ -613,8 +502,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 54
+									"ordinal": 47
 								},
 								"sink": {
 									"name": "Seq",
@@ -624,8 +512,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 55
+									"ordinal": 48
 								},
 								"sink": {
 									"name": "Speed_From_Port",
@@ -635,8 +522,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 56
+									"ordinal": 49
 								},
 								"sink": {
 									"name": "Speed_Instruction_Type",
@@ -646,8 +532,7 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 57
+									"ordinal": 50
 								},
 								"sink": {
 									"name": "Speed_to_Port",
@@ -657,7 +542,76 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
+									"ordinal": 51
+								},
+								"sink": {
+									"name": "Vessel_Code",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 52
+								},
+								"sink": {
+									"name": "Via",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 53
+								},
+								"sink": {
+									"name": "Voyage_No",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 54
+								},
+								"sink": {
+									"name": "Weather_Factor_From_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 55
+								},
+								"sink": {
+									"name": "Weather_Factor_to_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 56
+								},
+								"sink": {
+									"name": "Remarks_Fixture",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 57
+								},
+								"sink": {
+									"name": "Remarks_Operations",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
 									"ordinal": 58
 								},
 								"sink": {
@@ -668,66 +622,62 @@
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 59
 								},
 								"sink": {
-									"name": "Vessel_Code",
+									"name": "Country",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 60
 								},
 								"sink": {
-									"name": "Via",
+									"name": "Area",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 61
 								},
 								"sink": {
-									"name": "Voyage_No",
+									"name": "Port_Range",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 62
 								},
 								"sink": {
-									"name": "Weather_Factor_From_Port",
+									"name": "Port_Region",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 63
 								},
 								"sink": {
-									"name": "Weather_Factor_to_Port",
+									"name": "Low_Sulfur_ECA",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
 									"type": "String",
-									"physicalType": "String",
 									"ordinal": 64
 								},
 								"sink": {
-									"name": "Name"
+									"name": "Columnundefined",
+									"type": "String",
+									"physicalType": "UTF8"
 								}
 							}
 						],
