@@ -1197,7 +1197,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_rejection')]",
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_rejection_try')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
