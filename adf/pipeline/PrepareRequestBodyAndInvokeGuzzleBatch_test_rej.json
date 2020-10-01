@@ -541,7 +541,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PowerBI_DataSet_Refresh_rejection",
+						"referenceName": "PowerBI_DataSet_Refresh_rejection_try",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
