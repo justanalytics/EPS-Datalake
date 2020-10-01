@@ -1,5 +1,5 @@
 {
-	"name": "EPS_Dev_Batch_Schedule",
+	"name": "EPS_Prod_Batch_Schedule",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
