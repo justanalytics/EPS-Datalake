@@ -278,7 +278,7 @@
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9"
+				"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
 			},
 			"Email": {
 				"type": "string",
