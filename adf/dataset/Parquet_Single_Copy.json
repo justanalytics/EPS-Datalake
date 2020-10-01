@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('imos_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
+					"value": "@concat('bp_ports_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "epsdl/data/landing",

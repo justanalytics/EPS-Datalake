@@ -9,8 +9,8 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "EPS_CHARTER",
-			"table": "DOCUMENTS"
+			"schema": "NSLADMIN",
+			"table": "DELIVERY_POINT"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
