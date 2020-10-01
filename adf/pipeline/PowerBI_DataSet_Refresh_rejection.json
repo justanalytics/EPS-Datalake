@@ -278,11 +278,11 @@
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
+				"defaultValue": "14042830-2758-4e3d-af2d-ad0ab33571f6"
 			},
 			"Email": {
 				"type": "string",
-				"defaultValue": "agnit.chatterjee@justanalytics.com"
+				"defaultValue": "thao.nguyen@justanalytics.com"
 			},
 			"Datetime": {
 				"type": "string"
