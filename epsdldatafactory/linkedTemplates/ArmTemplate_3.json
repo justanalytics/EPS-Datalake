@@ -1736,7 +1736,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "SuccessNotification",
+								"activity": "PowerBI_DataSet_Refresh_rejection",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1766,7 +1766,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "powerbi_refresh",
+								"activity": "SuccessNotification",
 								"dependencyConditions": [
 									"Succeeded"
 								]

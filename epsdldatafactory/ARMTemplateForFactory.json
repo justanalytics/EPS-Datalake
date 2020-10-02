@@ -5292,27 +5292,6 @@
 											}
 										}
 									}
-								},
-								{
-									"name": "Pause_Synapse_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "PowerBI_Refresh_Success_Email_Call",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Pause_Synapse",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
 								}
 							]
 						}
@@ -5358,8 +5337,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
 			]
 		},
 		{
@@ -6583,7 +6561,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "SuccessNotification",
+								"activity": "PowerBI_DataSet_Refresh_rejection",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -6613,7 +6591,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "powerbi_refresh",
+								"activity": "SuccessNotification",
 								"dependencyConditions": [
 									"Succeeded"
 								]
