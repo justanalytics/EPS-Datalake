@@ -6613,7 +6613,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "SuccessNotification",
+								"activity": "powerbi_refresh",
 								"dependencyConditions": [
 									"Succeeded"
 								]
