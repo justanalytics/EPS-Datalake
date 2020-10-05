@@ -7893,8 +7893,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "NSLADMIN",
-					"table": "DELIVERY_POINT"
+					"schema": "DANAOS",
+					"table": "TELEGRAMS"
 				}
 			},
 			"dependsOn": [
@@ -8243,7 +8243,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('delivery_point','.parquet')",
+							"value": "@concat('telegrams','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
