@@ -1,5 +1,5 @@
 {
-	"name": "PrepareRequestBodyAndInvokeGuzzleBatch_test_rej",
+	"name": "PrepareRequestBodyAndInvokeGuzzleBatch",
 	"properties": {
 		"activities": [
 			{
@@ -502,7 +502,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_DataSet_Refresh_rejection",
+						"activity": "SuccessNotification",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -525,26 +525,6 @@
 							"type": "Expression"
 						}
 					}
-				}
-			},
-			{
-				"name": "PowerBI_DataSet_Refresh_rejection",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "SuccessNotification",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "PowerBI_DataSet_Refresh_rejection_try",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
 				}
 			}
 		],
@@ -615,7 +595,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-02T05:57:01Z"
+		"lastPublishTime": "2020-09-18T06:45:15Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
