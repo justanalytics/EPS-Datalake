@@ -91,7 +91,7 @@
 				}
 			},
 			{
-				"name": "Copy_Activity_Failure",
+				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -202,7 +202,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Call_IMOS_Copy_Pipeline",
+						"activity": "Copy_Oracle_Source_Data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -246,56 +246,6 @@
 						}
 					}
 				}
-			},
-			{
-				"name": "Call_IMOS_Copy_Pipeline",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Copy_Oracle_Source_Data",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Copy_IMOS_Parquet",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "IMOS_Copy_Activity_Failure",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Call_IMOS_Copy_Pipeline",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Copy_Activity_Failure_Email",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"emails": {
-							"value": "@activity('Get_Email_Details').output.firstRow.email",
-							"type": "Expression"
-						},
-						"datetime": {
-							"value": "@variables('business_date')",
-							"type": "Expression"
-						}
-					}
-				}
 			}
 		],
 		"variables": {
@@ -305,7 +255,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-01T08:58:07Z"
+		"lastPublishTime": "2020-10-06T03:41:50Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
