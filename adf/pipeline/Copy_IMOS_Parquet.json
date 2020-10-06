@@ -695,7 +695,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Parquet_Single_Copy",
+						"referenceName": "Parquet_Single_Copy_IMOS",
 						"type": "DatasetReference"
 					}
 				]
