@@ -1,5 +1,5 @@
 {
-	"name": "EPSDL_Master_Pipeline_incremental_test_rej",
+	"name": "EPSDL_Master_Pipeline_incremental",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_test_rej",
+						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -255,7 +255,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-01T08:58:07Z"
+		"lastPublishTime": "2020-09-18T06:45:16Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
