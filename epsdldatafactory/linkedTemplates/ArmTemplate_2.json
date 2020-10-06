@@ -482,6 +482,136 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Parquet_Single_Copy_IMOS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('imos_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "epsdl/data/landing",
+						"container": "epsdlcontainer"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "COMPANY",
+						"type": "UTF8"
+					},
+					{
+						"name": "SHORT_NAME",
+						"type": "UTF8"
+					},
+					{
+						"name": "NAME",
+						"type": "UTF8"
+					},
+					{
+						"name": "MANAGED_BY",
+						"type": "UTF8"
+					},
+					{
+						"name": "COMPANY_GROUP",
+						"type": "UTF8"
+					},
+					{
+						"name": "CHART",
+						"type": "UTF8"
+					},
+					{
+						"name": "COMPANY_TYPE",
+						"type": "UTF8"
+					},
+					{
+						"name": "BASE_CURRENCY",
+						"type": "UTF8"
+					},
+					{
+						"name": "REMARKS",
+						"type": "UTF8"
+					},
+					{
+						"name": "GROUP_FLAG_1",
+						"type": "UTF8"
+					},
+					{
+						"name": "GROUP_FLAG_2",
+						"type": "UTF8"
+					},
+					{
+						"name": "OFFICIAL_CURRENCY",
+						"type": "UTF8"
+					},
+					{
+						"name": "GLOBAL_VESSEL_ID",
+						"type": "UTF8"
+					},
+					{
+						"name": "CREATE_INTERCOMPANIES",
+						"type": "UTF8"
+					},
+					{
+						"name": "IS_FILING",
+						"type": "UTF8"
+					},
+					{
+						"name": "ACTIVE_FLAG",
+						"type": "UTF8"
+					},
+					{
+						"name": "COMPANY_LEVEL",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "BANK_LEDGER",
+						"type": "UTF8"
+					},
+					{
+						"name": "GROUP_DETAILS_FROM",
+						"type": "INT96"
+					},
+					{
+						"name": "GROUP_DETAILS_TO",
+						"type": "INT96"
+					},
+					{
+						"name": "TONNAGE_TAX_FROM",
+						"type": "INT96"
+					},
+					{
+						"name": "TONNAGE_TAX_TO",
+						"type": "INT96"
+					},
+					{
+						"name": "VAT_GROUP_FROM",
+						"type": "INT96"
+					},
+					{
+						"name": "VAT_GROUP_TO",
+						"type": "INT96"
+					},
+					{
+						"name": "INCEXP_MANAGED_BY",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet_production')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1208,7 +1338,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet_Single_Copy",
+								"referenceName": "Parquet_Single_Copy_IMOS",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1218,7 +1348,720 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy')]"
+				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_IMOS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy_IMOS_Parquet_v2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 1
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 1
+										},
+										"sink": {
+											"name": "Agreed_Speed",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 2
+										},
+										"sink": {
+											"name": "Agreed_Speed_Cons",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 3
+										},
+										"sink": {
+											"name": "Agreed_Speed_Engine_Load",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 4
+										},
+										"sink": {
+											"name": "Anchorage_Delay",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 5
+										},
+										"sink": {
+											"name": "Arr_Dep_Status",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 6
+										},
+										"sink": {
+											"name": "Arrival_Local",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 7
+										},
+										"sink": {
+											"name": "Ballast_Laden_From_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 8
+										},
+										"sink": {
+											"name": "Ballast_Laden_to_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 9
+										},
+										"sink": {
+											"name": "Berth_to_Pilot",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 10
+										},
+										"sink": {
+											"name": "Cargo_Inspector",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 11
+										},
+										"sink": {
+											"name": "Cargo_Scheduler",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 12
+										},
+										"sink": {
+											"name": "Dem_Des_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 13
+										},
+										"sink": {
+											"name": "Dem_Des_Rate",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 14
+										},
+										"sink": {
+											"name": "Departure_Local",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 15
+										},
+										"sink": {
+											"name": "Est_Cost_Base",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 16
+										},
+										"sink": {
+											"name": "Eta_Gmt",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 17
+										},
+										"sink": {
+											"name": "ETB",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 18
+										},
+										"sink": {
+											"name": "Etd_Gmt",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 19
+										},
+										"sink": {
+											"name": "Extra_Port_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 20
+										},
+										"sink": {
+											"name": "Extra_Sea_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 21
+										},
+										"sink": {
+											"name": "Fixture_No",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 22
+										},
+										"sink": {
+											"name": "Idle_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 23
+										},
+										"sink": {
+											"name": "Instructed_SAT_Local",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 24
+										},
+										"sink": {
+											"name": "Instructed_Speed",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 25
+										},
+										"sink": {
+											"name": "Is_Current_Port_Call",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "DateTime",
+											"ordinal": 26
+										},
+										"sink": {
+											"name": "Last_Update_Gmt",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 27
+										},
+										"sink": {
+											"name": "Last_User_ID",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 28
+										},
+										"sink": {
+											"name": "Low_Speed_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 29
+										},
+										"sink": {
+											"name": "Low_Speed_Miles",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 30
+										},
+										"sink": {
+											"name": "LS_Miles",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 31
+										},
+										"sink": {
+											"name": "LS_Port_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 32
+										},
+										"sink": {
+											"name": "LS_Sea_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 33
+										},
+										"sink": {
+											"name": "Master_Seq",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 34
+										},
+										"sink": {
+											"name": "Miles",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 35
+										},
+										"sink": {
+											"name": "Order",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 36
+										},
+										"sink": {
+											"name": "Pilot_to_Berth",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 37
+										},
+										"sink": {
+											"name": "Port_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 38
+										},
+										"sink": {
+											"name": "Port_Exp_Amount_Base",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 39
+										},
+										"sink": {
+											"name": "Port_Exp_Amount_Local",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 40
+										},
+										"sink": {
+											"name": "Port_Exp_Curr",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 41
+										},
+										"sink": {
+											"name": "Port_Exp_Exch_Rate",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 42
+										},
+										"sink": {
+											"name": "Port_Func",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 43
+										},
+										"sink": {
+											"name": "Port_Name",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 44
+										},
+										"sink": {
+											"name": "Port_No",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 45
+										},
+										"sink": {
+											"name": "Port_Status_Code",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 46
+										},
+										"sink": {
+											"name": "Sea_Days",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 47
+										},
+										"sink": {
+											"name": "Seq",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 48
+										},
+										"sink": {
+											"name": "Speed_From_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 49
+										},
+										"sink": {
+											"name": "Speed_Instruction_Type",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 50
+										},
+										"sink": {
+											"name": "Speed_to_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 51
+										},
+										"sink": {
+											"name": "Vessel_Code",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 52
+										},
+										"sink": {
+											"name": "Via",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 53
+										},
+										"sink": {
+											"name": "Voyage_No",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 54
+										},
+										"sink": {
+											"name": "Weather_Factor_From_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "Decimal",
+											"ordinal": 55
+										},
+										"sink": {
+											"name": "Weather_Factor_to_Port",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 56
+										},
+										"sink": {
+											"name": "Remarks_Fixture",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 57
+										},
+										"sink": {
+											"name": "Remarks_Operations",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 58
+										},
+										"sink": {
+											"name": "UN_Code",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 59
+										},
+										"sink": {
+											"name": "Country",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 60
+										},
+										"sink": {
+											"name": "Area",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 61
+										},
+										"sink": {
+											"name": "Port_Range",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 62
+										},
+										"sink": {
+											"name": "Port_Region",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 63
+										},
+										"sink": {
+											"name": "Low_Sulfur_ECA",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 64
+										},
+										"sink": {
+											"name": "Name",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "IMOS_Report_Dataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet_Single_Copy_IMOS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_IMOS')]"
 			]
 		},
 		{
@@ -1953,138 +2796,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_AGNIT_TESTING')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "OracleSource",
-								"oracleReaderQuery": "select * from tankpac.supply_items where (ORDER_CODE,ORDER_SUPPLIER) in (select ORDER_CODE,ORDER_SUPPLIER from  tankpac.requisitions where extract(year from document_date) in (extract(year from sysdate),extract(year from sysdate)-1))",
-								"partitionOption": "None",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": false,
-									"treatBooleanAsNumber": false,
-									"dateTimeFormat": "dd-MMM-yy"
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "OracleTable_Single_Use_AGNIT_TESTING",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Parquet_Single_Copy_AGNIT_TESTING",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2020-08-14T03:31:49Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use_AGNIT_TESTING')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_AGNIT_TESTING')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_danaos_prod')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "OracleSource",
-								"partitionOption": "None",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": false,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Oracle_danaos_production",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Parquet_production",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2020-08-04T02:51:27Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet_production')]"
 			]
 		}
 	]
