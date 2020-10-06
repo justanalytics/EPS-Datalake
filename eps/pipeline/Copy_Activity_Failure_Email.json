@@ -1,0 +1,42 @@
+{
+	"name": "Copy_Activity_Failure_Email",
+	"properties": {
+		"activities": [
+			{
+				"name": "Send_Copy_Data_Failure_Email",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Copy Activity Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"emails": {
+				"type": "string"
+			},
+			"datetime": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-07-19T14:20:57Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

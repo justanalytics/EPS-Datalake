@@ -1,0 +1,65 @@
+{
+	"name": "GetTableListAndTriggerCopyData_incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupTableList",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.02:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select tablename, filename from dbo.JBS_JOB_v2",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "LookupTableList",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "IterateAndCopySQLTables_incremental",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"tableList": {
+							"value": "@activity('LookupTableList').output.value",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2020-08-26T02:36:54Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

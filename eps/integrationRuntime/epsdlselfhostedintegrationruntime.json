@@ -1,0 +1,6 @@
+{
+	"name": "epsdlselfhostedintegrationruntime",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

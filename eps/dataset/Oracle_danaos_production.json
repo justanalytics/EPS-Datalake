@@ -1,0 +1,17 @@
+{
+	"name": "Oracle_danaos_production",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Oracle_Danaos_Production",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "DANAOS",
+			"table": "TELEGRAMS_CUSTOM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "OracleTable_Single_Use_AGNIT_TESTING",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Oracle1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "BIUSER1",
+			"table": "VW_VESSEL_DRY_DOCK_DETAILS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,25 @@
+{
+	"name": "Parquet_production",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('telegrams_custom','.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": "epsdl/data/landing/",
+				"container": "epsdlcontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
