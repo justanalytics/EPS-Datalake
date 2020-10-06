@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_test_rej",
+						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

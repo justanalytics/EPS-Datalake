@@ -1,5 +1,5 @@
 {
-	"name": "PrepareRequestBodyAndInvokeGuzzleBatch_test_rej",
+	"name": "PrepareRequestBodyAndInvokeGuzzleBatch",
 	"properties": {
 		"activities": [
 			{
