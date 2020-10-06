@@ -3112,11 +3112,11 @@
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
+						"defaultValue": "a1004e80-77b3-4103-9520-354f32683560"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
+						"defaultValue": "864328a9-695d-4601-8ab4-4010826bbd1b"
 					},
 					"Email": {
 						"type": "string",
