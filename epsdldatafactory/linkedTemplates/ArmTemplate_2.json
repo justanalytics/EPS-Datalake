@@ -247,8 +247,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "DANAOS",
-					"table": "PORTS_LIBRARY"
+					"schema": "TANKPAC",
+					"table": "SUPPLY_ITEMS"
 				}
 			},
 			"dependsOn": []
@@ -717,7 +717,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('ports_library','.parquet')",
+							"value": "@concat('supply_items_full','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
