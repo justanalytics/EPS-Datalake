@@ -75,7 +75,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-07-01T06:39:48Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -138,7 +138,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-10T02:40:15Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		},
@@ -202,7 +202,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-14T03:31:49Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -234,9 +234,6 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -267,7 +264,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-04T02:51:27Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -329,7 +326,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-03T11:51:18Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		},
@@ -397,7 +394,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-07-19T04:33:04Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": []
 		},
@@ -465,7 +462,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-26T02:36:54Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": []
 		},
@@ -872,7 +869,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-06T15:39:51Z"
+				"lastPublishTime": "2020-10-06T04:33:37Z"
 			},
 			"dependsOn": []
 		},
@@ -1500,7 +1497,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:49Z"
+				"lastPublishTime": "2020-10-06T04:33:38Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]"
@@ -2109,7 +2106,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:49Z"
+				"lastPublishTime": "2020-10-06T04:33:38Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]"
@@ -2136,8 +2133,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2020-10-11T22:30:00.000Z",
-						"endTime": "2020-10-12T13:39:00.000Z",
+						"startTime": "2020-10-11T22:30:00Z",
+						"endTime": "2020-10-12T13:39:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
@@ -2389,7 +2386,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
@@ -2660,7 +2657,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",
@@ -2668,7 +2665,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_bkp20201014')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2931,7 +2928,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:50Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2939,7 +2936,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_IMOS_ADDED')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3253,7 +3250,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:50Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -3524,7 +3521,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:44:08Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -3795,7 +3792,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",

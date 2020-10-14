@@ -120,7 +120,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-07-19T14:20:57Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -831,7 +831,8 @@
 						]
 					}
 				],
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:39Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IMOS_Report_Dataset')]",
@@ -1545,7 +1546,8 @@
 						]
 					}
 				],
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:39Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IMOS_Report_Dataset')]",
@@ -1787,7 +1789,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
@@ -2062,7 +2064,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",
@@ -2075,7 +2077,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_bkp20201014')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2338,7 +2340,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:50Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2351,7 +2353,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_IMOS_ADDED')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2665,7 +2667,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:50Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2942,7 +2944,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:44:08Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -3218,7 +3220,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:51Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",
@@ -3293,7 +3295,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-07-19T12:51:47Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -3361,7 +3363,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-07-19T04:33:04Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -3432,7 +3434,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-26T02:36:54Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -3479,7 +3481,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:55:11Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -3523,7 +3525,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:05:02Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -3930,7 +3932,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-06T15:39:51Z"
+				"lastPublishTime": "2020-10-06T04:33:37Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]",
@@ -4632,7 +4634,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-01T08:03:13Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Power_Bi_Admin')]",
@@ -4730,7 +4732,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-07T01:21:38Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -4828,7 +4830,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-27T06:34:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -4880,7 +4882,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-07T02:34:43Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -4957,7 +4959,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-09-07T02:57:13Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -5242,7 +5244,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-01T08:03:14Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/PowerBI_SQL_DB')]",
@@ -5550,7 +5552,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-15T01:15:48Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -5838,7 +5840,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-11T07:45:11Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -6125,7 +6127,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-02T05:57:00Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -6177,7 +6179,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-27T12:34:15Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -6226,7 +6228,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-28T01:18:58Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -6854,7 +6856,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:49Z"
+				"lastPublishTime": "2020-10-06T04:33:38Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -7468,7 +7470,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T03:41:49Z"
+				"lastPublishTime": "2020-10-06T04:33:38Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -7551,7 +7553,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-09-07T02:53:28Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -7668,7 +7670,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-07-17T16:07:26Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/TrackGuzzleStageRun')]"
@@ -7809,7 +7811,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-07-17T16:07:26Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]"
@@ -7843,7 +7845,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-11T00:54:39Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
@@ -7912,7 +7914,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-07-01T06:39:48Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable1')]",
@@ -7961,7 +7963,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-06-23T02:46:14Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/invokeJob')]"
@@ -8008,7 +8010,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-06-23T12:26:37Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Json1')]"
@@ -8073,7 +8075,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-10T02:40:15Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use')]",
@@ -8140,7 +8142,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-14T03:31:49Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use_AGNIT_TESTING')]",
@@ -8175,9 +8177,6 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -8208,7 +8207,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-04T02:51:27Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -8273,7 +8272,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-08-03T11:51:18Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_Data_Lake_Tables')]",
@@ -9555,8 +9554,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2020-10-11T22:30:00.000Z",
-						"endTime": "2020-10-12T13:39:00.000Z",
+						"startTime": "2020-10-11T22:30:00Z",
+						"endTime": "2020-10-12T13:39:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [

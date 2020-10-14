@@ -54,7 +54,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-06-23T02:46:14Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		},
@@ -99,7 +99,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-06-23T12:26:37Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		},
@@ -1436,7 +1436,8 @@
 						]
 					}
 				],
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:39Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_IMOS')]"
@@ -2149,7 +2150,8 @@
 						]
 					}
 				],
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:39Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_IMOS')]"
@@ -2246,7 +2248,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-07T01:21:38Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -2344,7 +2346,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-08-27T06:34:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -2632,7 +2634,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-09-01T08:03:14Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": []
 		},
@@ -2749,7 +2751,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-07-17T16:07:26Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		}
