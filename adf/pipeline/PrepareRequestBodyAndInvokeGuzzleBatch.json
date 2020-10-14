@@ -502,7 +502,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "SuccessNotification",
+						"activity": "powerbi_refresh_rejection",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -512,6 +512,36 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PowerBI_DataSet_Refresh",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": {
+							"value": "@pipeline().parameters.emails",
+							"type": "Expression"
+						},
+						"Datetime": {
+							"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "powerbi_refresh_rejection",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SuccessNotification",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Rejection",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

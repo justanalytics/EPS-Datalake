@@ -1,0 +1,40 @@
+{
+	"name": "EPS_UAT_PBI_Refresh",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PowerBI_DataSet_Refresh_UAT",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"TenantId": "cc3f0441-9868-4f81-a6f2-6d91c68fe354",
+					"SPClientId": "f2128599-61e0-4ec8-aa6d-de904319802d",
+					"SPSecret": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X",
+					"PBIAppWorkspaceId": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab",
+					"PBIDatasetId": "bd73f006-b99e-4473-b407-70ed2c1b0f9e",
+					"Email": "agnit.chatterjee@justanalytics.com"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2020-10-06T10:22:00.000Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						0
+					]
+				}
+			}
+		}
+	}
+}
