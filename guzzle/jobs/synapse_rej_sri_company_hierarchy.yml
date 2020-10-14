@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_company_hierarchy.child_value,\nrej_sri_company_hierarchy.child_description,\nrej_sri_company_hierarchy.parent1,\nrej_sri_company_hierarchy.parent1_description,\nrej_sri_company_hierarchy.parent2,\nrej_sri_company_hierarchy.parent2_description,\nrej_sri_company_hierarchy.parent3,\nrej_sri_company_hierarchy.parent3_descriptin,\nrej_sri_company_hierarchy.parent4,\nrej_sri_company_hierarchy.parent4_description,\nrej_sri_company_hierarchy.parent5,\nrej_sri_company_hierarchy.parent5_description,\nrej_sri_company_hierarchy.parent6,\nrej_sri_company_hierarchy.parent6_description,\nrej_sri_company_hierarchy.parent7,\nrej_sri_company_hierarchy.parent7_description,\nrej_sri_company_hierarchy.parent8,\nrej_sri_company_hierarchy.parent8_description,\nrej_sri_company_hierarchy.parent9,\nrej_sri_company_hierarchy.parent9_description,\nrej_sri_company_hierarchy.le,\nrej_sri_company_hierarchy.danaos_co_code,\nrej_sri_company_hierarchy.database,\nrej_sri_company_hierarchy.integration_key,\nrej_sri_company_hierarchy._validation_error as validation_error,\nrej_sri_company_hierarchy.w_source_system,\nrej_sri_company_hierarchy.w_src_file_name,\nrej_sri_company_hierarchy.w_refresh_ts,\nrej_sri_company_hierarchy.w_job_instance_id,\nrej_sri_company_hierarchy.w_business_dt,\nrej_sri_company_hierarchy.w_location,\nrej_sri_company_hierarchy.w_batch_id\nfrom \n${p_epsdl_sri_db}.rej_sri_company_hierarchy as rej_sri_company_hierarchy"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_company_hierarchy"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

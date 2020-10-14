@@ -1,0 +1,10 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "sri_del_departments"
+- "sri_supply_items"
+- "sri_requisitions"
+- "sri_order_details"
+- "sri_dept_mapping"
+parallel: 5

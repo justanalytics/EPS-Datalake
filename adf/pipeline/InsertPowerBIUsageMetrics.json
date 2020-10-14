@@ -1,0 +1,695 @@
+{
+	"name": "InsertPowerBIUsageMetrics",
+	"properties": {
+		"activities": [
+			{
+				"name": "InsertPowerBIUsageMetrics",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"additionalHeaders": {
+							"Authorization": {
+								"value": "@pipeline().parameters.Token",
+								"type": "Expression"
+							}
+						},
+						"paginationRules": {
+							"AbsoluteUrl": "$['continuationUri']"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"sqlWriterStoredProcedureName": {
+							"value": "@concat('[',pipeline().parameters.SchemaName,'].[LoadPowerBIRaw]')",
+							"type": "Expression"
+						},
+						"sqlWriterTableType": {
+							"value": "@concat('[',pipeline().parameters.SchemaName,'].PowerBIActivityEvent')",
+							"type": "Expression"
+						},
+						"storedProcedureTableTypeParameterName": "RAW_POWERBI_ACTIVITY_LOG",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['Activity']"
+								},
+								"sink": {
+									"name": "Activity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ActivityId']"
+								},
+								"sink": {
+									"name": "ActivityId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['AggregatedWorkspaceInformation']"
+								},
+								"sink": {
+									"name": "AggregatedWorkspaceInformation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['AppName']"
+								},
+								"sink": {
+									"name": "AppName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['AppReportId']"
+								},
+								"sink": {
+									"name": "AppReportId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ArtifactId']"
+								},
+								"sink": {
+									"name": "ArtifactId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ArtifactName']"
+								},
+								"sink": {
+									"name": "ArtifactName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['AuditedArtifactInformation']"
+								},
+								"sink": {
+									"name": "AuditedArtifactInformation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ClientIP']"
+								},
+								"sink": {
+									"name": "ClientIP",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ConsumptionMethod']"
+								},
+								"sink": {
+									"name": "ConsumptionMethod",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['CreationTime']"
+								},
+								"sink": {
+									"name": "CreationTime",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['CustomVisualAccessTokenResourceId']"
+								},
+								"sink": {
+									"name": "CustomVisualAccessTokenResourceId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['CustomVisualAccessTokenSiteUri']"
+								},
+								"sink": {
+									"name": "CustomVisualAccessTokenSiteUri",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DashboardId']"
+								},
+								"sink": {
+									"name": "DashboardId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DashboardName']"
+								},
+								"sink": {
+									"name": "DashboardName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DataConnectivityMode']"
+								},
+								"sink": {
+									"name": "DataConnectivityMode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DataflowId']"
+								},
+								"sink": {
+									"name": "DataflowId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DataflowName']"
+								},
+								"sink": {
+									"name": "DataflowName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DataflowType']"
+								},
+								"sink": {
+									"name": "DataflowType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DatasetId']"
+								},
+								"sink": {
+									"name": "DatasetId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DatasetName']"
+								},
+								"sink": {
+									"name": "DatasetName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Datasets']"
+								},
+								"sink": {
+									"name": "Datasets",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Datasources']"
+								},
+								"sink": {
+									"name": "Datasources",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['DistributionMethod']"
+								},
+								"sink": {
+									"name": "DistributionMethod",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ExportEventEndDateTimeParameter']"
+								},
+								"sink": {
+									"name": "ExportEventEndDateTimeParameter",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ExportEventStartDateTimeParameter']"
+								},
+								"sink": {
+									"name": "ExportEventStartDateTimeParameter",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ExportedArtifactInfo']"
+								},
+								"sink": {
+									"name": "ExportedArtifactInfo",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['FolderDisplayName']"
+								},
+								"sink": {
+									"name": "FolderDisplayName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['FolderObjectId']"
+								},
+								"sink": {
+									"name": "FolderObjectId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['GatewayId']"
+								},
+								"sink": {
+									"name": "GatewayId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['GatewayName']"
+								},
+								"sink": {
+									"name": "GatewayName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['GatewayType']"
+								},
+								"sink": {
+									"name": "GatewayType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ImportDisplayName']"
+								},
+								"sink": {
+									"name": "ImportDisplayName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ImportId']"
+								},
+								"sink": {
+									"name": "ImportId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ImportSource']"
+								},
+								"sink": {
+									"name": "ImportSource",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ImportType']"
+								},
+								"sink": {
+									"name": "ImportType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['IsSuccess']"
+								},
+								"sink": {
+									"name": "IsSuccess",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['IsUpdateAppActivity']"
+								},
+								"sink": {
+									"name": "IsUpdateAppActivity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ItemName']"
+								},
+								"sink": {
+									"name": "ItemName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['MentionedUsersInformation']"
+								},
+								"sink": {
+									"name": "MentionedUsersInformation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ObjectId']"
+								},
+								"sink": {
+									"name": "ObjectId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Operation']"
+								},
+								"sink": {
+									"name": "Operation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['OrgAppPermission']"
+								},
+								"sink": {
+									"name": "OrgAppPermission",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['OrganizationId']"
+								},
+								"sink": {
+									"name": "OrganizationId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['RecordType']"
+								},
+								"sink": {
+									"name": "RecordType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['RefreshType']"
+								},
+								"sink": {
+									"name": "RefreshType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ReportId']"
+								},
+								"sink": {
+									"name": "ReportId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ReportName']"
+								},
+								"sink": {
+									"name": "ReportName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['ReportType']"
+								},
+								"sink": {
+									"name": "ReportType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['RequestId']"
+								},
+								"sink": {
+									"name": "RequestId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['SharingInformation']"
+								},
+								"sink": {
+									"name": "SharingInformation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['SwitchState']"
+								},
+								"sink": {
+									"name": "SwitchState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TakingOverOwner']"
+								},
+								"sink": {
+									"name": "TakingOverOwner",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TemplateAppFolderObjectId']"
+								},
+								"sink": {
+									"name": "TemplateAppFolderObjectId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TemplateAppObjectId']"
+								},
+								"sink": {
+									"name": "TemplateAppObjectId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TemplateAppOwnerTenantObjectId']"
+								},
+								"sink": {
+									"name": "TemplateAppOwnerTenantObjectId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TemplateAppVersion']"
+								},
+								"sink": {
+									"name": "TemplateAppVersion",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['TemplatePackageName']"
+								},
+								"sink": {
+									"name": "TemplatePackageName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['UserAgent']"
+								},
+								"sink": {
+									"name": "UserAgent",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['UserId']"
+								},
+								"sink": {
+									"name": "UserId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['UserKey']"
+								},
+								"sink": {
+									"name": "UserKey",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['UserType']"
+								},
+								"sink": {
+									"name": "UserType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['WorkSpaceName']"
+								},
+								"sink": {
+									"name": "WorkSpaceName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Workload']"
+								},
+								"sink": {
+									"name": "Workload",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['WorkspaceId']"
+								},
+								"sink": {
+									"name": "WorkspaceId",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['activityEventEntities']",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Power_Bi_Admin",
+						"type": "DatasetReference",
+						"parameters": {
+							"api": "activityevents",
+							"params": {
+								"value": "@concat('startDateTime=''',pipeline().parameters.StartDateTime,'''&endDateTime=''',pipeline().parameters.EndDateTime,'''')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "PowerBI_SQL_DB",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": {
+								"value": "@concat('[',pipeline().parameters.SchemaName,'].PowerBIActivityEvent')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"StartDateTime": {
+				"type": "string"
+			},
+			"EndDateTime": {
+				"type": "string"
+			},
+			"Token": {
+				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string",
+				"defaultValue": "pbtest"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-09-01T08:03:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

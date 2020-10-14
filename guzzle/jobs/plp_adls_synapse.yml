@@ -1,0 +1,22 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    table: "${p_epsdl_db}.${p_table_name}"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "schema"
+  discard: false
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.${p_table_name}"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

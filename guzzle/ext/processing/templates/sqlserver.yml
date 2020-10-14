@@ -1,0 +1,283 @@
+functions: "def currentDateTimeValue(frameworkColumnName) {
+      def frameworkColumn = frameworkColumns[frameworkColumnName];
+      if (frameworkColumn.frameworkGenerated) {
+        return 'CURRENT_TIMESTAMP';
+      } else {
+        return 'CAST(\\'' + frameworkColumn.value + '\\' AS datetime)';
+      }
+    }
+
+    def ifFrameworkColumnDefined(frameworkColumnName, generateTemplateString) {
+      if (frameworkColumns.containsKey(frameworkColumnName)) {
+        return generateTemplateString();
+      } else {
+        return '';
+      }
+    }
+    "
+operations:
+  append:
+    - "insert into ${target.table}
+      (
+        ${columns.join(',')}
+        ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+        ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+        ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+      )
+      select
+        ${columns.collect{name -> 'mp.' + name}.join(',')}
+        ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+        ${ifFrameworkColumnDefined('w_created_ts', {',' + currentDateTimeValue('w_created_ts')})}
+        ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+       from (${source.query} ) mp"
+  overwrite:
+    - "insert into ${target.table}
+      (
+        ${columns.join(',')}
+        ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+        ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+        ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+      )
+      select
+        ${columns.collect{name -> 'mp.' + name}.join(',')}
+        ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+        ${ifFrameworkColumnDefined('w_created_ts', {',' + currentDateTimeValue('w_created_ts')})}
+        ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+       from (${source.query} ) mp"
+  merge:
+    incremental:
+      - "MERGE INTO ${target.table} p USING (${source.query}) mp ON
+        (
+          ${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')}
+        )
+        WHEN matched THEN
+          UPDATE
+          SET
+            ${mergeColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(',')}
+            ${ifFrameworkColumnDefined('w_current_record_flag', {',p.' + frameworkColumns['w_current_record_flag'].name + ' = \\'Y\\''})}
+            ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})}
+        WHEN NOT matched THEN
+        INSERT
+        (
+          ${columns.join(',')}
+          ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+          ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+          ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+        )
+        VALUES
+        (
+          ${columns.collect{name -> 'mp.' + name}.join(',')}
+          ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+          ${ifFrameworkColumnDefined('w_created_ts', {',' + currentDateTimeValue('w_created_ts')})}
+          ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+        );"
+    full:
+      - "MERGE INTO ${target.table} p USING
+        (
+          SELECT
+          ${primaryKeyColumns.collect{name -> 'isnull(sp.' + name + ',dp.' + name + ') ' + name}.join(',')},
+          ${dataColumns.collect{name -> 'sp.' + name}.join(',')}
+          ${ifFrameworkColumnDefined('w_created_ts', {',dp.' + frameworkColumns['w_created_ts'].name})},
+          ${dataColumns.collect{name -> 'dp.' + name + ' T_' + name}.join(',')},
+          CASE
+            WHEN (${primaryKeyColumns.collect{name -> 'dp.' + name + ' is null'}.join(' and ')}) THEN 1
+            WHEN ((${primaryKeyColumns.collect{name -> 'dp.' + name + ' is not null'}.join(' and ')}) and (${primaryKeyColumns.collect{name -> 'sp.' + name + ' is null'}.join(' and ')})) THEN 2
+            ELSE
+            3 END AS scd_change_type_id
+          FROM
+            (${source.query}) sp
+          FULL JOIN (select * from ${target.table} ${ifFrameworkColumnDefined('w_current_record_flag', {' where ' + frameworkColumns['w_current_record_flag'].name + ' = \\'Y\\''})}
+          ) dp
+                ON (${primaryKeyColumns.collect{name -> 'sp.' + name + ' = dp.' + name}.join(' and ')})
+          )
+          mp ON
+          (${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')})
+          WHEN matched THEN
+            UPDATE
+            SET
+              ${mergeColumns.collect{name -> 'p.' + name + ' = case when scd_change_type_id = 2 then mp.T_' + name + ' else mp.' + name + ' end'}.join(',')}
+              ${ifFrameworkColumnDefined('w_current_record_flag', {',p.' + frameworkColumns['w_current_record_flag'].name + ' = case when scd_change_type_id = 2 then \\'N\\' else \\'Y\\' end'})}
+              ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})}
+          WHEN NOT matched THEN
+            INSERT
+              (
+                ${columns.join(',')}
+                ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+                ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+                ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+              )
+              VALUES
+              (
+                ${columns.collect{name -> 'mp.' + name}.join(',')}
+                ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+                ${ifFrameworkColumnDefined('w_created_ts', {',' + currentDateTimeValue('w_created_ts')})}
+                ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+              );"
+  effective_date_merge:
+    incremental:
+      - "MERGE INTO ${target.table} p USING
+        (
+          SELECT
+            CASE WHEN s.scd_row_type = 1 THEN ${currentDateTimeValue('w_eff_start_date_ts')} ELSE m.${frameworkColumns['w_eff_start_date_ts'].name} END AS ${frameworkColumns['w_eff_start_date_ts'].name}
+            ${ifFrameworkColumnDefined('w_created_ts', {', CASE WHEN m.scd_change_type_id = 2 THEN ' + currentDateTimeValue('w_created_ts') + ' ELSE m.' + frameworkColumns['w_created_ts'].name + ' END ' + frameworkColumns['w_created_ts'].name})},
+            ${columns.join(',')},
+            m.scd_change_type_id,
+            ${dataColumns.collect{name -> 'T_' + name}.join(',')}
+          FROM
+            (
+              SELECT
+                dp.${frameworkColumns['w_eff_start_date_ts'].name},
+                ${columns.collect{name -> 'sp.' + name}.join(',')}
+                ${ifFrameworkColumnDefined('w_created_ts', {',dp.' + frameworkColumns['w_created_ts'].name})},
+                ${columns.collect{name -> 'dp.' + name + ' T_' + name}.join(',')},
+                CASE
+                  WHEN (${primaryKeyColumns.collect{name -> 'dp.' + name + ' is null'}.join(' and ')}) THEN 2
+                  WHEN (
+                    ${historyTriggeringColumns.collect{name -> 'not(dp.' + name + ' = sp.' + name + ' or (dp.' + name + ' is null and sp.' + name + ' is null))'}.join(' or ')}
+                  ) THEN 3
+                  ELSE
+                  1 END AS scd_change_type_id
+              FROM
+                (${source.query}) sp
+              LEFT JOIN ${target.table} dp
+              ON
+                (${primaryKeyColumns.collect{name -> 'sp.' + name + ' = dp.' + name}.join(' and ')}
+                  AND dp.${frameworkColumns['w_eff_end_date_ts'].name} is null
+                )
+            )
+            m
+          JOIN
+            (
+               select 1 scd_change_type_id, 2 scd_row_type union all
+               select 2 scd_change_type_id, 1 scd_row_type union all
+               select 3 scd_change_type_id, 1 scd_row_type union all
+               select 3 scd_change_type_id, 2 scd_row_type
+            )
+            s
+          ON (s.scd_change_type_id = m.scd_change_type_id)
+        )
+        mp ON
+        (
+          p.${frameworkColumns['w_eff_start_date_ts'].name} = mp.${frameworkColumns['w_eff_start_date_ts'].name}
+          and ${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')}
+        )
+        WHEN matched THEN
+          UPDATE
+          SET
+            ${dataColumns.collect{name -> 'p.' + name + ' = CASE WHEN scd_change_type_id = 3 THEN mp.T_' + name + ' else mp.' + name + ' END'}.join(',')},
+            P.${frameworkColumns['w_eff_end_date_ts'].name} = CASE WHEN scd_change_type_id = 3 THEN ${currentDateTimeValue('w_eff_end_date_ts')} ELSE null END
+            ${ifFrameworkColumnDefined('w_current_record_flag', {',p.' + frameworkColumns['w_current_record_flag'].name + ' = CASE WHEN scd_change_type_id = 3 THEN \\'N\\' ELSE \\'Y\\' END'})}
+            ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})}
+        WHEN NOT matched THEN
+          INSERT
+            (
+              ${columns.join(',')},
+              ${frameworkColumns['w_eff_start_date_ts'].name},
+              ${frameworkColumns['w_eff_end_date_ts'].name}
+              ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+              ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+              ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+            )
+            VALUES
+            (
+              ${columns.collect{name -> 'mp.' + name}.join(',')},
+              ${currentDateTimeValue('w_eff_start_date_ts')},
+              null
+              ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+              ${ifFrameworkColumnDefined('w_created_ts', {',mp.' + frameworkColumns['w_created_ts'].name})}
+              ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+            );"
+    full:
+      - "MERGE INTO ${target.table} p USING
+        (
+          SELECT
+            CASE WHEN s.scd_row_type = 1 THEN ${currentDateTimeValue('w_eff_start_date_ts')} ELSE m.${frameworkColumns['w_eff_start_date_ts'].name} END AS ${frameworkColumns['w_eff_start_date_ts'].name}
+            ${ifFrameworkColumnDefined('w_created_ts', {', CASE WHEN m.scd_change_type_id = 2 THEN ' + currentDateTimeValue('w_created_ts') + ' ELSE m.' + frameworkColumns['w_created_ts'].name + ' END ' + frameworkColumns['w_created_ts'].name})},
+            ${columns.join(',')},
+            m.scd_change_type_id,
+            ${dataColumns.collect{name ->'T_' + name}.join(',')}
+          FROM
+            (
+              SELECT
+                dp.${frameworkColumns['w_eff_start_date_ts'].name},
+                ${primaryKeyColumns.collect{name -> 'isnull(sp.' + name + ',dp.' + name + ') ' + name}.join(',')},
+                ${dataColumns.collect{name -> 'sp.' + name}.join(',')}
+                ${ifFrameworkColumnDefined('w_created_ts', {',dp.' + frameworkColumns['w_created_ts'].name})},
+                ${dataColumns.collect{name -> 'dp.' + name + ' T_' + name}.join(',')},
+                CASE
+                  WHEN ${primaryKeyColumns.collect{name -> 'dp.' + name + ' IS NULL'}.join(' and ')} THEN 2
+                  WHEN (
+                  ${historyTriggeringColumns.collect{name -> 'not (dp.' + name + ' = sp.' + name + ' or (dp.' + name + ' is null and  sp.' + name + ' is null) )'}.join(' or ')}
+                  ) THEN 3
+                  WHEN ${primaryKeyColumns.collect{name -> 'dp.' + name + ' IS NOT NULL and sp.' + name + ' IS NULL'}.join(' and ')} THEN 4
+                  ELSE
+                  1 END AS scd_change_type_id
+              FROM
+                (${source.query}) sp
+              FULL JOIN (select * from ${target.table} where ${frameworkColumns['w_eff_end_date_ts'].name} is null) dp
+              ON (${primaryKeyColumns.collect{name -> 'sp.' + name + ' = dp.' + name}.join(' and ')})
+            ) m
+          JOIN
+            (
+               select 1 scd_change_type_id, 2 scd_row_type union all
+               select 2 scd_change_type_id, 1 scd_row_type union all
+               select 3 scd_change_type_id, 1 scd_row_type union all
+               select 3 scd_change_type_id, 2 scd_row_type  union all
+               select 4 scd_change_type_id, 2 scd_row_type
+            )
+            s
+          ON (s.scd_change_type_id = m.scd_change_type_id)
+        )
+        mp ON
+        (
+          p.${frameworkColumns['w_eff_start_date_ts'].name} = mp.${frameworkColumns['w_eff_start_date_ts'].name}
+          and ${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')}
+        )
+        WHEN matched THEN
+          UPDATE
+          SET
+            ${dataColumns.collect{name -> 'p.' + name + ' = CASE WHEN scd_change_type_id in (3,4) THEN mp.T_' + name + ' ELSE mp.' + name + ' END'}.join(',')},
+            P.${frameworkColumns['w_eff_end_date_ts'].name} = CASE WHEN scd_change_type_id in (3,4) THEN ${currentDateTimeValue('w_eff_end_date_ts')} ELSE null END
+            ${ifFrameworkColumnDefined('w_current_record_flag', {',p.' + frameworkColumns['w_current_record_flag'].name + ' = CASE WHEN scd_change_type_id in (3,4) THEN \\'N\\' ELSE \\'Y\\' END'})}
+            ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})}
+        WHEN NOT matched THEN
+          INSERT
+            (
+              ${columns.join(',')},
+              ${frameworkColumns['w_eff_start_date_ts'].name},
+              ${frameworkColumns['w_eff_end_date_ts'].name}
+              ${ifFrameworkColumnDefined('w_current_record_flag', {',' + frameworkColumns['w_current_record_flag'].name})}
+              ${ifFrameworkColumnDefined('w_created_ts', {',' + frameworkColumns['w_created_ts'].name})}
+              ${ifFrameworkColumnDefined('w_refresh_ts', {',' + frameworkColumns['w_refresh_ts'].name})}
+            )
+            VALUES
+            (
+              ${columns.collect{name -> 'mp.' + name}.join(',')},
+              ${currentDateTimeValue('w_eff_start_date_ts')},
+              null
+              ${ifFrameworkColumnDefined('w_current_record_flag', {',\\'Y\\''})}
+              ${ifFrameworkColumnDefined('w_created_ts', {',mp.' + frameworkColumns['w_created_ts'].name})}
+              ${ifFrameworkColumnDefined('w_refresh_ts', {',' + currentDateTimeValue('w_refresh_ts')})}
+            );"
+  update_only:
+    - "MERGE INTO ${target.table} p USING (${source.query}) mp
+      ON (${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')})
+      WHEN matched THEN
+        UPDATE
+        SET
+          ${mergeColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(',')}
+          ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})};"
+  delete:
+    hard:
+      - "MERGE INTO ${target.table} p USING (${source.query}) mp
+        ON (${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')})
+        WHEN matched THEN
+          DELETE;"
+    soft:
+      - "MERGE INTO ${target.table} p USING (${source.query}) mp
+        ON (${primaryKeyColumns.collect{name -> 'p.' + name + ' = mp.' + name}.join(' and ')})
+        WHEN matched THEN
+          UPDATE
+          SET
+            ${ifFrameworkColumnDefined('w_current_record_flag', {'p.' + frameworkColumns['w_current_record_flag'].name + ' = \\'N\\''})}
+            ${ifFrameworkColumnDefined('w_refresh_ts', {',p.' + frameworkColumns['w_refresh_ts'].name + ' = ' + currentDateTimeValue('w_refresh_ts')})};"

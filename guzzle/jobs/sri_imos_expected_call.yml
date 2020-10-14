@@ -1,0 +1,184 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    charset: "UTF-8"
+    source_file_pattern: "archive/imos_port_call*csv"
+    format_properties:
+      source_name_as_column: true
+      infer_schema: false
+      quote_delimiter: "\""
+      column_delimiter: ","
+      columns:
+      - Agreed_Speed: "1"
+      - Agreed_Speed_Cons: "2"
+      - Agreed_Speed_Engine_Load: "3"
+      - Anchorage_Delay: "4"
+      - Arr_Dep_Status: "5"
+      - Arrival_Local: "6"
+      - Ballast_Laden_From_Port: "7"
+      - Ballast_Laden_to_Port: "8"
+      - Berth_to_Pilot: "9"
+      - Cargo_Inspector: "10"
+      - Cargo_Scheduler: "11"
+      - Dem_Des_Days: "12"
+      - Dem_Des_Rate: "13"
+      - Departure_Local: "14"
+      - Est_Cost_Base: "15"
+      - Eta_Gmt: "16"
+      - ETB: "17"
+      - Etd_Gmt: "18"
+      - Extra_Port_Days: "19"
+      - Extra_Sea_Days: "20"
+      - Fixture_No: "21"
+      - Idle_Days: "22"
+      - Instructed_SAT_Local: "23"
+      - Instructed_Speed: "24"
+      - Is_Current_Port_Call: "25"
+      - Last_Update_Gmt: "26"
+      - Last_User_ID: "27"
+      - Low_Speed_Days: "28"
+      - Low_Speed_Miles: "29"
+      - LS_Miles: "30"
+      - LS_Port_Days: "31"
+      - LS_Sea_Days: "32"
+      - Master_Seq: "33"
+      - Miles: "34"
+      - Order: "35"
+      - Pilot_to_Berth: "36"
+      - Port_Days: "37"
+      - Port_Exp_Amount_Base: "38"
+      - Port_Exp_Amount_Local: "39"
+      - Port_Exp_Curr: "40"
+      - Port_Exp_Exch_Rate: "41"
+      - Port_Func: "42"
+      - Port_Name: "43"
+      - Port_No: "44"
+      - Port_Status_Code: "45"
+      - Sea_Days: "46"
+      - Seq: "47"
+      - Speed_From_Port: "48"
+      - Speed_Instruction_Type: "49"
+      - Speed_to_Port: "50"
+      - Vessel_Code: "51"
+      - Via: "52"
+      - Voyage_No: "53"
+      - Weather_Factor_From_Port: "54"
+      - Weather_Factor_to_Port: "55"
+      - Remarks_Fixture: "56"
+      - Remarks_Operations: "57"
+      - UN_Code: "58"
+      - Country: "59"
+      - Area: "60"
+      - Port_Range: "61"
+      - Port_Region: "62"
+      - Low_Sulfur_ECA: "63"
+      - Name: "64"
+      escape_char: "\\\\"
+      contains_header: true
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "schema"
+  discard: false
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "w_refresh_ts"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "current_timestamp"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "business_date"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "'${business_date}'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_job_instance_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "${job_instance_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_batch_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "bigint"
+      discard: false
+    transform_sql:
+      value: "${batch_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_location"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ALL'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_data_src_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ONETIME'"
+    primary_key:
+      value: false
+      discard: false
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.sri_imos_expected_call_v2"
+  operation: "overwrite"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.rej_sri_imos_expected_call_v2"
+  failure_threshold: 99

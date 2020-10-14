@@ -1,0 +1,54 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \nchild_value\n,description\n,department\n,department_description\n,parent2\n,parent2_description\n,parent3\n,parent3_description\n,parent4\n,parent4_description\n,parent5\n,parent5_description\n,parent6\n,parent6_description\n,parent7\n,parent7_description\n,parent8\n,parent8_description\n,parent9\n,parent9_description\n,integration_key\n,sha2(child_value, 512) as department_id\n,null as w_x_custom\n,w_job_instance_id\n,w_refresh_ts\n,null as w_curr_rec_flg\n,w_source_system as w_data_src_id\n,w_location\n,w_batch_id\n,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_department\nwhere w_business_dt='${business_date}' and child_value is not null"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_department"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_department where department_id is null"
+  merge_columns:
+  - "child_value"
+  - "description"
+  - "department"
+  - "department_description"
+  - "parent2"
+  - "parent2_description"
+  - "parent3"
+  - "parent3_description"
+  - "parent4"
+  - "parent4_description"
+  - "parent5"
+  - "parent5_description"
+  - "parent6"
+  - "parent6_description"
+  - "parent7"
+  - "parent7_description"
+  - "parent8"
+  - "parent8_description"
+  - "parent9"
+  - "parent9_description"
+  - "department_id"
+  endpoint: "lo_delta_tables"

@@ -1,0 +1,30 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_sri"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "parquet"
+    charset: "UTF-8"
+    source_file_pattern: "${p_staging}/imos*parquet"
+    format_properties:
+      source_name_as_column: true
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "target"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: false
+    table: "${p_epsdl_sri_db}.sri_imos"
+  operation: "overwrite"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.rej_sri_imos"
+  failure_threshold: 99

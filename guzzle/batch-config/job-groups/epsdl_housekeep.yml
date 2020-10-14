@@ -1,0 +1,65 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_del_departments"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_supply_items"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_requisitions"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_order_details"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_documents"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_company_master"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_company_hierarchy"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_budget_opex_monitor"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_account"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_service_hierarchy"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_reporting_lines"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_item_ledgers"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_expected_call_da"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_vessel_team_map"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_vessel_master"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_vessel_hierarchy"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_vessel_dry_dock_details"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_department"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_data_security"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_account_mapping"
+parallel: 4

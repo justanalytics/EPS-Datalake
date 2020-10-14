@@ -1,0 +1,17 @@
+{
+	"name": "Oracle_Data_Lake_Tables",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Oracle_datalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "EBI_UAT",
+			"table": "REQUISITIONS_CATEGORY"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

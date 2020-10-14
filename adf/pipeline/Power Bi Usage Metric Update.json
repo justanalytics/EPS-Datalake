@@ -1,0 +1,283 @@
+{
+	"name": "Power Bi Usage Metric Update",
+	"properties": {
+		"activities": [
+			{
+				"name": "Oauth2 Login",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"body": {
+						"value": "@concat('grant_type=password&scope=openid&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret),'&username=',pipeline().parameters.UserName,'&password=',encodeUriComponent(pipeline().parameters.Password))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Last Value Look Up",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": {
+							"value": "@concat('[',pipeline().parameters.SchemaName,'].[DeterminePBLastUsageQueryTime]')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"isolationLevel": "ReadUncommitted",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "PowerBI_SQL_DB",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "aaaaaa"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Last Value Look Up",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Oauth2 Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Last Value Look Up').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Insert Usage Metrics",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "InsertPowerBIUsageMetrics",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"StartDateTime": {
+										"value": "@item().StartDateTime",
+										"type": "Expression"
+									},
+									"EndDateTime": {
+										"value": "@item().EndDateTime",
+										"type": "Expression"
+									},
+									"Token": {
+										"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+										"type": "Expression"
+									},
+									"SchemaName": {
+										"value": "@pipeline().parameters.SchemaName",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Drop Duplicate Data",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": {
+						"value": "@concat('[',pipeline().parameters.SchemaName,'].[DropDuplicateRawPowerBIStaging]')",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Transform",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Drop Duplicate Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": {
+						"value": "@concat('[',pipeline().parameters.SchemaName,'].[TransformPBStagingToFact]')",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Staging To Raw",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Transform",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": {
+						"value": "@concat('[',pipeline().parameters.SchemaName,'].[PowerBIStagingToRaw]')",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Clear Staging",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Staging To Raw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('TRUNCATE TABLE [',pipeline().parameters.SchemaName,'].RAW_POWERBI_ACTIVITY_LOG_STAGING;\nSELECT 1 as res;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "PowerBI_SQL_DB",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Test.RAW_POWERBI_ACTIVITY_LOG_STAGING"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"TenantId": {
+				"type": "String",
+				"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
+			},
+			"SPClientId": {
+				"type": "String",
+				"defaultValue": "70ac25e2-0500-4b93-affa-583ef8b28d5a"
+			},
+			"SPSecret": {
+				"type": "String",
+				"defaultValue": "3NYx_dDlH~_KkC_XwA24-5M4OiFyR5xM9H"
+			},
+			"UserName": {
+				"type": "string",
+				"defaultValue": "thao.nguyen@justanalytics.com"
+			},
+			"Password": {
+				"type": "string",
+				"defaultValue": "Nplt@June"
+			},
+			"SchemaName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-09-01T08:03:14Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

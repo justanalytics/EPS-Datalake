@@ -1,0 +1,15 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select * from ${p_epsdl_db}.fact_port_calls_imos \nunion\nselect danaos.* from  \n${p_epsdl_db}.fact_port_calls_danaos danaos\nleft join\n ${p_epsdl_db}.fact_port_calls_imos imos\non\nimos.voyage_No=danaos.voyage_No\nand \nimos.vessel_code=danaos.vessel_code\nwhere\nimos.vessel_code is null"
+target:
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_port_calls_master"
+  endpoint: "lo_delta_tables"

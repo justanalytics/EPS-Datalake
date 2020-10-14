@@ -1,0 +1,49 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with SAWITH0 as\n(\nselect \n     sum(sri_supply_items.order_price * sri_supply_items.order_qty * sri_supply_items.order_rate - sri_supply_items.order_price * sri_supply_items.order_qty * sri_supply_items.order_discount / 100 * sri_supply_items.order_rate) as amount_usd_po,\n     dim_requisitions.line_type,\n     case when dim_requisitions.line_type in ('O', 'SO') then dim_requisitions.document_date else NULL end as order_date,\n     sri_supply_items.order_currency,\n     dim_requisitions.document_date,\n     \n     dim_department.department_id,\n     dim_gl_vessel.vessel_id,\n\n     dim_requisitions_category.department,\n     dim_requisitions_category.dept_name,\n     dim_requisitions_category.document_code,\n     dim_requisitions_category.order_code,\n     dim_requisitions_category.requisition_code,\n     dim_requisitions_category.rfq_supplier_name,\n     dim_requisitions_category.vessel_code,\n     dim_requisitions_category.vessel_name,\n     dim_requisitions_category.req_desc,\n     \n     case  when dim_reqn_audit.AUDIT_DETAILS = 'New Requisition' and dim_reqn_audit.CRUD_TYPE = 'CREATED' then dim_reqn_audit.audit_date end  as date_sent_to_office,\n     case  when dim_reqn_audit.CRUD_TYPE = 'APPROVED' then dim_reqn_audit.audit_date end  as audit_date\n     \n     ,sri_supply_items.w_source_system as w_data_src_id\n     ,sri_supply_items.w_business_dt\n     ,sri_supply_items.w_refresh_ts\n     ,sri_supply_items.w_job_instance_id\n     ,sri_supply_items.w_location\n     ,sri_supply_items.w_batch_id\n     ,null as w_x_custom\n     ,null as w_curr_rec_flg\n\nfrom epsdlsrid.sri_supply_items sri_supply_items\n\njoin epsdld.dim_requisitions dim_requisitions \n        on sri_supply_items.DOCUMENT_CODE = dim_requisitions.DOCUMENT_CODE\n\njoin epsdld.dim_gl_vessel dim_gl_vessel\n        on dim_requisitions.VESSEL_CODE = dim_gl_vessel.VESSEL_CODE\n\njoin epsdld.dim_department dim_department\n        on dim_requisitions.DEPARTMENT = dim_department.CODE\n\njoin epsdld.dim_requisitions_category dim_requisitions_category on sri_supply_items.document_code = dim_requisitions_category.document_code\nleft join epsdld.dim_reqn_audit dim_reqn_audit on sri_supply_items.document_code = dim_reqn_audit.document_code\n\nwhere sri_supply_items.w_business_dt='${business_date}'\n\ngroup by \n     dim_requisitions.line_type,\n     sri_supply_items.order_currency,\n     dim_requisitions.document_date,\n     \n     dim_department.department_id,\n     dim_gl_vessel.vessel_id,\n\n     dim_requisitions_category.department,\n     dim_requisitions_category.dept_name,\n     dim_requisitions_category.document_code,\n     dim_requisitions_category.order_code,\n     dim_requisitions_category.requisition_code,\n     dim_requisitions_category.rfq_supplier_name,\n     dim_requisitions_category.vessel_code,\n     dim_requisitions_category.vessel_name,\n     dim_requisitions_category.req_desc,\n     \n     case when dim_reqn_audit.AUDIT_DETAILS = 'New Requisition' and dim_reqn_audit.CRUD_TYPE = 'CREATED' then dim_reqn_audit.audit_date end,\n     case when dim_reqn_audit.CRUD_TYPE = 'APPROVED' then dim_reqn_audit.audit_date end\n\n     ,sri_supply_items.w_source_system\n     ,sri_supply_items.w_business_dt\n     ,sri_supply_items.w_refresh_ts\n     ,sri_supply_items.w_job_instance_id\n     ,sri_supply_items.w_location\n     ,sri_supply_items.w_batch_id\n)\n, SAWITH1 as\n(\nselect \n  case when line_type in ('O','SO') then amount_usd_po else 0 end amount_usd_po,\n  line_type,\n  order_date,\n  order_currency,\n  document_date,\n  department_id,\n  vessel_id,\n  department,\n  dept_name,\n  document_code,\n  order_code,\n  requisition_code,\n  rfq_supplier_name,\n  vessel_code,\n  vessel_name,\n  req_desc,\n  date_sent_to_office,\n  audit_date,\n  w_data_src_id,\n  w_business_dt,\n  w_refresh_ts,\n  w_job_instance_id,\n  w_location,\n  w_batch_id,\n  w_x_custom,\n  w_curr_rec_flg,\n  row_number() over (partition by line_type, order_currency, document_date, department_id, vessel_id, department, dept_name, document_code, order_code, requisition_code, rfq_supplier_name, vessel_code, vessel_name, req_desc order by line_type, order_currency, document_date, department_id, vessel_id, department, dept_name, document_code, order_code, requisition_code, rfq_supplier_name, vessel_code, vessel_name, req_desc) as rownumber\nfrom SAWITH0 \n)\nselect \n  amount_usd_po,\n  line_type,\n  order_date,\n  order_currency,\n  document_date,\n  department_id,\n  vessel_id,\n  department,\n  dept_name,\n  document_code,\n  order_code,\n  requisition_code,\n  rfq_supplier_name,\n  vessel_code,\n  vessel_name,\n  req_desc,\n  date_sent_to_office,\n  audit_date,\n  coalesce(line_type,'')||'~'||coalesce(order_currency,'')||'~'||coalesce(document_date,'')||'~'||coalesce(department_id,'')||'~'||coalesce(vessel_id,'')||'~'||coalesce(document_code,'')||'~'||coalesce(order_code,'')||'~'||coalesce(requisition_code,'')||'~'||coalesce(rfq_supplier_name,'')||'~'||coalesce(req_desc,'') as integration_key,\n  w_data_src_id,\n  w_business_dt,\n  w_refresh_ts,\n  w_job_instance_id,\n  w_location,\n  w_batch_id,\n  w_x_custom,\n  w_curr_rec_flg\nfrom SAWITH1 where rownumber = 1"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'TANKPAC'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_requisitions_category"
+  merge_columns:
+  - "amount_usd_po"
+  - "line_type"
+  - "order_date"
+  - "order_currency"
+  - "document_date"
+  - "department_id"
+  - "vessel_id"
+  - "department"
+  - "dept_name"
+  - "document_code"
+  - "order_code"
+  - "requisition_code"
+  - "rfq_supplier_name"
+  - "vessel_code"
+  - "vessel_name"
+  - "req_desc"
+  - "date_sent_to_office"
+  - "audit_date"
+  endpoint: "lo_delta_tables"
