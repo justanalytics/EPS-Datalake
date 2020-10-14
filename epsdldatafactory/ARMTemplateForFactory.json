@@ -9554,8 +9554,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2020-10-11T22:30:00Z",
-						"endTime": "2020-10-12T13:39:00Z",
+						"startTime": "2020-10-11T22:30:00.000Z",
+						"endTime": "2020-10-12T13:39:00.000Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
@@ -9581,6 +9581,44 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Incremetal_Load_Extract')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "EPSDL_Master_Pipeline_incremental",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-10-13T11:25:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								30
+							],
+							"hours": [
+								21
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_incremental')]"
+			]
 		}
 	]
 }
