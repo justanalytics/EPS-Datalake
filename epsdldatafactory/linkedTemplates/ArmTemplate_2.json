@@ -13,6 +13,145 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/TrackGuzzleStageRun')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "WaitUntilStageFinish",
+						"type": "Until",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@if(variables('statusChangedToRunning'), not(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'RUNNING')), or(or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'SUCCESS'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'WARNING')), or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'FAILED'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'ABORTED'))))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait2minutes",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 120
+									}
+								},
+								{
+									"name": "GetStageStatus",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Wait2minutes",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "select @{pipeline().parameters.stage} from dbo.batch_control where batch_id=@{pipeline().parameters.batch_id}",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "GuzzleDB",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								},
+								{
+									"name": "If Status Changed To RUNNING",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "GetStageStatus",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@and(not(variables('statusChangedToRunning')), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'RUNNING'))",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "Set status changed to RUNNING",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "statusChangedToRunning",
+													"value": true
+												}
+											}
+										]
+									}
+								}
+							],
+							"timeout": "0.04:00:00"
+						}
+					},
+					{
+						"name": "RaiseExceptionIfFailed",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "WaitUntilStageFinish",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": {
+								"value": "@if(or(equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'SUCCESS'), equals(activity('GetStageStatus').output.firstRow[pipeline().parameters.stage], 'WARNING')), 'SUCCESS', 1)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"stage": {
+						"type": "string"
+					},
+					"batch_id": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"status": {
+						"type": "String"
+					},
+					"statusChangedToRunning": {
+						"type": "Boolean"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2635,123 +2774,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:36Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TrackGuzzleBatchRun')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "WaitForAllStagesToFinish",
-						"type": "ForEach",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@pipeline().parameters.stages",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "If Condition1",
-									"type": "IfCondition",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@not(variables('failureFlag'))",
-											"type": "Expression"
-										},
-										"ifTrueActivities": [
-											{
-												"name": "WaitUntilStageFinished",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "TrackGuzzleStageRun",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true,
-													"parameters": {
-														"stage": {
-															"value": "@concat(trim(item()), '_status')",
-															"type": "Expression"
-														},
-														"batch_id": {
-															"value": "@pipeline().parameters.batch_id",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "Set Failure Flag",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "WaitUntilStageFinished",
-														"dependencyConditions": [
-															"Failed"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "failureFlag",
-													"value": true
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "RaiseExceptionIfFailure",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "WaitForAllStagesToFinish",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "status",
-							"value": {
-								"value": "@if(variables('failureFlag'), 1, 'SUCCESS')",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"batch_id": {
-						"type": "string"
-					},
-					"stages": {
-						"type": "array"
-					}
-				},
-				"variables": {
-					"failureFlag": {
-						"type": "Boolean"
-					},
-					"status": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": []
 		}
