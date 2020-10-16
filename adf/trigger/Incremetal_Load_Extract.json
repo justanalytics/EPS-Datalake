@@ -2,7 +2,7 @@
 	"name": "Incremetal_Load_Extract",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
