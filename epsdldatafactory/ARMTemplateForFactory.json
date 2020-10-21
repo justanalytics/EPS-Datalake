@@ -2010,7 +2010,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Copy_Oracle_Source_Data",
+								"activity": "IMOS_Copy",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -2055,6 +2055,57 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "IMOS_Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_IMOS_Parquet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1_copy1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
 					}
 				],
 				"variables": {
@@ -2073,7 +2124,8 @@
 				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
 				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
-				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]"
+				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
 			]
 		},
 		{
