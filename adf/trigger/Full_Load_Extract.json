@@ -9,6 +9,12 @@
 					"referenceName": "GetTableListAndTriggerCopyData",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "EPSDL_Master_Pipeline_Full_Extract",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
@@ -16,15 +22,15 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2020-10-11T22:30:00.000Z",
-				"endTime": "2020-10-12T13:39:00.000Z",
+				"startTime": "2020-10-20T22:30:00.000Z",
+				"endTime": "2020-10-23T13:39:00.000Z",
 				"timeZone": "UTC",
 				"schedule": {
 					"minutes": [
-						30
+						0
 					],
 					"hours": [
-						22
+						0
 					]
 				}
 			}
