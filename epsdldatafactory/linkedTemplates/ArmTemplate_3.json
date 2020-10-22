@@ -3952,7 +3952,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Full_Load_Extract')]",
+			"name": "[concat(parameters('factoryName'), '/Incremental_load')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3961,7 +3961,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "EPSDL_Master_Pipeline_Full_Extract",
+							"referenceName": "EPSDL_Master_Pipeline_incremental",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -3972,22 +3972,22 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2020-10-20T22:30:00Z",
-						"endTime": "2020-10-23T13:39:00Z",
+						"startTime": "2020-10-21T10:13:00Z",
+						"endTime": "2020-10-24T10:13:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
-								0
+								30
 							],
 							"hours": [
-								0
+								23
 							]
 						}
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_Full_Extract')]"
+				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_incremental')]"
 			]
 		}
 	]
