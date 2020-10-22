@@ -386,8 +386,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "TANKPAC",
-					"table": "SUPPLY_ITEMS"
+					"schema": "DANAOS",
+					"table": "EXPECTED_CALL"
 				}
 			},
 			"dependsOn": []
@@ -856,7 +856,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('supply_items_20201022_000000','.parquet')",
+							"value": "@concat('expected_call_20201022_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",

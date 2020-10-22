@@ -9047,8 +9047,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "TANKPAC",
-					"table": "SUPPLY_ITEMS"
+					"schema": "DANAOS",
+					"table": "EXPECTED_CALL"
 				}
 			},
 			"dependsOn": [
@@ -9529,7 +9529,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('supply_items_20201022_000000','.parquet')",
+							"value": "@concat('expected_call_20201022_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
@@ -9894,16 +9894,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/epsdlselfhostedintegrationruntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Full_Load_Extract')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -9941,6 +9931,16 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_Full_Extract')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/epsdlselfhostedintegrationruntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
 		}
 	]
 }
