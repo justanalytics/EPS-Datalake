@@ -13,6 +13,101 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/IterateAndCopySQLTables_incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "IterateSQLTables",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.tableList",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 3,
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.02:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "OracleSource",
+											"oracleReaderQuery": {
+												"value": "@{item().tablename}",
+												"type": "Expression"
+											},
+											"partitionOption": "None",
+											"queryTimeout": "02:00:00"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings",
+												"maxConcurrentConnections": 10
+											}
+										},
+										"enableStaging": false,
+										"parallelCopies": 4,
+										"enableSkipIncompatibleRow": true,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false,
+												"dateTimeFormat": "dd-MMM-yy"
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Oracle_danaos_production",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Parquet1",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().filename",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"tableList": {
+						"type": "array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Power Bi Usage Metric Update')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -866,7 +961,9 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/IterateAndCopySQLTables_incremental')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/InitializeGuzzleBatchRun')]",
