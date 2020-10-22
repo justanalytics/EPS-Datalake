@@ -9894,6 +9894,16 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/epsdlselfhostedintegrationruntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Full_Load_Extract')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -9901,13 +9911,6 @@
 				"annotations": [],
 				"runtimeState": "Started",
 				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "GetTableListAndTriggerCopyData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
 					{
 						"pipelineReference": {
 							"referenceName": "EPSDL_Master_Pipeline_Full_Extract",
@@ -9921,8 +9924,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2020-10-20T22:30:00.000Z",
-						"endTime": "2020-10-23T13:39:00.000Z",
+						"startTime": "2020-10-20T22:30:00Z",
+						"endTime": "2020-10-23T13:39:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
@@ -9936,19 +9939,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
 				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_Full_Extract')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/epsdlselfhostedintegrationruntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
 		}
 	]
 }
