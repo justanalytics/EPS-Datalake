@@ -856,7 +856,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('supply_items_full','.parquet')",
+							"value": "@concat('supply_items_20201022_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
