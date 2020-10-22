@@ -2938,7 +2938,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006",
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -3236,7 +3236,7 @@
 				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]"
 			]
 		},
