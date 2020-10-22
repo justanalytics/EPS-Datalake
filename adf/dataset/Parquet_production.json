@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('ports_library_20201022_000000','.parquet')",
+					"value": "@concat('telegrams_20201022_000000','.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "epsdl/data/landing/",
