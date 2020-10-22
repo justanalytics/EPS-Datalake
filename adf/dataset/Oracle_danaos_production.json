@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "DANAOS",
-			"table": "EXPECTED_CALL"
+			"table": "BP_PORTS"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
