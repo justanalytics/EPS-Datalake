@@ -162,9 +162,6 @@
 					"Oracle_Danaos_Production_connectionString": {
 						"value": "[parameters('Oracle_Danaos_Production_connectionString')]"
 					},
-					"Oracle_datalake_connectionString": {
-						"value": "[parameters('Oracle_datalake_connectionString')]"
-					},
 					"FileServer1_properties_typeProperties_host": {
 						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
 					},
@@ -190,6 +187,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Oracle_datalake_connectionString": {
+						"value": "[parameters('Oracle_datalake_connectionString')]"
 					}
 				}
 			},
