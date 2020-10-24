@@ -1880,11 +1880,11 @@
 						}
 					},
 					{
-						"name": "powerbi_refresh",
+						"name": "PowerBI_Refresh_Opex",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"activity": "PowerBI_Refresh_Trial_Balance",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1910,7 +1910,7 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_rejection",
+						"name": "PowerBI_Refresh_Rejection",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
@@ -1931,11 +1931,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Supply_Log",
+						"name": "PowerBI_Refresh_Supply_Log",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_rejection",
+								"activity": "PowerBI_Refresh_Rejection",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1952,11 +1952,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Port_Calls",
+						"name": "PowerBI_Refresh_Port_Calls",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Supply_Log",
+								"activity": "PowerBI_Refresh_Supply_Log",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1973,11 +1973,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"name": "PowerBI_Refresh_Trial_Balance",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Port_Calls",
+								"activity": "PowerBI_Refresh_Port_Calls",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -3545,6 +3545,28 @@
 									"type": "Expression"
 								}
 							}
+						}
+					},
+					{
+						"name": "Pause_Synapse",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Guzzle_Invokation",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pause_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
 						}
 					}
 				],
