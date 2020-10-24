@@ -234,26 +234,6 @@
 									}
 								}
 							}
-						},
-						{
-							"name": "Pause_Synapse_Call",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "PowerBI_Refresh_Success_Email_Call",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Pause_Synapse",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
 						}
 					]
 				}
