@@ -1,0 +1,1029 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "eps-adf-datalake-dev-001"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
+		},
+		"HttpServer1GuzzleService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'HttpServer1GuzzleService'"
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"IMOS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"IMOS_HTTP_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"IMOS_Rest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy_Activity_Failure_Email')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Failure_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Copy Activity Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EmailNotificationPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SendEmailNotification",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n  \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"pipeline_name": {
+						"type": "string"
+					},
+					"pipeline_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"business_date": {
+						"type": "string"
+					},
+					"start_time": {
+						"type": "string"
+					},
+					"end_time": {
+						"type": "string"
+					},
+					"failure_info": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"emails": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IMOS_Copy_Activity_Failure_Email')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Failure_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"IMOS Copy Activity Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IMOS_Copy_Activity_Failure_Email_')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Failure_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"IMOS Copy Activity Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Move_File_Archive_Failure_Email')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Failure_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Move to Archive Notebook Job Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"Current_Date": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pause_Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/pause?api-version=2017-10-01-preview",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-type": "application/json",
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('Oauth2 Login').output.access_token)",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json('')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/cc3f0441-9868-4f81-a6f2-6d91c68fe354/oauth2/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_Refresh_Failure_Email')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Failure_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"Failed\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Failed\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"Current_Date": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_Refresh_Success_Email')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Send_Copy_Data_Success_Email",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"Current_Date": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Resume_Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/resume?api-version=2017-10-01-preview",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-type": "application/json",
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('Oauth2 Login').output.access_token)",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json('')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/cc3f0441-9868-4f81-a6f2-6d91c68fe354/oauth2/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-6924865795882378.18.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "2",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "6.6.x-scala2.11"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalytics1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HttpServer1GuzzleService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HttpServer1GuzzleService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Basic",
+					"userName": "[parameters('HttpServer1GuzzleService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('HttpServer1GuzzleService_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IMOS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('IMOS_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IMOS_HTTP')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('IMOS_HTTP_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IMOS_Rest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('IMOS_Rest_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestService1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestService1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Pause_Synapse_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "PowerBI_Refresh_Success_Email_Call",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Pause_Synapse",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:35Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+			]
+		}
+	]
+}

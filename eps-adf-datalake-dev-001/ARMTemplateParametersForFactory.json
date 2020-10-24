@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "eps-adf-datalake-dev-001"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"value": ""
+		},
+		"HttpServer1GuzzleService_password": {
+			"value": ""
+		},
+		"Oracle1_connectionString": {
+			"value": ""
+		},
+		"Oracle_Danaos_Production_connectionString": {
+			"value": ""
+		},
+		"Oracle_datalake_connectionString": {
+			"value": ""
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_url": {
+			"value": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+		},
+		"HttpServer1GuzzleService_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"IMOS_properties_typeProperties_url": {
+			"value": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"IMOS_HTTP_properties_typeProperties_url": {
+			"value": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"IMOS_Rest_properties_typeProperties_url": {
+			"value": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
+		}
+	}
+}
