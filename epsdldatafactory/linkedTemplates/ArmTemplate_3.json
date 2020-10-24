@@ -1884,7 +1884,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_Refresh_Trial_Balance",
+								"activity": "SuccessNotification",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1914,7 +1914,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "SuccessNotification",
+								"activity": "PowerBI_Refresh_Trial_Balance",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1935,7 +1935,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_Refresh_Rejection",
+								"activity": "PowerBI_Refresh_Opex",
 								"dependencyConditions": [
 									"Succeeded"
 								]
