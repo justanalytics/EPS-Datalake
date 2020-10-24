@@ -5285,7 +5285,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/pause?api-version=2017-10-01-preview",
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-dev-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-dev-001/databases/eps-sqldw-datalake-dev-001/pause?api-version=2017-10-01-preview",
 								"type": "Expression"
 							},
 							"method": "POST",
@@ -5324,7 +5324,7 @@
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							"body": {
-								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
+								"value": "grant_type=client_credentials&client_id=9e8ec5e0-883e-4049-9db2-483cf0c14571&client_secret=t1z12.P7-iG0W19Pj_JxlOBIoFvmxcdG_i&resource=https://management.azure.com/",
 								"type": "Expression"
 							}
 						}
