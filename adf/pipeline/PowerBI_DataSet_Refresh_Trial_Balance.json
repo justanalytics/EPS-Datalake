@@ -1,5 +1,5 @@
 {
-	"name": "PowerBI_DataSet_Refresh",
+	"name": "PowerBI_DataSet_Refresh_Trial_Balance",
 	"properties": {
 		"activities": [
 			{
@@ -234,26 +234,6 @@
 									}
 								}
 							}
-						},
-						{
-							"name": "Pause_Synapse_Call",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "PowerBI_Refresh_Success_Email_Call",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Pause_Synapse",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
 						}
 					]
 				}
@@ -278,11 +258,11 @@
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
+				"defaultValue": "647a5bfc-31d6-4f27-9f7c-5cd946f9bf28"
 			},
 			"Email": {
 				"type": "string",
-				"defaultValue": "agnit.chatterjee@justanalytics.com"
+				"defaultValue": "thao.nguyen@justanalytics.com"
 			},
 			"Datetime": {
 				"type": "string"

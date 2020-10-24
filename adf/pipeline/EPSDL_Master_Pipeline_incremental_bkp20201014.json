@@ -1,33 +1,13 @@
 {
-	"name": "EPSDL_Master_Pipeline",
+	"name": "EPSDL_Master_Pipeline_incremental_bkp20201014",
 	"properties": {
 		"activities": [
-			{
-				"name": "Copy_Oracle_Source_Data",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "move_parquet_files_archive",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "GetTableListAndTriggerCopyData",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
 			{
 				"name": "Guzzle_Invokation",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Copy_Oracle_Source_Data",
+						"activity": "Resume_Synapse_Call",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -36,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006",
+						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -51,6 +31,14 @@
 						},
 						"stage": {
 							"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
+							"type": "Expression"
+						},
+						"parent_pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"parent_pipeline_id": {
+							"value": "@pipeline().RunId",
 							"type": "Expression"
 						},
 						"emails": {
@@ -190,11 +178,11 @@
 				}
 			},
 			{
-				"name": "Invoke_Power_BI_refresh",
+				"name": "Copy_Oracle_Source_Data",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Guzzle_Invokation",
+						"activity": "move_parquet_files_archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -203,16 +191,56 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PowerBI_DataSet_Refresh",
+						"referenceName": "GetTableListAndTriggerCopyData_incremental",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Resume_Synapse_Call",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy_Oracle_Source_Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Resume_Synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute Pipeline2",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "move_parquet_files_archive",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Move_File_Archive_Failure_Email",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"Email": {
+						"emails": {
 							"value": "@activity('Get_Email_Details').output.firstRow.email",
 							"type": "Expression"
 						},
-						"Datetime": {
+						"datetime": {
 							"value": "@variables('business_date')",
 							"type": "Expression"
 						}

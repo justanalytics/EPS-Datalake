@@ -1,5 +1,6 @@
 {
 	"name": "IMOS_HTTP",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "HttpServer",
