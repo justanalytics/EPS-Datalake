@@ -1106,8 +1106,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "DANAOS",
-					"table": "TELEGRAMS_CUSTOM"
+					"schema": "VLOG",
+					"table": "NAV_AUDIT_OFF_MAIN"
 				}
 			},
 			"dependsOn": []
@@ -1576,7 +1576,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('telegrams_custom_20201022_000000','.parquet')",
+							"value": "@concat('nav_audit_off_main_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
