@@ -9701,7 +9701,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "VLOG",
-					"table": "NAV_AUDIT_VSL_ANSWERS"
+					"table": "NAV_AUDIT_QN_MASTER"
 				}
 			},
 			"dependsOn": [
@@ -10182,7 +10182,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('nav_audit_vsl_answers_20201030_000000','.parquet')",
+							"value": "@concat('nav_audit_qn_master_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
