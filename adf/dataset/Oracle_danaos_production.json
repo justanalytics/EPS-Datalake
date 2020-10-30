@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "VLOG",
-			"table": "NAV_AUDIT_OFF_ANSWERS"
+			"table": "NAV_AUDIT_VSL_ANSWERS"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
