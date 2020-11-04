@@ -1107,7 +1107,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "APPLN1",
-					"table": "MOC_VIQ_QUESTIONS"
+					"table": "MOC_INSPECTION_REQUESTS"
 				}
 			},
 			"dependsOn": []
@@ -1576,7 +1576,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('moc_viq_questions_20201030_000000','.parquet')",
+							"value": "@concat('moc_inspection_requests_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
