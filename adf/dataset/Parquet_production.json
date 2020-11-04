@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('incident_categoris_20201030_000000','.parquet')",
+					"value": "@concat('insp_inspections_20201030_000000','.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "epsdl/data/landing/",

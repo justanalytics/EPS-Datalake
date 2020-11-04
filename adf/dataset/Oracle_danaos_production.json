@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "VLOG",
-			"table": "INCIDENT_CATEGORIES"
+			"table": "INSP_INSPECTIONS"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
