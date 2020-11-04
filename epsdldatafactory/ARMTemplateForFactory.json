@@ -9703,8 +9703,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "VLOG",
-					"table": "INSP_ANSWER"
+					"schema": "APPLN1",
+					"table": "MOC_DEFICIENCIES"
 				}
 			},
 			"dependsOn": [
@@ -10185,7 +10185,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('insp_answer_20201030_000000','.parquet')",
+							"value": "@concat('moc_deficiencies_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
