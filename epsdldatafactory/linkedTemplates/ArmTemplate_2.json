@@ -1107,7 +1107,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "VLOG",
-					"table": "NAV_AUDIT_QN_MASTER"
+					"table": "INCIDENT_REPORT"
 				}
 			},
 			"dependsOn": []
@@ -1576,7 +1576,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('nav_audit_qn_master_20201030_000000','.parquet')",
+							"value": "@concat('incident_report_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
@@ -2332,7 +2332,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:39Z"
+				"lastPublishTime": "2020-10-28T03:27:27Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_IMOS')]"
