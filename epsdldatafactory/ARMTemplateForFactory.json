@@ -9704,7 +9704,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "APPLN1",
-					"table": "MOC_DEFICIENCIES"
+					"table": "MOC_VIQ_QUESTIONS"
 				}
 			},
 			"dependsOn": [
@@ -10185,7 +10185,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('moc_deficiencies_20201030_000000','.parquet')",
+							"value": "@concat('moc_viq_questions_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
