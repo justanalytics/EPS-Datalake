@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "VLOG",
-			"table": "INSP_QUESTION"
+			"table": "INSP_ANSWER"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
