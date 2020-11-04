@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('insp_inspection_questionnaire_20201030_000000','.parquet')",
+					"value": "@concat('insp_questionnaire_question_20201030_000000','.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "epsdl/data/landing/",
