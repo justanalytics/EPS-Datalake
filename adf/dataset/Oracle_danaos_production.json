@@ -9,8 +9,8 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "APPLN1",
-			"table": "MOC_INSPECTION_REQUESTS"
+			"schema": "VLOG",
+			"table": "INSP_QUESTIONNAIRE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
