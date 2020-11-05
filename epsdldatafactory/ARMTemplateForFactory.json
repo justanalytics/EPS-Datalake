@@ -9190,9 +9190,6 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -9703,8 +9700,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "APPLN1",
-					"table": "MOC_INSPECTION_REQUESTS"
+					"schema": "VLOG",
+					"table": "INSP_QUESTIONNAIRE"
 				}
 			},
 			"dependsOn": [
@@ -10185,7 +10182,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('moc_inspection_requests_20201030_000000','.parquet')",
+							"value": "@concat('insp_questionnaires_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",

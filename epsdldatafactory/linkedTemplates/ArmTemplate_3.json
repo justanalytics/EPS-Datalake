@@ -731,9 +731,6 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
