@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "VLOG",
-			"table": "NAV_AUDIT_QN_MASTER"
+			"table": "INSP_QUESTIONNAIRE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

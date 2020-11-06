@@ -12,7 +12,8 @@
 				"type": "HttpServerLocation",
 				"relativeUrl": "api/batches/initialize?mode=default"
 			}
-		}
+		},
+		"schema": {}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

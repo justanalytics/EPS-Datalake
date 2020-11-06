@@ -17,14 +17,13 @@
 				"frequency": "Day",
 				"interval": 1,
 				"startTime": "2020-10-21T10:13:00Z",
-				"endTime": "2020-10-26T10:13:00Z",
 				"timeZone": "UTC",
 				"schedule": {
 					"minutes": [
-						30
+						0
 					],
 					"hours": [
-						23
+						0
 					]
 				}
 			}
