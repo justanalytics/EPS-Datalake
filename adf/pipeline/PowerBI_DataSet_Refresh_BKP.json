@@ -254,15 +254,15 @@
 			},
 			"PBIAppWorkspaceId": {
 				"type": "string",
-				"defaultValue": "78df354e-a49d-4078-8b74-f5bd13a26dc6"
+				"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "6c75d4c6-c9e9-4e1a-90c1-acd3cf28188d"
+				"defaultValue": "d3338d0a-c7db-4f6f-bd18-ad5b1664b71e"
 			},
 			"Email": {
 				"type": "string",
-				"defaultValue": "agnit.chatterjee@justanalytics.com"
+				"defaultValue": "thao.nguyen@justanalytics.com"
 			},
 			"Datetime": {
 				"type": "string"
