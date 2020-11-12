@@ -6216,7 +6216,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-22T10:19:08Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -6788,7 +6788,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-14T14:25:09Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -7074,7 +7074,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-22T10:22:44Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -9701,7 +9701,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "VLOG",
-					"table": "INSP_QUESTIONNAIRE"
+					"table": "INSP_INSPECTION_OBSERVATION"
 				}
 			},
 			"dependsOn": [
@@ -10182,7 +10182,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('insp_questionnaires_20201030_000000','.parquet')",
+							"value": "@concat('insp_inspection_observation_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
