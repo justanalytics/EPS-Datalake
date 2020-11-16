@@ -21,7 +21,7 @@
 						"Content-Type": "application/json"
 					},
 					"body": {
-						"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": @replace(replace(\"{pipeline().parameters.failure_info}\",'\\'',''),'\\\"',''),\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+						"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": @replace(replace(\"{pipeline().parameters.failure_info}\",'''',''),'\\\"',''),\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
 						"type": "Expression"
 					}
 				}
