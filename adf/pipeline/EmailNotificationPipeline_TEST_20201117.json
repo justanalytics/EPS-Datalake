@@ -41,7 +41,7 @@
 				"typeProperties": {
 					"variableName": "msg",
 					"value": {
-						"value": "@replace(replace(pipeline().parameters.failure_info,'\\\"',''),'''','')",
+						"value": "@replace(replace(pipeline().parameters.failure_info,'\"',''),'''','')",
 						"type": "Expression"
 					}
 				}
