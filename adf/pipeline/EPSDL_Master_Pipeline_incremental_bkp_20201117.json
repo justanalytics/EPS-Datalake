@@ -1,5 +1,5 @@
 {
-	"name": "EPSDL_Master_Pipeline_Full_Extract",
+	"name": "EPSDL_Master_Pipeline_incremental_bkp_20201117",
 	"properties": {
 		"activities": [
 			{
@@ -191,7 +191,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "GetTableListAndTriggerCopyData",
+						"referenceName": "GetTableListAndTriggerCopyData_incremental",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -326,7 +326,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-22T10:28:20Z"
+		"lastPublishTime": "2020-10-24T14:21:27Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

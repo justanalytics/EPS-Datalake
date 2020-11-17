@@ -1,5 +1,5 @@
 {
-	"name": "EmailNotificationPipeline",
+	"name": "EmailNotificationPipeline_bkp_20201117",
 	"properties": {
 		"activities": [
 			{

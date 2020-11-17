@@ -1,5 +1,5 @@
 {
-	"name": "EmailNotificationPipeline_TEST_20201117",
+	"name": "EmailNotificationPipeline",
 	"properties": {
 		"activities": [
 			{
