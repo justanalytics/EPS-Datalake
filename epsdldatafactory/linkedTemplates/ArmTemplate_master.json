@@ -159,9 +159,6 @@
 					"Oracle1_connectionString": {
 						"value": "[parameters('Oracle1_connectionString')]"
 					},
-					"Oracle_Danaos_Production_connectionString": {
-						"value": "[parameters('Oracle_Danaos_Production_connectionString')]"
-					},
 					"FileServer1_properties_typeProperties_host": {
 						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
 					},
@@ -187,6 +184,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Oracle_Danaos_Production_connectionString": {
+						"value": "[parameters('Oracle_Danaos_Production_connectionString')]"
 					},
 					"Oracle_datalake_connectionString": {
 						"value": "[parameters('Oracle_datalake_connectionString')]"
@@ -215,6 +215,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'epsdldatafactory_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "epsdldatafactory_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'epsdldatafactory_ArmTemplate_3')]"
 			]
 		}
 	]
