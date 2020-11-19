@@ -354,7 +354,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "EmailNotificationPipeline",
+						"referenceName": "EmailNotificationPipeline_bkp_20201117",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -425,7 +425,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "EmailNotificationPipeline",
+						"referenceName": "EmailNotificationPipeline_bkp_20201117",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
