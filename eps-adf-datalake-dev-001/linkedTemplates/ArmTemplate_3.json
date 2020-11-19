@@ -2190,7 +2190,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh",
+								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,

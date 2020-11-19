@@ -1769,7 +1769,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh",
+								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -1801,7 +1801,7 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]"
 			]
 		},
 		{
@@ -6055,7 +6055,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh')]",
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Opex_Monitor')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -6292,27 +6292,6 @@
 											}
 										}
 									}
-								},
-								{
-									"name": "Pause_Synapse_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "PowerBI_Refresh_Success_Email_Call",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Pause_Synapse",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
 								}
 							]
 						}
@@ -6321,23 +6300,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
+						"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
 					},
 					"Email": {
 						"type": "string",
@@ -6358,8 +6337,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
 			]
 		},
 		{
@@ -8697,7 +8675,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh",
+								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -8872,7 +8850,7 @@
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]",
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]",
 				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Rejection')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Supply_Log')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Port_Calls')]",
@@ -9398,7 +9376,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh",
+								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -9489,7 +9467,7 @@
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]",
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]",
 				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]"
 			]
 		},
 		{
