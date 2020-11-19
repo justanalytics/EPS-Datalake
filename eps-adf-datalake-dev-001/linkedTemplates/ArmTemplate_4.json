@@ -13,6 +13,325 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Guzzle_Invokation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Resume_Synapse_Call",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"job_id": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.job_id",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								},
+								"stage": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
+									"type": "Expression"
+								},
+								"parent_pipeline_name": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"parent_pipeline_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Business_Date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date",
+							"value": {
+								"value": "@formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get_Email_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select email from [dbo].[JBS_JOB_EMAILS] where id=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Get_Guzzle_Batch_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "move_parquet_files_archive",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Business_Date",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Email_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Guzzle_Batch_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "move_parquet_files_landing_to_archive",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Copy_Oracle_Source_Data",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "GetTableListAndTriggerCopyData_incremental",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Resume_Synapse_Call",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Resume_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Move_File_Archive_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "IMOS_Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_IMOS_Parquet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1_copy1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"variables": {
+					"business_date": {
+						"type": "String",
+						"defaultValue": "1900-01-01 00:00:00"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-24T04:47:28Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_IMOS_ADDED')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1511,7 +1830,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/EPSDL_Master_Pipeline_incremental')]"
+			]
 		}
 	]
 }
