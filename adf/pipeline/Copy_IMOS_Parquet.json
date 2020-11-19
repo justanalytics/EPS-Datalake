@@ -678,42 +678,6 @@
 									"name": "Name",
 									"physicalType": "UTF8"
 								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"ordinal": 65
-								},
-								"sink": {
-									"name": "Latitude"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"ordinal": 66
-								},
-								"sink": {
-									"name": "Longitude"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"ordinal": 67
-								},
-								"sink": {
-									"name": "Latitude_Seconds"
-								}
-							},
-							{
-								"source": {
-									"type": "String",
-									"ordinal": 68
-								},
-								"sink": {
-									"name": "Longitude_Seconds"
-								}
 							}
 						],
 						"typeConversion": true,
@@ -738,7 +702,7 @@
 			}
 		],
 		"annotations": [],
-		"lastPublishTime": "2020-10-28T03:27:27Z"
+		"lastPublishTime": "2020-10-24T04:47:25Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

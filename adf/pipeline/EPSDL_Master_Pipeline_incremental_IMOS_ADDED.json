@@ -1,5 +1,5 @@
 {
-	"name": "EPSDL_Master_Pipeline_incremental_bkp_20201006",
+	"name": "EPSDL_Master_Pipeline_incremental_IMOS_ADDED",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006",
+						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -202,7 +202,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Copy_Oracle_Source_Data",
+						"activity": "IMOS_Copy",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -246,6 +246,56 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "IMOS_Copy",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy_Oracle_Source_Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Copy_IMOS_Parquet",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute Pipeline1_copy1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "IMOS_Copy",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Copy_Activity_Failure_Email",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"emails": {
+							"value": "@activity('Get_Email_Details').output.firstRow.email",
+							"type": "Expression"
+						},
+						"datetime": {
+							"value": "@variables('business_date')",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"variables": {
@@ -255,7 +305,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-24T04:47:28Z"
+		"lastPublishTime": "2020-10-24T04:47:29Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

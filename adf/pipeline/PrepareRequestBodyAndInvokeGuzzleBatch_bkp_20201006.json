@@ -354,7 +354,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "EmailNotificationPipeline_bkp_20201117",
+						"referenceName": "EmailNotificationPipeline",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -425,7 +425,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "EmailNotificationPipeline_bkp_20201117",
+						"referenceName": "EmailNotificationPipeline",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -595,7 +595,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-06T04:33:38Z"
+		"lastPublishTime": "2020-10-24T04:47:27Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

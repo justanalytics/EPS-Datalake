@@ -296,27 +296,6 @@
 						}
 					}
 				}
-			},
-			{
-				"name": "Pause_Synapse",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Guzzle_Invokation",
-						"dependencyConditions": [
-							"Succeeded",
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Pause_Synapse",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"variables": {
@@ -326,7 +305,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-22T10:28:20Z"
+		"lastPublishTime": "2020-10-24T04:47:30Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

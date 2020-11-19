@@ -242,27 +242,27 @@
 		"parameters": {
 			"TenantId": {
 				"type": "String",
-				"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
+				"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
 			},
 			"SPClientId": {
 				"type": "String",
-				"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
+				"defaultValue": "14811cb4-8500-41ac-92a0-f10a65374aa1"
 			},
 			"SPSecret": {
 				"type": "String",
-				"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
+				"defaultValue": "g0x1WU~hWyJ4qy-UyDFW21B_A7e0.yqjs2"
 			},
 			"PBIAppWorkspaceId": {
 				"type": "string",
-				"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
+				"defaultValue": "78df354e-a49d-4078-8b74-f5bd13a26dc6"
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
+				"defaultValue": "6c75d4c6-c9e9-4e1a-90c1-acd3cf28188d"
 			},
 			"Email": {
 				"type": "string",
-				"defaultValue": "thao.nguyen@justanalytics.com"
+				"defaultValue": "agnit.chatterjee@justanalytics.com"
 			},
 			"Datetime": {
 				"type": "string"
@@ -275,7 +275,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-11-06T14:29:22Z"
+		"lastPublishTime": "2020-10-24T04:47:25Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

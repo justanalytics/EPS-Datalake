@@ -1,5 +1,5 @@
 {
-	"name": "PowerBI_DataSet_Refresh",
+	"name": "PowerBI_DataSet_Refresh_rejection_try",
 	"properties": {
 		"activities": [
 			{
@@ -234,26 +234,6 @@
 									}
 								}
 							}
-						},
-						{
-							"name": "Pause_Synapse_Call",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "PowerBI_Refresh_Success_Email_Call",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Pause_Synapse",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
 						}
 					]
 				}
@@ -278,11 +258,11 @@
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
+				"defaultValue": "14042830-2758-4e3d-af2d-ad0ab33571f6"
 			},
 			"Email": {
 				"type": "string",
-				"defaultValue": "agnit.chatterjee@justanalytics.com"
+				"defaultValue": "thao.nguyen@justanalytics.com"
 			},
 			"Datetime": {
 				"type": "string"
@@ -295,7 +275,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-24T04:47:25Z"
+		"lastPublishTime": "2020-10-24T04:47:20Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -498,11 +498,11 @@
 				}
 			},
 			{
-				"name": "PowerBI_Refresh_Opex",
+				"name": "powerbi_refresh",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "SuccessNotification",
+						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -528,11 +528,11 @@
 				}
 			},
 			{
-				"name": "PowerBI_Refresh_Rejection",
+				"name": "PowerBI_DataSet_Refresh_rejection",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_Refresh_Trial_Balance",
+						"activity": "SuccessNotification",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -548,11 +548,11 @@
 				}
 			},
 			{
-				"name": "PowerBI_Refresh_Supply_Log",
+				"name": "PowerBI_DataSet_Refresh_Supply_Log",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_Refresh_Opex",
+						"activity": "PowerBI_DataSet_Refresh_rejection",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -568,11 +568,11 @@
 				}
 			},
 			{
-				"name": "PowerBI_Refresh_Port_Calls",
+				"name": "PowerBI_DataSet_Refresh_Port_Calls",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_Refresh_Supply_Log",
+						"activity": "PowerBI_DataSet_Refresh_Supply_Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -588,11 +588,11 @@
 				}
 			},
 			{
-				"name": "PowerBI_Refresh_Trial_Balance",
+				"name": "PowerBI_DataSet_Refresh_Trial_Balance",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_Refresh_Port_Calls",
+						"activity": "PowerBI_DataSet_Refresh_Port_Calls",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -675,7 +675,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-24T14:24:33Z"
+		"lastPublishTime": "2020-10-24T04:47:27Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

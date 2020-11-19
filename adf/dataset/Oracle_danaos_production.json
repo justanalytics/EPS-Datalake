@@ -9,8 +9,8 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "VLOG",
-			"table": "INSP_INSPECTION_OBSERVATION"
+			"schema": "DANAOS",
+			"table": "TELEGRAMS_CUSTOM"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

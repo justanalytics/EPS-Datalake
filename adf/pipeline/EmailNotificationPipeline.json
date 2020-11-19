@@ -5,14 +5,7 @@
 			{
 				"name": "SendEmailNotification",
 				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -28,20 +21,7 @@
 						"Content-Type": "application/json"
 					},
 					"body": {
-						"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": \"@{variables('msg')}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "msg",
-					"value": {
-						"value": "@replace(replace(pipeline().parameters.failure_info,'\"',''),'''','')",
+						"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n  \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -76,13 +56,10 @@
 		"variables": {
 			"emails": {
 				"type": "String"
-			},
-			"msg": {
-				"type": "String"
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-06T04:33:34Z"
+		"lastPublishTime": "2020-10-24T04:47:17Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
