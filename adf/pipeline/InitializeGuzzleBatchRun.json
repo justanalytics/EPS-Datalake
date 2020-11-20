@@ -219,6 +219,9 @@
 								"type": "Expression"
 							},
 							"requestTimeout": ""
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
@@ -358,6 +361,16 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "parameters",
+					"value": "json(pipeline().parameters.run_stage_body)['parameters']"
+				}
 			}
 		],
 		"parameters": {
@@ -391,6 +404,9 @@
 				"type": "String"
 			},
 			"status": {
+				"type": "String"
+			},
+			"parameters": {
 				"type": "String"
 			}
 		},
