@@ -53,7 +53,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",
@@ -106,9 +106,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBlobStorage1_connectionString": {
-						"value": "[parameters('AzureBlobStorage1_connectionString')]"
-					},
 					"AzureDatabricks1_accessToken": {
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
@@ -138,6 +135,9 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
@@ -156,9 +156,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
@@ -179,6 +176,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
 					"FileServer1_password": {
 						"value": "[parameters('FileServer1_password')]"

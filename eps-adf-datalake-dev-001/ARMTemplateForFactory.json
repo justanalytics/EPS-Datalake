@@ -53,7 +53,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",
@@ -124,7 +124,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -810,6 +810,42 @@
 											"name": "Name",
 											"physicalType": "UTF8"
 										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 65
+										},
+										"sink": {
+											"name": "Latitude"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 66
+										},
+										"sink": {
+											"name": "Longitude"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 67
+										},
+										"sink": {
+											"name": "Latitude_Seconds"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 68
+										},
+										"sink": {
+											"name": "Longitude_Seconds"
+										}
 									}
 								],
 								"typeConversion": true,
@@ -836,7 +872,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-10-28T03:27:27Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IMOS_Report_Dataset')]",
@@ -1551,7 +1587,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:26Z"
+				"lastPublishTime": "2020-10-06T04:33:39Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IMOS_Report_Dataset')]",
@@ -1769,7 +1805,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
+								"referenceName": "PowerBI_DataSet_Refresh",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -1793,7 +1829,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-11-19T05:50:49Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
@@ -1801,7 +1837,7 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]"
 			]
 		},
 		{
@@ -2110,6 +2146,28 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Pause_Synapse",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Guzzle_Invokation",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pause_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"variables": {
@@ -2119,7 +2177,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:30Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2129,7 +2187,8 @@
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData')]",
 				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
 				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
+				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
 			]
 		},
 		{
@@ -2438,6 +2497,28 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Pause_Synapse",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Guzzle_Invokation",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pause_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"variables": {
@@ -2447,7 +2528,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:28Z"
+				"lastPublishTime": "2020-10-24T14:21:27Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2457,7 +2538,8 @@
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
 				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
 				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
+				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
 			]
 		},
 		{
@@ -3380,7 +3462,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:29Z"
+				"lastPublishTime": "2020-10-14T11:12:51Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -3656,7 +3738,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:28Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -3932,7 +4014,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:28Z"
+				"lastPublishTime": "2020-10-06T04:33:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_bkp_20201006')]",
@@ -4281,7 +4363,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:21:27Z"
+				"lastPublishTime": "2020-11-17T12:20:49Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -4304,7 +4386,14 @@
 					{
 						"name": "SendEmailNotification",
 						"type": "WebActivity",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -4320,7 +4409,20 @@
 								"Content-Type": "application/json"
 							},
 							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n  \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": \"@{variables('msg')}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "msg",
+							"value": {
+								"value": "@replace(replace(pipeline().parameters.failure_info,'\"',''),'''','')",
 								"type": "Expression"
 							}
 						}
@@ -4355,10 +4457,13 @@
 				"variables": {
 					"emails": {
 						"type": "String"
+					},
+					"msg": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": []
 		},
@@ -4425,7 +4530,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:34Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": []
 		},
@@ -4493,7 +4598,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -4564,7 +4669,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -4611,7 +4716,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -4655,7 +4760,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -5062,7 +5167,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:22Z"
+				"lastPublishTime": "2020-10-06T04:33:37Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]",
@@ -5764,7 +5869,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Power_Bi_Admin')]",
@@ -5862,7 +5967,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -5960,7 +6065,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -6012,7 +6117,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -6043,7 +6148,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-dev-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-dev-001/databases/eps-sqldw-datalake-dev-001/pause?api-version=2017-10-01-preview",
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/pause?api-version=2017-10-01-preview",
 								"type": "Expression"
 							},
 							"method": "POST",
@@ -6082,14 +6187,14 @@
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							"body": {
-								"value": "grant_type=client_credentials&client_id=9e8ec5e0-883e-4049-9db2-483cf0c14571&client_secret=t1z12.P7-iG0W19Pj_JxlOBIoFvmxcdG_i&resource=https://management.azure.com/",
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
 								"type": "Expression"
 							}
 						}
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T05:50:31Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -6374,7 +6479,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:23Z"
+				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/PowerBI_SQL_DB')]",
@@ -6620,27 +6725,6 @@
 											}
 										}
 									}
-								},
-								{
-									"name": "Pause_Synapse_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "PowerBI_Refresh_Success_Email_Call",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Pause_Synapse",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
 								}
 							]
 						}
@@ -6682,12 +6766,11 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-10-24T14:21:25Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
 			]
 		},
 		{
@@ -7223,27 +7306,27 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "14811cb4-8500-41ac-92a0-f10a65374aa1"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "g0x1WU~hWyJ4qy-UyDFW21B_A7e0.yqjs2"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "78df354e-a49d-4078-8b74-f5bd13a26dc6"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "6c75d4c6-c9e9-4e1a-90c1-acd3cf28188d"
+						"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
 					},
 					"Email": {
 						"type": "string",
-						"defaultValue": "agnit.chatterjee@justanalytics.com"
+						"defaultValue": "thao.nguyen@justanalytics.com"
 					},
 					"Datetime": {
 						"type": "string"
@@ -7256,7 +7339,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-11-06T14:29:22Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -8654,23 +8737,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "16a5b79d-342f-4963-b322-075143d67647"
+						"defaultValue": "d3338d0a-c7db-4f6f-bd18-ad5b1664b71e"
 					},
 					"Email": {
 						"type": "string",
@@ -8687,7 +8770,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -8973,7 +9056,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-10-23T04:20:13Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -9512,23 +9595,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "1ec1ec43-28c7-4e1a-8cde-453ac909152a"
+						"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
 					},
 					"Email": {
 						"type": "string",
@@ -9545,7 +9628,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -9798,23 +9881,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "647a5bfc-31d6-4f27-9f7c-5cd946f9bf28"
+						"defaultValue": "40dfb6ec-fdd8-4bec-bdce-e2068534a7b3"
 					},
 					"Email": {
 						"type": "string",
@@ -9831,7 +9914,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -10169,7 +10252,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -10218,7 +10301,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -10728,11 +10811,11 @@
 						}
 					},
 					{
-						"name": "powerbi_refresh",
+						"name": "PowerBI_Refresh_Opex",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"activity": "SuccessNotification",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10741,7 +10824,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
+								"referenceName": "PowerBI_DataSet_Refresh",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -10758,11 +10841,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_rejection",
+						"name": "PowerBI_Refresh_Rejection",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "SuccessNotification",
+								"activity": "PowerBI_Refresh_Trial_Balance",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10779,11 +10862,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Supply_Log",
+						"name": "PowerBI_Refresh_Supply_Log",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_rejection",
+								"activity": "PowerBI_Refresh_Opex",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10800,11 +10883,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Port_Calls",
+						"name": "PowerBI_Refresh_Port_Calls",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Supply_Log",
+								"activity": "PowerBI_Refresh_Supply_Log",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10821,11 +10904,11 @@
 						}
 					},
 					{
-						"name": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"name": "PowerBI_Refresh_Trial_Balance",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PowerBI_DataSet_Refresh_Port_Calls",
+								"activity": "PowerBI_Refresh_Port_Calls",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -10835,111 +10918,6 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PowerBI_DataSet_Refresh_Audit",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "powerbi_refresh",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Audit",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PowerBI_DataSet_Refresh_Incident",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PowerBI_DataSet_Refresh_Audit",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Incident",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PowerBI_DataSet_Refresh_Inspection",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PowerBI_DataSet_Refresh_Incident",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Inspection",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PowerBI_DataSet_Refresh_Sire Inspection",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PowerBI_DataSet_Refresh_Inspection",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Sire Inspection",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PowerBI_DataSet_Refresh_Inspection Matching",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PowerBI_DataSet_Refresh_Sire Inspection",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -11014,23 +10992,18 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-11-19T06:45:44Z"
+				"lastPublishTime": "2020-10-24T14:24:33Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]",
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]",
 				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Rejection')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Supply_Log')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Port_Calls')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Audit')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Incident')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Sire Inspection')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection Matching')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]"
 			]
 		},
 		{
@@ -11776,7 +11749,8 @@
 						"defaultValue": 1
 					},
 					"stage": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "STG"
 					},
 					"parent_pipeline_name": {
 						"type": "string"
@@ -11789,7 +11763,8 @@
 						"defaultValue": "agnit.chatterjee@justanalytics.com"
 					},
 					"start_time": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
 					}
 				},
 				"variables": {
@@ -12205,7 +12180,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "EmailNotificationPipeline",
+								"referenceName": "EmailNotificationPipeline_bkp_20201117",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -12276,7 +12251,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "EmailNotificationPipeline",
+								"referenceName": "EmailNotificationPipeline_bkp_20201117",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -12363,7 +12338,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
+								"referenceName": "PowerBI_DataSet_Refresh",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -12447,14 +12422,14 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-11-19T05:50:47Z"
+				"lastPublishTime": "2020-11-17T12:20:49Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]",
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]",
-				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]"
+				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline_bkp_20201117')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh')]"
 			]
 		},
 		{
@@ -12484,7 +12459,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-dev-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-dev-001/databases/eps-sqldw-datalake-dev-001/resume?api-version=2017-10-01-preview",
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/resume?api-version=2017-10-01-preview",
 								"type": "Expression"
 							},
 							"method": "POST",
@@ -12523,14 +12498,14 @@
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							"body": {
-								"value": "grant_type=client_credentials&client_id=9e8ec5e0-883e-4049-9db2-483cf0c14571&client_secret=t1z12.P7-iG0W19Pj_JxlOBIoFvmxcdG_i&resource=https://management.azure.com/",
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
 								"type": "Expression"
 							}
 						}
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T05:44:37Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -12647,7 +12622,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/TrackGuzzleStageRun')]"
@@ -12788,7 +12763,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]"
@@ -12822,7 +12797,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
@@ -12891,7 +12866,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable1')]",
@@ -12940,7 +12915,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/invokeJob')]"
@@ -12987,7 +12962,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Json1')]"
@@ -13052,7 +13027,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use')]",
@@ -13119,7 +13094,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use_AGNIT_TESTING')]",
@@ -13184,7 +13159,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
@@ -13249,7 +13224,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:19Z"
+				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_Data_Lake_Tables')]",
@@ -13664,8 +13639,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "DANAOS",
-					"table": "TELEGRAMS_CUSTOM"
+					"schema": "VLOG",
+					"table": "INSP_INSPECTION_OBSERVATION"
 				}
 			},
 			"dependsOn": [
@@ -14146,7 +14121,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('telegrams_custom_20201022_000000','.parquet')",
+							"value": "@concat('insp_inspection_observation_20201030_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
@@ -14293,9 +14268,15 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "epsdlselfhostedintegrationruntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
@@ -14305,17 +14286,14 @@
 				"annotations": [],
 				"type": "AzureDatabricks",
 				"typeProperties": {
-					"domain": "https://adb-6924865795882378.18.azuredatabricks.net",
+					"domain": "https://adb-243883213393729.9.azuredatabricks.net",
 					"accessToken": {
 						"type": "SecureString",
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
 					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "6.6.x-scala2.11"
+					"newClusterNumOfWorker": "1",
+					"newClusterVersion": "5.5.x-scala2.11"
 				}
 			},
 			"dependsOn": []
@@ -14446,12 +14424,12 @@
 					"connectionString": "[parameters('Oracle1_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "integrationRuntime1",
+					"referenceName": "epsdlselfhostedintegrationruntime",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
 			]
 		},
 		{
@@ -14465,12 +14443,12 @@
 					"connectionString": "[parameters('Oracle_Danaos_Production_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "integrationRuntime1",
+					"referenceName": "epsdlselfhostedintegrationruntime",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
 			]
 		},
 		{
@@ -14484,12 +14462,12 @@
 					"connectionString": "[parameters('Oracle_datalake_connectionString')]"
 				},
 				"connectVia": {
-					"referenceName": "integrationRuntime1",
+					"referenceName": "epsdlselfhostedintegrationruntime",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
 			]
 		},
 		{
@@ -14529,14 +14507,13 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2020-10-21T10:13:00Z",
-						"endTime": "2020-10-24T10:13:00Z",
 						"timeZone": "UTC",
 						"schedule": {
 							"minutes": [
-								30
+								0
 							],
 							"hours": [
-								23
+								0
 							]
 						}
 					}

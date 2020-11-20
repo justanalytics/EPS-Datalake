@@ -6,31 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "eps-adf-datalake-dev-001"
-		},
-		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -269,27 +250,6 @@
 											}
 										}
 									}
-								},
-								{
-									"name": "Pause_Synapse_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "PowerBI_Refresh_Success_Email_Call",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Pause_Synapse",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
 								}
 							]
 						}
@@ -331,7 +291,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-10-24T14:21:25Z"
 			},
 			"dependsOn": []
 		},
@@ -865,27 +825,27 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "14811cb4-8500-41ac-92a0-f10a65374aa1"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "g0x1WU~hWyJ4qy-UyDFW21B_A7e0.yqjs2"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "78df354e-a49d-4078-8b74-f5bd13a26dc6"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "6c75d4c6-c9e9-4e1a-90c1-acd3cf28188d"
+						"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
 					},
 					"Email": {
 						"type": "string",
-						"defaultValue": "agnit.chatterjee@justanalytics.com"
+						"defaultValue": "thao.nguyen@justanalytics.com"
 					},
 					"Datetime": {
 						"type": "string"
@@ -898,7 +858,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:25Z"
+				"lastPublishTime": "2020-11-06T14:29:22Z"
 			},
 			"dependsOn": []
 		},
@@ -2280,23 +2240,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "16a5b79d-342f-4963-b322-075143d67647"
+						"defaultValue": "d3338d0a-c7db-4f6f-bd18-ad5b1664b71e"
 					},
 					"Email": {
 						"type": "string",
@@ -2313,7 +2273,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": []
 		},
@@ -2596,7 +2556,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-10-23T04:20:13Z"
 			},
 			"dependsOn": []
 		},
@@ -3129,23 +3089,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "1ec1ec43-28c7-4e1a-8cde-453ac909152a"
+						"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
 					},
 					"Email": {
 						"type": "string",
@@ -3162,7 +3122,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:20Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": []
 		},
@@ -3412,23 +3372,23 @@
 				"parameters": {
 					"TenantId": {
 						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
 					},
 					"SPClientId": {
 						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
 					},
 					"SPSecret": {
 						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
 					},
 					"PBIAppWorkspaceId": {
 						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
 					},
 					"PBIDatasetId": {
 						"type": "string",
-						"defaultValue": "647a5bfc-31d6-4f27-9f7c-5cd946f9bf28"
+						"defaultValue": "40dfb6ec-fdd8-4bec-bdce-e2068534a7b3"
 					},
 					"Email": {
 						"type": "string",
@@ -3445,7 +3405,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:21Z"
+				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": []
 		},
@@ -3760,7 +3720,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -3926,61 +3886,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "test-data",
-						"container": "epsdlcontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "Date",
-						"type": "String"
-					},
-					{
-						"name": "Customer",
-						"type": "String"
-					},
-					{
-						"name": "Type",
-						"type": "String"
-					},
-					{
-						"name": "Value1",
-						"type": "String"
-					},
-					{
-						"name": "Value2",
-						"type": "String"
-					},
-					{
-						"name": "Value3",
-						"type": "String"
-					},
-					{
-						"name": "Value4",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/GuzzleDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4016,6 +3921,48 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Initialize_Batch')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HttpServer1GuzzleService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "api/batches/initialize?mode=default"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HttpServer1GuzzleService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "/api/execute/job"
+					}
+				},
+				"schema": {}
 			},
 			"dependsOn": []
 		}

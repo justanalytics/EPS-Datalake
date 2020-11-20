@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eps-adf-datalake-dev-001"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
@@ -29,7 +25,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",
@@ -50,6 +46,10 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		}
 	},
 	"variables": {
@@ -96,7 +96,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -109,7 +109,14 @@
 					{
 						"name": "SendEmailNotification",
 						"type": "WebActivity",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -125,7 +132,20 @@
 								"Content-Type": "application/json"
 							},
 							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n  \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": \"@{variables('msg')}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "msg",
+							"value": {
+								"value": "@replace(replace(pipeline().parameters.failure_info,'\"',''),'''','')",
 								"type": "Expression"
 							}
 						}
@@ -160,10 +180,13 @@
 				"variables": {
 					"emails": {
 						"type": "String"
+					},
+					"msg": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": []
 		},
@@ -230,7 +253,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:34Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": []
 		},
@@ -274,7 +297,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -318,7 +341,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -367,7 +390,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -398,7 +421,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-dev-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-dev-001/databases/eps-sqldw-datalake-dev-001/pause?api-version=2017-10-01-preview",
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/pause?api-version=2017-10-01-preview",
 								"type": "Expression"
 							},
 							"method": "POST",
@@ -437,14 +460,14 @@
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							"body": {
-								"value": "grant_type=client_credentials&client_id=9e8ec5e0-883e-4049-9db2-483cf0c14571&client_secret=t1z12.P7-iG0W19Pj_JxlOBIoFvmxcdG_i&resource=https://management.azure.com/",
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
 								"type": "Expression"
 							}
 						}
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T05:50:31Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -493,7 +516,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:18Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -542,7 +565,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T04:47:17Z"
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -573,7 +596,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/eps-rg-datalake-dev-sg-1/providers/Microsoft.Sql/servers/eps-sql-datalake-dev-001/databases/eps-sqldw-datalake-dev-001/resume?api-version=2017-10-01-preview",
+								"value": "https://management.azure.com/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourceGroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.Sql/servers/epsdlsqlserver/databases/epsdlsynapse/resume?api-version=2017-10-01-preview",
 								"type": "Expression"
 							},
 							"method": "POST",
@@ -612,27 +635,14 @@
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							"body": {
-								"value": "grant_type=client_credentials&client_id=9e8ec5e0-883e-4049-9db2-483cf0c14571&client_secret=t1z12.P7-iG0W19Pj_JxlOBIoFvmxcdG_i&resource=https://management.azure.com/",
+								"value": "grant_type=client_credentials&client_id=d74c37ed-aabc-4fc2-9e6a-dc3fbcdc98d2&client_secret=TdII~W6q-5Rx_Zqt1_lY4eP-iP5cQ776Sl&resource=https://management.azure.com/",
 								"type": "Expression"
 							}
 						}
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T05:44:37Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
+				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": []
 		},
@@ -644,17 +654,14 @@
 				"annotations": [],
 				"type": "AzureDatabricks",
 				"typeProperties": {
-					"domain": "https://adb-6924865795882378.18.azuredatabricks.net",
+					"domain": "https://adb-243883213393729.9.azuredatabricks.net",
 					"accessToken": {
 						"type": "SecureString",
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
 					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "6.6.x-scala2.11"
+					"newClusterNumOfWorker": "1",
+					"newClusterVersion": "5.5.x-scala2.11"
 				}
 			},
 			"dependsOn": []
@@ -772,6 +779,21 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
 			},
 			"dependsOn": []
 		}
