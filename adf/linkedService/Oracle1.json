@@ -6,10 +6,10 @@
 		"type": "Oracle",
 		"typeProperties": {
 			"connectionString": "host=192.168.138.170;port=1521;servicename=orcl;user id=danaos",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkMGEwMmFhNC1jZGI5LTQ0ZmQtOWMxZC0xMGU3N2NiMmFkNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMjJjMGUzNC0xNjgyLTQyZGUtODMxZS1mZTMyYjJmNzVkOWYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
-			"referenceName": "integrationRuntime1",
+			"referenceName": "epsdlselfhostedintegrationruntime",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
