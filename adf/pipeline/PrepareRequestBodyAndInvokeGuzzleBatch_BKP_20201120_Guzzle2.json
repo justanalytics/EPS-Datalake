@@ -210,7 +210,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"initialize_batch_body": {
-							"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+							"value": "{\"contextParams\":{\"system\":\"ALL\",\"location\":\"ALL\"},\"environment\":\"test\"}",
 							"type": "Expression"
 						},
 						"run_stage_body": {
