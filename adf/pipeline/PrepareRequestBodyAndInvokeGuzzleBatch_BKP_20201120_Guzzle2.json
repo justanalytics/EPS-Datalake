@@ -726,7 +726,8 @@
 				"defaultValue": 1
 			},
 			"stage": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "STG"
 			},
 			"parent_pipeline_name": {
 				"type": "string"
@@ -739,7 +740,8 @@
 				"defaultValue": "agnit.chatterjee@justanalytics.com"
 			},
 			"start_time": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2020-07-18 00:00:00"
 			}
 		},
 		"variables": {
