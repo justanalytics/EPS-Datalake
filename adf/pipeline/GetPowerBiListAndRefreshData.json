@@ -48,7 +48,13 @@
 						"referenceName": "IterateAndRefreshPBI",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"powerbiList": {
+							"value": "@activity('LookupPowerBiList').output.value",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
