@@ -10943,8 +10943,7 @@
 						"defaultValue": 1
 					},
 					"stage": {
-						"type": "string",
-						"defaultValue": "STG"
+						"type": "string"
 					},
 					"parent_pipeline_name": {
 						"type": "string"
