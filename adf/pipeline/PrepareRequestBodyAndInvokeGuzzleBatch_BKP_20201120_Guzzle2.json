@@ -210,7 +210,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"initialize_batch_body": {
-							"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+							"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},\"businessDate\":\"@{variables('business_date_json')}\",\"environment\":\"@{variables('environment')}\"}",
 							"type": "Expression"
 						},
 						"run_stage_body": {
@@ -498,6 +498,36 @@
 				}
 			},
 			{
+				"name": "powerbi_refresh",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": {
+							"value": "@pipeline().parameters.emails",
+							"type": "Expression"
+						},
+						"Datetime": {
+							"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
 				"name": "PowerBI_DataSet_Refresh_rejection",
 				"type": "ExecutePipeline",
 				"dependsOn": [
@@ -582,7 +612,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "PowerBI_DataSet_Refresh_Opex_Monitor",
+						"activity": "powerbi_refresh",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -672,26 +702,6 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "PowerBI_DataSet_Refresh_Opex_Monitor",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
