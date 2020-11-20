@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eps-adf-datalake-dev-001"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
@@ -50,6 +46,10 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		}
 	},
 	"variables": {
@@ -545,7 +545,7 @@
 								"Content-Type": "application/json"
 							},
 							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"report_name\": \"@{pipeline().parameters.report_name}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -556,6 +556,9 @@
 						"type": "string"
 					},
 					"datetime": {
+						"type": "string"
+					},
+					"report_name": {
 						"type": "string"
 					}
 				},
@@ -643,19 +646,6 @@
 				],
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:34Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		},
@@ -795,6 +785,21 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
 			},
 			"dependsOn": []
 		}

@@ -4556,14 +4556,14 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "select name, datasetid from dbo.BD_refresh_job",
+									"value": "select name, datasetid from dbo.BD_refresh_job where flag = 1",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
 							"dataset": {
-								"referenceName": "AzureSqlTable1",
+								"referenceName": "AzureSqlTable_PBI",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -4588,15 +4588,20 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"powerbiList": {
+									"value": "@activity('LookupPowerBiList').output.value",
+									"type": "Expression"
+								}
+							}
 						}
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:36Z"
+				"lastPublishTime": "2020-11-20T06:24:21Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_PBI')]",
 				"[concat(variables('factoryId'), '/pipelines/IterateAndRefreshPBI')]"
 			]
 		},
@@ -5259,7 +5264,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:37Z"
+				"lastPublishTime": "2020-11-20T06:24:18Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]",
@@ -6171,7 +6176,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "IterateSQLTables",
+						"name": "IteratePowerBI",
 						"type": "ForEach",
 						"dependsOn": [],
 						"userProperties": [],
@@ -6203,7 +6208,11 @@
 												"value": "@{item().datasetid}",
 												"type": "Expression"
 											},
-											"Email": "thao.nguyen@justanalytics.com"
+											"Email": "thao.nguyen@justanalytics.com",
+											"ReportName": {
+												"value": "@{item().name}",
+												"type": "Expression"
+											}
 										}
 									}
 								}
@@ -6217,7 +6226,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:34Z"
+				"lastPublishTime": "2020-11-20T06:24:19Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Test_Loop')]"
@@ -10056,6 +10065,10 @@
 					},
 					"Datetime": {
 						"type": "string"
+					},
+					"ReportName": {
+						"type": "string",
+						"defaultValue": "Port Calls"
 					}
 				},
 				"variables": {
@@ -10065,7 +10078,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:21:25Z"
+				"lastPublishTime": "2020-11-20T06:24:18Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -10718,7 +10731,7 @@
 								"Content-Type": "application/json"
 							},
 							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"report_name\": \"@{pipeline().parameters.report_name}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -10729,6 +10742,9 @@
 						"type": "string"
 					},
 					"datetime": {
+						"type": "string"
+					},
+					"report_name": {
 						"type": "string"
 					}
 				},
@@ -11430,7 +11446,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:24:33Z"
+				"lastPublishTime": "2020-11-20T06:24:20Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -11659,7 +11675,7 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"initialize_batch_body": {
-									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},\"businessDate\":\"@{variables('business_date_json')}\",\"environment\":\"@{variables('environment')}\"}",
 									"type": "Expression"
 								},
 								"run_stage_body": {
@@ -13208,6 +13224,56 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/guzzle2_initilaize_test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Initialize Batch",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "POST",
+									"additionalHeaders": "Content-Type: application/json",
+									"requestBody": {
+										"value": "{\"contextParams\":{\"system\":\"ALL\",\"location\":\"ALL\"},\"environment\":\"test\"}",
+										"type": "Expression"
+									},
+									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Initialize_Batch",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:18Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/move_parquet_files_landing_to_archive')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -13828,6 +13894,143 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "JBS_JOB"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_PBI')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "JOB_ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "MODULE_ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "JOB_GROUP",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "DESCRIPTION",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_TYPE",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_SCRIPT",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_SCRIPT_MANUAL",
+						"type": "varchar"
+					},
+					{
+						"name": "LAST_RUNTIME_TS",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "PRIMARY_SRC_TABLE",
+						"type": "varchar"
+					},
+					{
+						"name": "PRIMARY_TGT_TABLE",
+						"type": "varchar"
+					},
+					{
+						"name": "CONTINUE_ON_ERROR_FLG",
+						"type": "char"
+					},
+					{
+						"name": "INACTIVE_FLG",
+						"type": "char"
+					},
+					{
+						"name": "ATTR1",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR2",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR3",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR4",
+						"type": "varchar"
+					},
+					{
+						"name": "CREATED_BY",
+						"type": "varchar"
+					},
+					{
+						"name": "CREATED_DATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LAST_UPDATED_BY",
+						"type": "varchar"
+					},
+					{
+						"name": "LAST_UPDATED_DATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "FULL_LOAD_FLAG",
+						"type": "char"
+					},
+					{
+						"name": "PRUNE_DAYS",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "INITIAL_EXTRACT_DATE",
+						"type": "date"
+					},
+					{
+						"name": "JOB_PHASE",
+						"type": "varchar"
+					},
+					{
+						"name": "excution_fullload_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "BD_refresh_job"
 				}
 			},
 			"dependsOn": [
@@ -14706,9 +14909,15 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "epsdlselfhostedintegrationruntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
