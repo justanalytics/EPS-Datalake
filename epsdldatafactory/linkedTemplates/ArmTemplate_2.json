@@ -1139,7 +1139,11 @@
 												"value": "@{item().datasetid}",
 												"type": "Expression"
 											},
-											"Email": "thao.nguyen@justanalytics.com"
+											"Email": "thao.nguyen@justanalytics.com",
+											"ReportName": {
+												"value": "@{item().name}",
+												"type": "Expression"
+											}
 										}
 									}
 								}

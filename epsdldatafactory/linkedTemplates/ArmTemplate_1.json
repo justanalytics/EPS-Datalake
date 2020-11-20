@@ -3396,6 +3396,10 @@
 					},
 					"Datetime": {
 						"type": "string"
+					},
+					"ReportName": {
+						"type": "string",
+						"defaultValue": "Port Calls"
 					}
 				},
 				"variables": {
