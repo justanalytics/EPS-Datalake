@@ -545,7 +545,7 @@
 								"Content-Type": "application/json"
 							},
 							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"report_name\": \"@{pipeline().parameters.reportname}\"\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().Pipeline}\",\n  \"pipeline_id\": \"@{pipeline().RunId}\",\n  \"status\":\"SUCCESS\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.datetime}\",\n  \"start_time\": \"@{formatDateTime(addhours(pipeline().TriggerTime,8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"end_time\": \"@{formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')}\",\n  \"failure_info\": \"Power BI Refresh Succeeded\",\n  \"report_name\": \"@{pipeline().parameters.report_name}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -558,7 +558,7 @@
 					"datetime": {
 						"type": "string"
 					},
-					"reportname": {
+					"report_name": {
 						"type": "string"
 					}
 				},
