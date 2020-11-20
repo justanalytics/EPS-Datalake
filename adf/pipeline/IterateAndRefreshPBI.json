@@ -1,0 +1,55 @@
+{
+	"name": "IterateAndRefreshPBI",
+	"properties": {
+		"activities": [
+			{
+				"name": "IterateSQLTables",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.powerbiList",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 3,
+					"activities": [
+						{
+							"name": "PowerBI_DataSet_Refresh",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PowerBI_DataSet_Refresh_Test_Loop",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"TenantId": "bc5c7327-b12e-48db-a856-175591ecd2f0",
+									"SPClientId": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514",
+									"SPSecret": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS",
+									"PBIAppWorkspaceId": "2f2ce11d-59ad-4e92-96cc-82aaaab85444",
+									"PBIDatasetId": {
+										"value": "@{item().datasetid}",
+										"type": "Expression"
+									},
+									"Email": "thao.nguyen@justanalytics.com"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"powerbiList": {
+				"type": "array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-06T04:33:34Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
