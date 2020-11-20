@@ -4556,7 +4556,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "select name, datasetid from dbo.BD_refresh_job",
+									"value": "select name, datasetid from dbo.BD_refresh_job where flag = 1",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
