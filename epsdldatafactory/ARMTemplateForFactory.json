@@ -4588,7 +4588,12 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"powerbiList": {
+									"value": "@activity('LookupPowerBiList').output.value",
+									"type": "Expression"
+								}
+							}
 						}
 					}
 				],
