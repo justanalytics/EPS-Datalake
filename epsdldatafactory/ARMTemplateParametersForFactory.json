@@ -39,7 +39,7 @@
 			"value": "vendor1.POC1"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
-			"value": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"
+			"value": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"value": "admin"
@@ -55,6 +55,9 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		}
 	}
 }

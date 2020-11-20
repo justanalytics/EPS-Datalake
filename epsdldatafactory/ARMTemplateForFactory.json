@@ -53,7 +53,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"
+			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",
@@ -74,6 +74,10 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.powerbi.com/"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		}
 	},
 	"variables": {
@@ -2173,7 +2177,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-22T10:28:20Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
@@ -2536,6 +2540,662 @@
 				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
 				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_BKP_20201120_Guzzle2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Guzzle_Invokation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Resume_Synapse_Call",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"job_id": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.job_id",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								},
+								"stage": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
+									"type": "Expression"
+								},
+								"parent_pipeline_name": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"parent_pipeline_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Business_Date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date",
+							"value": {
+								"value": "@formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get_Email_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select email from [dbo].[JBS_JOB_EMAILS] where id=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Get_Guzzle_Batch_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "move_parquet_files_archive",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Business_Date",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Email_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Guzzle_Batch_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "move_parquet_files_landing_to_archive",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Copy_Oracle_Source_Data",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "GetTableListAndTriggerCopyData_incremental",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Resume_Synapse_Call",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Resume_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Move_File_Archive_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "IMOS_Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_IMOS_Parquet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1_copy1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"variables": {
+					"business_date": {
+						"type": "String",
+						"defaultValue": "1900-01-01 00:00:00"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-24T04:47:28Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
+				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
+				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
+				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_IMOS_ADDED')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Guzzle_Invokation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Resume_Synapse_Call",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"job_id": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.job_id",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								},
+								"stage": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
+									"type": "Expression"
+								},
+								"parent_pipeline_name": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"parent_pipeline_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Business_Date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date",
+							"value": {
+								"value": "@formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get_Email_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select email from [dbo].[JBS_JOB_EMAILS] where id=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Get_Guzzle_Batch_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "move_parquet_files_archive",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Business_Date",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Email_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Guzzle_Batch_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "move_parquet_files_landing_to_archive",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Copy_Oracle_Source_Data",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "GetTableListAndTriggerCopyData_incremental",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Resume_Synapse_Call",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Resume_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Move_File_Archive_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "IMOS_Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_IMOS_Parquet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1_copy1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"variables": {
+					"business_date": {
+						"type": "String",
+						"defaultValue": "1900-01-01 00:00:00"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-24T04:47:29Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
+				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
+				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
+				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
 			]
 		},
 		{
@@ -3367,14 +4027,77 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EmailNotificationPipeline_bkp_20201117')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_bkp_20201117')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "SendEmailNotification",
-						"type": "WebActivity",
+						"name": "Guzzle_Invokation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Resume_Synapse_Call",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"job_id": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.job_id",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								},
+								"stage": {
+									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
+									"type": "Expression"
+								},
+								"parent_pipeline_name": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"parent_pipeline_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Business_Date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date",
+							"value": {
+								"value": "@formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get_Email_Details",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -3385,53 +4108,274 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
-							"method": "POST",
-							"headers": {
-								"Content-Type": "application/json"
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select email from [dbo].[JBS_JOB_EMAILS] where id=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
-							"body": {
-								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
-								"type": "Expression"
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Get_Guzzle_Batch_Details",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "move_parquet_files_archive",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Business_Date",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Email_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get_Guzzle_Batch_Details",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "move_parquet_files_landing_to_archive",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Copy_Oracle_Source_Data",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "GetTableListAndTriggerCopyData_incremental",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Resume_Synapse_Call",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Resume_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "move_parquet_files_archive",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Move_File_Archive_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "IMOS_Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Copy_Oracle_Source_Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_IMOS_Parquet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1_copy1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "IMOS_Copy",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_Activity_Failure_Email",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@activity('Get_Email_Details').output.firstRow.email",
+									"type": "Expression"
+								},
+								"datetime": {
+									"value": "@variables('business_date')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Pause_Synapse",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Guzzle_Invokation",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pause_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
 						}
 					}
 				],
-				"parameters": {
-					"emails": {
-						"type": "string"
-					},
-					"pipeline_name": {
-						"type": "string"
-					},
-					"pipeline_id": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					},
-					"business_date": {
-						"type": "string"
-					},
-					"start_time": {
-						"type": "string"
-					},
-					"end_time": {
-						"type": "string"
-					},
-					"failure_info": {
-						"type": "string"
-					}
-				},
 				"variables": {
-					"emails": {
-						"type": "String"
+					"business_date": {
+						"type": "String",
+						"defaultValue": "1900-01-01 00:00:00"
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:34Z"
+				"lastPublishTime": "2020-11-17T12:20:49Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
+				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
+				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
+				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
+				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/EmailNotificationPipeline')]",
@@ -3519,9 +4463,142 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:34Z"
+				"lastPublishTime": "2020-11-17T12:20:48Z"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EmailNotificationPipeline_bkp_20201117')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SendEmailNotification",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-00.southeastasia.logic.azure.com:443/workflows/c1bbc02c47184d6cba62ced65a886226/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svZ8t14z6UXZIh6XO39Fvz7saqdC_zpuMzSux6cN_LM",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n  \"pipeline_name\": \"@{pipeline().parameters.pipeline_name}\",\n  \"pipeline_id\": \"@{pipeline().parameters.pipeline_id}\",\n  \"status\":\"@{pipeline().parameters.status}\",\n  \"data_factory_name\":\"@{pipeline().DataFactory}\",\n  \"business_date\": \"@{pipeline().parameters.business_date}\",\n  \"start_time\": \"@{addhours(pipeline().parameters.start_time,8)}\",\n  \"end_time\": \"@{addhours(pipeline().parameters.end_time,8)}\",\n   \"failure_info\": \"@{pipeline().parameters.failure_info}\",\n  \"emails\": \"@{pipeline().parameters.emails}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"emails": {
+						"type": "string"
+					},
+					"pipeline_name": {
+						"type": "string"
+					},
+					"pipeline_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"business_date": {
+						"type": "string"
+					},
+					"start_time": {
+						"type": "string"
+					},
+					"end_time": {
+						"type": "string"
+					},
+					"failure_info": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"emails": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-17T12:20:48Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetPowerBiListAndRefreshData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupPowerBiList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.02:00:00",
+							"retry": 1,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select name, datasetid from dbo.BD_refresh_job",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable_PBI",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "LookupPowerBiList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "IterateAndRefreshPBI",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:21Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_PBI')]",
+				"[concat(variables('factoryId'), '/pipelines/IterateAndRefreshPBI')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetTableListAndTriggerCopyData')]",
@@ -3815,12 +4892,19 @@
 					{
 						"name": "Set Stages",
 						"type": "SetVariable",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "stages",
 							"value": {
-								"value": "@split(json(pipeline().parameters.run_stage_body)['stage'], ',')",
+								"value": "@split(json(variables('parameters'))['stage'], ',')",
 								"type": "Expression"
 							}
 						}
@@ -3978,6 +5062,9 @@
 										"type": "Expression"
 									},
 									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
 								}
 							},
 							"dataset": {
@@ -4119,6 +5206,19 @@
 								"type": "Expression"
 							}
 						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "parameters",
+							"value": {
+								"value": "@string(json(pipeline().parameters.run_stage_body)['parameters'])",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"parameters": {
@@ -4153,10 +5253,13 @@
 					},
 					"status": {
 						"type": "String"
+					},
+					"parameters": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:37Z"
+				"lastPublishTime": "2020-11-20T06:24:18Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]",
@@ -5062,6 +6165,65 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/IterateAndRefreshPBI')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "IteratePowerBI",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.powerbiList",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 3,
+							"activities": [
+								{
+									"name": "PowerBI_DataSet_Refresh",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_DataSet_Refresh_Test_Loop",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"TenantId": "bc5c7327-b12e-48db-a856-175591ecd2f0",
+											"SPClientId": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514",
+											"SPSecret": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS",
+											"PBIAppWorkspaceId": "2f2ce11d-59ad-4e92-96cc-82aaaab85444",
+											"PBIDatasetId": {
+												"value": "@{item().datasetid}",
+												"type": "Expression"
+											},
+											"Email": "thao.nguyen@justanalytics.com"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"powerbiList": {
+						"type": "array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:19Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Test_Loop')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Move_File_Archive_Failure_Email')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5763,6 +6925,292 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Audit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "c66201d2-d1ed-40e8-ad7b-3bb9f765f71f"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T04:20:36Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_BKP')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6048,6 +7496,1150 @@
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Incident')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "8d301a19-49f6-478b-bde3-e6bde18c1359"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T05:18:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Inspection Matching')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "e99d97dd-c5b9-4c1e-b9ec-29c26a428376"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T05:21:17Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Inspection')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "01550bbd-539a-4086-9407-491bbf0bd94c"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T05:21:17Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Opex_Monitor')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T05:50:46Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
 			]
 		},
 		{
@@ -6623,6 +9215,292 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Sire Inspection')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "dee63004-e266-4b56-99c2-ec7f57bff980"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T05:21:17Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Supply_Log')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6909,6 +9787,292 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Test_Loop')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "16a5b79d-342f-4963-b322-075143d67647"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:18Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_Trial_Balance')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -7188,6 +10352,292 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2020-11-06T14:59:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh_rejection_try')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Oauth2 Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call Dataset Refresh",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Oauth2 Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"helloww": "worldddd"
+							}
+						}
+					},
+					{
+						"name": "Until Refresh Complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Call Dataset Refresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								},
+								{
+									"name": "Get Dataset Refresh Status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set RefreshStatus",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Get Dataset Refresh Status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Until Refresh Complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('RefreshStatus'),'Completed')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Failure_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "RaiseException",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RefreshStatus",
+										"value": {
+											"value": "@add(1, 1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "PowerBI_Refresh_Success_Email_Call",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_Refresh_Success_Email",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"emails": {
+												"value": "@pipeline().parameters.Email",
+												"type": "Expression"
+											},
+											"datetime": {
+												"value": "@pipeline().parameters.Datetime",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"TenantId": {
+						"type": "String",
+						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
+					},
+					"SPClientId": {
+						"type": "String",
+						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
+					},
+					"SPSecret": {
+						"type": "String",
+						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
+					},
+					"PBIAppWorkspaceId": {
+						"type": "string",
+						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
+					},
+					"PBIDatasetId": {
+						"type": "string",
+						"defaultValue": "14042830-2758-4e3d-af2d-ad0ab33571f6"
+					},
+					"Email": {
+						"type": "string",
+						"defaultValue": "thao.nguyen@justanalytics.com"
+					},
+					"Datetime": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RefreshStatus": {
+						"type": "String",
+						"defaultValue": "Unknown"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-24T04:47:20Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
@@ -7511,7 +10961,7 @@
 									"type": "Expression"
 								},
 								"run_stage_body": {
-									"value": "{\"system\": \"@{variables('system')}\", @{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\": \"@{variables('sparkEnv')}\", \"stage\": \"@{pipeline().parameters.stage}\", \"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')}}",
+									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }",
 									"type": "Expression"
 								},
 								"business_date": {
@@ -7943,7 +11393,8 @@
 						"defaultValue": "agnit.chatterjee@justanalytics.com"
 					},
 					"start_time": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
 					}
 				},
 				"variables": {
@@ -7979,7 +11430,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:24:33Z"
+				"lastPublishTime": "2020-11-20T06:24:20Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -7991,6 +11442,810 @@
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Supply_Log')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Port_Calls')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetJobConfig",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Context Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "contextParams",
+							"value": {
+								"value": "@split(activity('GetJobConfig').output.firstRow['Guzzle_Obj_Ref'], ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set System",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "system",
+							"value": {
+								"value": "@variables('contextParams')[0]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Location",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "location",
+							"value": {
+								"value": "@if(equals(length(variables('contextParams')), 2), variables('contextParams')[1], 'NA')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Environment",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "environment",
+							"value": {
+								"value": "@json(split(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ',')[0], ':')[1])",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Additional Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "additionalParams",
+							"value": {
+								"value": "@skip(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ','), 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Spark Env",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sparkEnv",
+							"value": {
+								"value": "@activity('GetJobConfig').output.firstRow['Spark_Config']",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Prepare Business Date Json",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date_json",
+							"value": {
+								"value": "@if(pipeline().parameters.isMultiBatch, concat('\"businessDateRange\": {\"startDate\": \"${prev_business_ts}\",\"endDate\":\"', pipeline().parameters.datetime, '\"},\"period\":\"', string(pipeline().parameters.period), '\"'), concat('\"businessDate\":\"', pipeline().parameters.datetime, '\"'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Invoke Guzzle Batch",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Prepare Business Date Json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Spark Env",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Additional Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Environment",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Location",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set System",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "InitializeGuzzleBatchRun",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"initialize_batch_body": {
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+									"type": "Expression"
+								},
+								"run_stage_body": {
+									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }}",
+									"type": "Expression"
+								},
+								"business_date": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetFailedBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status='FAILED' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "GetFailedJobInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select\n*,\n(select parameter_value from dbo.job_info_param where 1=1 and parameter_name = 'job_status_url' and job_info_param.job_instance_id = job_info.job_instance_id) job_databricks_url,\n(select concat('<<Your blob storage URL>>',parameter_value,'<<Your blob query string>>') from dbo.job_info_param where 1=1 and parameter_name = 'log_file' and job_info_param.job_instance_id = job_info.job_instance_id) job_log_file\nfrom dbo.job_info\nwhere 1=1\nand batch_id='@{activity('GetFailedBatchInfo').output.firstRow['batch_id']}'\nand status in ('FAILED','ABORTED') and tag not in ('workunit', 'publish')\norder by job_info.job_instance_id desc",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Stages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "stages",
+							"value": {
+								"value": "@split(pipeline().parameters.stage, ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Failed Stage",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Stages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "failed_stage",
+							"value": {
+								"value": "@if(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[0]), '_status')], 'FAILED'), trim(variables('stages')[0]), \nif(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[1]), '_status')], 'FAILED'), trim(variables('stages')[1]), trim(variables('stages')[2])))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ErrorNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetFailedJobInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Failed Stage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "ERROR",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Guzzle Batch Stage: @{variables('failed_stage')}</div>\n<div>Guzzle Job Name: @{activity('GetFailedJobInfo').output.firstRow['name']}</div>\n<div>Batch ID: @{activity('GetFailedBatchInfo').output.firstRow['batch_id']}</div>\n<div>Job Instance ID: @{activity('GetFailedJobInfo').output.firstRow['job_instance_id']}</div>\n<div>Job Log Message: @{activity('GetFailedJobInfo').output.firstRow['message']}</div>\n<div>Guzzle Log URL: @{concat('/guzzle/logs/',activity('GetFailedJobInfo').output.firstRow['job_log_file'])}</div>\n<div>Databricks Log URL: {activity('GetFailedJobInfo').output.firstRow['job_databricks_url']}\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Raise Exception",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ErrorNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": {
+								"value": "@add(1, 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "SuccessNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetSuccessBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "SUCCESS",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div>Guzzle Batch Completed Successfuly</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Batch ID: @{activity('GetSuccessBatchInfo').output.firstRow['batch_id']}</div>\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetSuccessBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status in ('WARNING','SUCCESS') and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_rejection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "SuccessNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Rejection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Supply_Log",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_rejection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Supply_Log",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Port_Calls",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Supply_Log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Port_Calls",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Port_Calls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Audit",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Opex_Monitor",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Audit",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Incident",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Audit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Incident",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Inspection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Incident",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Inspection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Sire Inspection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Inspection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Sire Inspection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Inspection Matching",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Sire Inspection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Opex_Monitor",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"parameters": {
+					"job_id": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"datetime": {
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
+					},
+					"isMultiBatch": {
+						"type": "bool",
+						"defaultValue": false
+					},
+					"period": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"stage": {
+						"type": "string",
+						"defaultValue": "STG"
+					},
+					"parent_pipeline_name": {
+						"type": "string"
+					},
+					"parent_pipeline_id": {
+						"type": "string"
+					},
+					"emails": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"start_time": {
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
+					}
+				},
+				"variables": {
+					"business_date_json": {
+						"type": "String"
+					},
+					"system": {
+						"type": "String"
+					},
+					"location": {
+						"type": "String"
+					},
+					"contextParams": {
+						"type": "Array"
+					},
+					"environment": {
+						"type": "String"
+					},
+					"additionalParams": {
+						"type": "Array"
+					},
+					"sparkEnv": {
+						"type": "String"
+					},
+					"status": {
+						"type": "String"
+					},
+					"failed_stage": {
+						"type": "String"
+					},
+					"stages": {
+						"type": "Array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-19T06:45:44Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]",
+				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]",
+				"[concat(variables('factoryId'), '/pipelines/EmailNotificationPipeline')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Rejection')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Supply_Log')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Port_Calls')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Audit')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Incident')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Sire Inspection')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection Matching')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Opex_Monitor')]"
 			]
 		},
 		{
@@ -8596,7 +12851,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:38Z"
+				"lastPublishTime": "2020-11-17T12:20:49Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
@@ -8941,6 +13196,56 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/GuzzleDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/guzzle2_initilaize_test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Initialize Batch",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "POST",
+									"additionalHeaders": "Content-Type: application/json",
+									"requestBody": {
+										"value": "{\"contextParams\":{\"system\":\"ALL\",\"location\":\"ALL\"},\"environment\":\"test\"}",
+										"type": "Expression"
+									},
+									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Initialize_Batch",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:18Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]"
 			]
 		},
 		{
@@ -10460,14 +14765,17 @@
 				"annotations": [],
 				"type": "AzureDatabricks",
 				"typeProperties": {
-					"domain": "https://adb-243883213393729.9.azuredatabricks.net",
+					"domain": "https://adb-6924865795882378.18.azuredatabricks.net",
 					"accessToken": {
 						"type": "SecureString",
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
 					"newClusterNodeType": "Standard_DS3_v2",
 					"newClusterNumOfWorker": "1",
-					"newClusterVersion": "5.5.x-scala2.11"
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "6.6.x-scala2.11"
 				}
 			},
 			"dependsOn": []
@@ -10708,354 +15016,155 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_bkp_20201117')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "Guzzle_Invokation",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Resume_Synapse_Call",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"job_id": {
-									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.job_id",
-									"type": "Expression"
-								},
-								"datetime": {
-									"value": "@variables('business_date')",
-									"type": "Expression"
-								},
-								"stage": {
-									"value": "@activity('Get_Guzzle_Batch_Details').output.firstRow.run_stage",
-									"type": "Expression"
-								},
-								"parent_pipeline_name": {
-									"value": "@pipeline().Pipeline",
-									"type": "Expression"
-								},
-								"parent_pipeline_id": {
-									"value": "@pipeline().RunId",
-									"type": "Expression"
-								},
-								"emails": {
-									"value": "@activity('Get_Email_Details').output.firstRow.email",
-									"type": "Expression"
-								},
-								"start_time": {
-									"value": "@variables('business_date')",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					{
-						"name": "Business_Date",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "business_date",
-							"value": {
-								"value": "@formatDateTime(addhours(utcnow(),8),'yyyy-MM-dd HH:mm:ss')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Get_Email_Details",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select email from [dbo].[JBS_JOB_EMAILS] where id=1;",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Copy_Oracle_Source_Data",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Copy_Activity_Failure_Email",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"emails": {
-									"value": "@activity('Get_Email_Details').output.firstRow.email",
-									"type": "Expression"
-								},
-								"datetime": {
-									"value": "@variables('business_date')",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					{
-						"name": "Get_Guzzle_Batch_Details",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "move_parquet_files_archive",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Business_Date",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Get_Email_Details",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Get_Guzzle_Batch_Details",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "move_parquet_files_landing_to_archive",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Copy_Oracle_Source_Data",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "move_parquet_files_archive",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "GetTableListAndTriggerCopyData_incremental",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Resume_Synapse_Call",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "IMOS_Copy",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Resume_Synapse",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline2",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "move_parquet_files_archive",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Move_File_Archive_Failure_Email",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"emails": {
-									"value": "@activity('Get_Email_Details').output.firstRow.email",
-									"type": "Expression"
-								},
-								"datetime": {
-									"value": "@variables('business_date')",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					{
-						"name": "IMOS_Copy",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Copy_Oracle_Source_Data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Copy_IMOS_Parquet",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline1_copy1",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "IMOS_Copy",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Copy_Activity_Failure_Email",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"emails": {
-									"value": "@activity('Get_Email_Details').output.firstRow.email",
-									"type": "Expression"
-								},
-								"datetime": {
-									"value": "@variables('business_date')",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					{
-						"name": "Pause_Synapse",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Guzzle_Invokation",
-								"dependencyConditions": [
-									"Succeeded",
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Pause_Synapse",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
 					}
-				],
-				"variables": {
-					"business_date": {
-						"type": "String",
-						"defaultValue": "1900-01-01 00:00:00"
-					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_PBI')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:21:27Z"
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "JOB_ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "MODULE_ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "JOB_GROUP",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "DESCRIPTION",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_TYPE",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_SCRIPT",
+						"type": "varchar"
+					},
+					{
+						"name": "JOB_SCRIPT_MANUAL",
+						"type": "varchar"
+					},
+					{
+						"name": "LAST_RUNTIME_TS",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "PRIMARY_SRC_TABLE",
+						"type": "varchar"
+					},
+					{
+						"name": "PRIMARY_TGT_TABLE",
+						"type": "varchar"
+					},
+					{
+						"name": "CONTINUE_ON_ERROR_FLG",
+						"type": "char"
+					},
+					{
+						"name": "INACTIVE_FLG",
+						"type": "char"
+					},
+					{
+						"name": "ATTR1",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR2",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR3",
+						"type": "varchar"
+					},
+					{
+						"name": "ATTR4",
+						"type": "varchar"
+					},
+					{
+						"name": "CREATED_BY",
+						"type": "varchar"
+					},
+					{
+						"name": "CREATED_DATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LAST_UPDATED_BY",
+						"type": "varchar"
+					},
+					{
+						"name": "LAST_UPDATED_DATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "FULL_LOAD_FLAG",
+						"type": "char"
+					},
+					{
+						"name": "PRUNE_DAYS",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "INITIAL_EXTRACT_DATE",
+						"type": "date"
+					},
+					{
+						"name": "JOB_PHASE",
+						"type": "varchar"
+					},
+					{
+						"name": "excution_fullload_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "BD_refresh_job"
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
-				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
-				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
-				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
-				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
-				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		}
 	]
