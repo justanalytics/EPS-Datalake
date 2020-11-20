@@ -214,7 +214,7 @@
 							"type": "Expression"
 						},
 						"run_stage_body": {
-							"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }}",
+							"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" }}",
 							"type": "Expression"
 						},
 						"business_date": {
