@@ -63,7 +63,7 @@
 				"typeProperties": {
 					"variableName": "stages",
 					"value": {
-						"value": "@split(json(pipeline().parameters.run_stage_body)['stage'], ',')",
+						"value": "@split(json(pipeline().parameters.run_stage_body)['parameters']['stage'], ',')",
 						"type": "Expression"
 					}
 				}
