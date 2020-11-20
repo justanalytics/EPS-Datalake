@@ -498,36 +498,6 @@
 				}
 			},
 			{
-				"name": "powerbi_refresh",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"Email": {
-							"value": "@pipeline().parameters.emails",
-							"type": "Expression"
-						},
-						"Datetime": {
-							"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			{
 				"name": "PowerBI_DataSet_Refresh_rejection",
 				"type": "ExecutePipeline",
 				"dependsOn": [
@@ -612,7 +582,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "powerbi_refresh",
+						"activity": "PowerBI_DataSet_Refresh_Opex_Monitor",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -702,6 +672,26 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Opex_Monitor",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Opex_Monitor",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
