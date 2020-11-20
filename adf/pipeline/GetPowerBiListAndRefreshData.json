@@ -25,7 +25,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "AzureSqlTable_PBI",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
