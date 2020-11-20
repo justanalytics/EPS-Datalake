@@ -13,6 +13,760 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/InsertPowerBIUsageMetrics')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "InsertPowerBIUsageMetrics",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"Authorization": {
+										"value": "@pipeline().parameters.Token",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"AbsoluteUrl": "$['continuationUri']"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": {
+									"value": "@concat('[',pipeline().parameters.SchemaName,'].[LoadPowerBIRaw]')",
+									"type": "Expression"
+								},
+								"sqlWriterTableType": {
+									"value": "@concat('[',pipeline().parameters.SchemaName,'].PowerBIActivityEvent')",
+									"type": "Expression"
+								},
+								"storedProcedureTableTypeParameterName": "RAW_POWERBI_ACTIVITY_LOG",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['Activity']"
+										},
+										"sink": {
+											"name": "Activity",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ActivityId']"
+										},
+										"sink": {
+											"name": "ActivityId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['AggregatedWorkspaceInformation']"
+										},
+										"sink": {
+											"name": "AggregatedWorkspaceInformation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['AppName']"
+										},
+										"sink": {
+											"name": "AppName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['AppReportId']"
+										},
+										"sink": {
+											"name": "AppReportId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ArtifactId']"
+										},
+										"sink": {
+											"name": "ArtifactId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ArtifactName']"
+										},
+										"sink": {
+											"name": "ArtifactName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['AuditedArtifactInformation']"
+										},
+										"sink": {
+											"name": "AuditedArtifactInformation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ClientIP']"
+										},
+										"sink": {
+											"name": "ClientIP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ConsumptionMethod']"
+										},
+										"sink": {
+											"name": "ConsumptionMethod",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['CreationTime']"
+										},
+										"sink": {
+											"name": "CreationTime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['CustomVisualAccessTokenResourceId']"
+										},
+										"sink": {
+											"name": "CustomVisualAccessTokenResourceId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['CustomVisualAccessTokenSiteUri']"
+										},
+										"sink": {
+											"name": "CustomVisualAccessTokenSiteUri",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DashboardId']"
+										},
+										"sink": {
+											"name": "DashboardId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DashboardName']"
+										},
+										"sink": {
+											"name": "DashboardName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DataConnectivityMode']"
+										},
+										"sink": {
+											"name": "DataConnectivityMode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DataflowId']"
+										},
+										"sink": {
+											"name": "DataflowId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DataflowName']"
+										},
+										"sink": {
+											"name": "DataflowName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DataflowType']"
+										},
+										"sink": {
+											"name": "DataflowType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DatasetId']"
+										},
+										"sink": {
+											"name": "DatasetId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DatasetName']"
+										},
+										"sink": {
+											"name": "DatasetName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Datasets']"
+										},
+										"sink": {
+											"name": "Datasets",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Datasources']"
+										},
+										"sink": {
+											"name": "Datasources",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['DistributionMethod']"
+										},
+										"sink": {
+											"name": "DistributionMethod",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ExportEventEndDateTimeParameter']"
+										},
+										"sink": {
+											"name": "ExportEventEndDateTimeParameter",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ExportEventStartDateTimeParameter']"
+										},
+										"sink": {
+											"name": "ExportEventStartDateTimeParameter",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ExportedArtifactInfo']"
+										},
+										"sink": {
+											"name": "ExportedArtifactInfo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['FolderDisplayName']"
+										},
+										"sink": {
+											"name": "FolderDisplayName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['FolderObjectId']"
+										},
+										"sink": {
+											"name": "FolderObjectId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['GatewayId']"
+										},
+										"sink": {
+											"name": "GatewayId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['GatewayName']"
+										},
+										"sink": {
+											"name": "GatewayName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['GatewayType']"
+										},
+										"sink": {
+											"name": "GatewayType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Id']"
+										},
+										"sink": {
+											"name": "Id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ImportDisplayName']"
+										},
+										"sink": {
+											"name": "ImportDisplayName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ImportId']"
+										},
+										"sink": {
+											"name": "ImportId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ImportSource']"
+										},
+										"sink": {
+											"name": "ImportSource",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ImportType']"
+										},
+										"sink": {
+											"name": "ImportType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['IsSuccess']"
+										},
+										"sink": {
+											"name": "IsSuccess",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['IsUpdateAppActivity']"
+										},
+										"sink": {
+											"name": "IsUpdateAppActivity",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ItemName']"
+										},
+										"sink": {
+											"name": "ItemName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['MentionedUsersInformation']"
+										},
+										"sink": {
+											"name": "MentionedUsersInformation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ObjectId']"
+										},
+										"sink": {
+											"name": "ObjectId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Operation']"
+										},
+										"sink": {
+											"name": "Operation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['OrgAppPermission']"
+										},
+										"sink": {
+											"name": "OrgAppPermission",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['OrganizationId']"
+										},
+										"sink": {
+											"name": "OrganizationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['RecordType']"
+										},
+										"sink": {
+											"name": "RecordType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['RefreshType']"
+										},
+										"sink": {
+											"name": "RefreshType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ReportId']"
+										},
+										"sink": {
+											"name": "ReportId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ReportName']"
+										},
+										"sink": {
+											"name": "ReportName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ReportType']"
+										},
+										"sink": {
+											"name": "ReportType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['RequestId']"
+										},
+										"sink": {
+											"name": "RequestId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['SharingInformation']"
+										},
+										"sink": {
+											"name": "SharingInformation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['SwitchState']"
+										},
+										"sink": {
+											"name": "SwitchState",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TakingOverOwner']"
+										},
+										"sink": {
+											"name": "TakingOverOwner",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TemplateAppFolderObjectId']"
+										},
+										"sink": {
+											"name": "TemplateAppFolderObjectId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TemplateAppObjectId']"
+										},
+										"sink": {
+											"name": "TemplateAppObjectId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TemplateAppOwnerTenantObjectId']"
+										},
+										"sink": {
+											"name": "TemplateAppOwnerTenantObjectId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TemplateAppVersion']"
+										},
+										"sink": {
+											"name": "TemplateAppVersion",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['TemplatePackageName']"
+										},
+										"sink": {
+											"name": "TemplatePackageName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['UserAgent']"
+										},
+										"sink": {
+											"name": "UserAgent",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['UserId']"
+										},
+										"sink": {
+											"name": "UserId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['UserKey']"
+										},
+										"sink": {
+											"name": "UserKey",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['UserType']"
+										},
+										"sink": {
+											"name": "UserType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['WorkSpaceName']"
+										},
+										"sink": {
+											"name": "WorkSpaceName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Workload']"
+										},
+										"sink": {
+											"name": "Workload",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['WorkspaceId']"
+										},
+										"sink": {
+											"name": "WorkspaceId",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": "$['activityEventEntities']",
+								"mapComplexValuesToString": true
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Power_Bi_Admin",
+								"type": "DatasetReference",
+								"parameters": {
+									"api": "activityevents",
+									"params": {
+										"value": "@concat('startDateTime=''',pipeline().parameters.StartDateTime,'''&endDateTime=''',pipeline().parameters.EndDateTime,'''')",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "PowerBI_SQL_DB",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": {
+										"value": "@concat('[',pipeline().parameters.SchemaName,'].PowerBIActivityEvent')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"StartDateTime": {
+						"type": "string"
+					},
+					"EndDateTime": {
+						"type": "string"
+					},
+					"Token": {
+						"type": "string"
+					},
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "pbtest"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:35Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IterateAndRefreshPBI')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "IterateSQLTables",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.powerbiList",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 3,
+							"activities": [
+								{
+									"name": "PowerBI_DataSet_Refresh",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PowerBI_DataSet_Refresh_Test_Loop",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"TenantId": "bc5c7327-b12e-48db-a856-175591ecd2f0",
+											"SPClientId": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514",
+											"SPSecret": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS",
+											"PBIAppWorkspaceId": "2f2ce11d-59ad-4e92-96cc-82aaaab85444",
+											"PBIDatasetId": {
+												"value": "@{item().datasetid}",
+												"type": "Expression"
+											},
+											"Email": "thao.nguyen@justanalytics.com"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"powerbiList": {
+						"type": "array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TrackGuzzleStageRun')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -336,6 +1090,71 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetPowerBiListAndRefreshData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupPowerBiList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.02:00:00",
+							"retry": 1,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select name, datasetid from dbo.BD_refresh_job",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "LookupPowerBiList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "IterateAndRefreshPBI",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:36Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/IterateAndRefreshPBI')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IterateAndCopySQLTables')]",
@@ -814,7 +1633,9 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:36Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/InsertPowerBIUsageMetrics')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/TrackGuzzleBatchRun')]",
@@ -1261,555 +2082,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Oracle_Data_Lake_Tables')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GetTableListAndTriggerCopyData')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "LookupTableList",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.02:00:00",
-							"retry": 1,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select tablename, filename from dbo.JBS_JOB",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "LookupTableList",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "IterateAndCopySQLTables",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"tableList": {
-									"value": "@activity('LookupTableList').output.value",
-									"type": "Expression"
-								}
-							}
-						}
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:36Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/IterateAndCopySQLTables')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GetTableListAndTriggerCopyData_incremental')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "LookupTableList",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.02:00:00",
-							"retry": 1,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select tablename, filename from dbo.JBS_JOB_v2",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "LookupTableList",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "IterateAndCopySQLTables_incremental",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"tableList": {
-									"value": "@activity('LookupTableList').output.value",
-									"type": "Expression"
-								}
-							}
-						}
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:36Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/IterateAndCopySQLTables_incremental')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InitializeGuzzleBatchRun')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set Context Params",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "contextParams",
-							"value": {
-								"value": "@string(json(pipeline().parameters.initialize_batch_body)['contextParams'])",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set System",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set Context Params",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "system",
-							"value": {
-								"value": "@json(variables('contextParams'))['system']",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set Location",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set Context Params",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "location",
-							"value": {
-								"value": "@if(contains(json(variables('contextParams')), 'location'), json(variables('contextParams'))['location'], 'NA')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set Stages",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "stages",
-							"value": {
-								"value": "@split(json(pipeline().parameters.run_stage_body)['parameters']['stage'], ',')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Initialize Batch",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Set System",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set Location",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set Stages",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "POST",
-									"additionalHeaders": "Content-Type: application/json",
-									"requestBody": {
-										"value": "@{pipeline().parameters.initialize_batch_body}",
-										"type": "Expression"
-									},
-									"requestTimeout": ""
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "Initialize_Batch",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Wait Until Started",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "Initialize Batch",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@greaterOrEquals(activity('GetCount').output.firstRow.count, 1)",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Wait5Seconds",
-									"type": "Wait",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": 10
-									}
-								},
-								{
-									"name": "GetCount",
-									"type": "Lookup",
-									"dependsOn": [
-										{
-											"activity": "Wait5Seconds",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "AzureSqlSource",
-											"sqlReaderQuery": {
-												"value": "select count(*) as count from dbo.batch_control where business_date='@{pipeline().parameters.business_date}' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
-												"type": "Expression"
-											},
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"dataset": {
-											"referenceName": "GuzzleDB",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									}
-								}
-							],
-							"timeout": "2.0:01:00"
-						}
-					},
-					{
-						"name": "Run Stage",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "GetAllBatchesByContexts",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "POST",
-									"additionalHeaders": "Content-Type: application/json",
-									"requestBody": {
-										"value": "@{pipeline().parameters.run_stage_body}",
-										"type": "Expression"
-									},
-									"requestTimeout": ""
-								}
-							},
-							"dataset": {
-								"referenceName": "Run_Stage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "GetAllBatchesByContexts",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Wait Until Started",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select batch_id from dbo.batch_control where system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))} and (batch_status='OPEN' or batch_status='FAILED') order by business_date",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "GuzzleDB",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "TrackAllBatchesSequentially",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Run Stage",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GetAllBatchesByContexts').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "If Condition1",
-									"type": "IfCondition",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@not(variables('failureFlag'))",
-											"type": "Expression"
-										},
-										"ifTrueActivities": [
-											{
-												"name": "WaitUntilBatchFinishes",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "TrackGuzzleBatchRun",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true,
-													"parameters": {
-														"batch_id": {
-															"value": "@item()['batch_id']",
-															"type": "Expression"
-														},
-														"stages": {
-															"value": "@variables('stages')",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "Set Failure Flag",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "WaitUntilBatchFinishes",
-														"dependencyConditions": [
-															"Failed"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "failureFlag",
-													"value": true
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "RaiseExceptionIfFailure",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "TrackAllBatchesSequentially",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "status",
-							"value": {
-								"value": "@if(variables('failureFlag'), 1, 'SUCCESS')",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"initialize_batch_body": {
-						"type": "string"
-					},
-					"run_stage_body": {
-						"type": "string"
-					},
-					"business_date": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"business_date": {
-						"type": "String"
-					},
-					"stages": {
-						"type": "Array"
-					},
-					"failureFlag": {
-						"type": "Boolean"
-					},
-					"contextParams": {
-						"type": "String"
-					},
-					"system": {
-						"type": "String"
-					},
-					"location": {
-						"type": "String"
-					},
-					"status": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2020-10-06T04:33:37Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/TrackGuzzleBatchRun')]"
 			]
 		}
 	]
