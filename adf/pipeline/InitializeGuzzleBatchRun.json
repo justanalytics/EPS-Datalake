@@ -60,7 +60,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Extract_Parameters_List",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -370,7 +370,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Extract_Parameters_List",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
