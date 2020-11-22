@@ -2562,7 +2562,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -2860,7 +2860,7 @@
 				"lastPublishTime": "2020-10-24T04:47:28Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/Copy_Activity_Failure_Email')]",
 				"[concat(variables('factoryId'), '/pipelines/move_parquet_files_landing_to_archive')]",
@@ -4899,7 +4899,7 @@
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "Set variable1",
+								"activity": "Extract_Parameters_List",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -5213,7 +5213,7 @@
 						}
 					},
 					{
-						"name": "Set variable1",
+						"name": "Extract_Parameters_List",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"userProperties": [],
@@ -11675,11 +11675,11 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"initialize_batch_body": {
-									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},\"businessDate\":\"@{variables('business_date_json')}\",\"environment\":\"@{variables('environment')}\"}",
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
 									"type": "Expression"
 								},
 								"run_stage_body": {
-									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }}",
+									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" }}",
 									"type": "Expression"
 								},
 								"business_date": {
@@ -13249,7 +13249,7 @@
 									"requestMethod": "POST",
 									"additionalHeaders": "Content-Type: application/json",
 									"requestBody": {
-										"value": "{\"contextParams\":{\"system\":\"ALL\",\"location\":\"ALL\"},\"environment\":\"test\"}",
+										"value": "{\"contextParams\":{\"location\":\"ALL\",\"system\":\"ALL\"},\"businessDate\":\"2019-01-01 00:00:00\",\"environment\":\"test\"}",
 										"type": "Expression"
 									},
 									"requestTimeout": ""
@@ -13271,6 +13271,56 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Initialize_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/guzzle2_run_test_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Run Batch",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "POST",
+									"additionalHeaders": "Content-Type: application/json",
+									"requestBody": {
+										"value": "{\"parameters\":{\"location\":\"ALL\",\"guzzle.spark.name\":\"EPS_Batch_cluster\",\"system\":\"ALL\",\"stage\":\"STG\",\"environment\":\"test\"}}",
+										"type": "Expression"
+									},
+									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Run_Stage",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:18Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Run_Stage')]"
 			]
 		},
 		{

@@ -13,6 +13,70 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_AGNIT_TESTING')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "select * from tankpac.supply_items where (ORDER_CODE,ORDER_SUPPLIER) in (select ORDER_CODE,ORDER_SUPPLIER from  tankpac.requisitions where extract(year from document_date) in (extract(year from sysdate),extract(year from sysdate)-1))",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": false,
+									"dateTimeFormat": "dd-MMM-yy"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OracleTable_Single_Use_AGNIT_TESTING",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet_Single_Copy_AGNIT_TESTING",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_danaos_prod')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -336,7 +400,7 @@
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "Set variable1",
+								"activity": "Extract_Parameters_List",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -650,7 +714,7 @@
 						}
 					},
 					{
-						"name": "Set variable1",
+						"name": "Extract_Parameters_List",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"userProperties": [],
@@ -1614,11 +1678,11 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"initialize_batch_body": {
-									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},\"businessDate\":\"@{variables('business_date_json')}\",\"environment\":\"@{variables('environment')}\"}",
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
 									"type": "Expression"
 								},
 								"run_stage_body": {
-									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }}",
+									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" }}",
 									"type": "Expression"
 								},
 								"business_date": {
@@ -3758,7 +3822,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -4056,7 +4120,7 @@
 				"lastPublishTime": "2020-10-24T04:47:28Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2')]",
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]"
 			]
 		},
