@@ -22,7 +22,7 @@
 							"requestMethod": "POST",
 							"additionalHeaders": "Content-Type: application/json",
 							"requestBody": {
-								"value": "{\"contextParams\":{\"location\":\"ALL\",\"system\":\"ALL\"},\"businessDate\":\"2020-01-01 00:00:00\",\"environment\":\"test\"}",
+								"value": "{\"contextParams\":{\"location\":\"ALL\",\"system\":\"ALL\"},\"businessDate\":\"2020-12-01 00:00:00\",\"environment\":\"test\"}",
 								"type": "Expression"
 							},
 							"requestTimeout": ""
