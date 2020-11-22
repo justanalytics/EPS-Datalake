@@ -22,7 +22,7 @@
 							"requestMethod": "POST",
 							"additionalHeaders": "Content-Type: application/json",
 							"requestBody": {
-								"value": "{\"parameters\":{\"location\":\"ALL\",\"guzzle.spark.name\":\"EPS_Batch_cluster\",\"system\":\"ALL\",\"stage\":\"STG\",\"environment\":\"test\"}}",
+								"value": "{\"parameters\":{\"location\":\"ALL\",\"guzzle.spark.name\":\"EPS_Batch_cluster\",\"system\":\"ALL\",\"stage\":\"STG\",\"environment\":\"test\",\"guzzle.stage.resume\":\"Y\"}}",
 								"type": "Expression"
 							},
 							"requestTimeout": ""
