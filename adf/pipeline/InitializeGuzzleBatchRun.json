@@ -58,12 +58,19 @@
 			{
 				"name": "Set Stages",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "stages",
 					"value": {
-						"value": "@split(json(pipeline().parameters.run_stage_body)['stage'], ',')",
+						"value": "@split(json(variables('parameters'))['stage'], ',')",
 						"type": "Expression"
 					}
 				}
@@ -219,6 +226,9 @@
 								"type": "Expression"
 							},
 							"requestTimeout": ""
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
@@ -358,6 +368,19 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "parameters",
+					"value": {
+						"value": "@string(json(pipeline().parameters.run_stage_body)['parameters'])",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -392,10 +415,13 @@
 			},
 			"status": {
 				"type": "String"
+			},
+			"parameters": {
+				"type": "String"
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2020-10-06T04:33:37Z"
+		"lastPublishTime": "2020-11-20T06:24:18Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

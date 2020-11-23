@@ -1,0 +1,133 @@
+{
+	"name": "AzureSqlTable_PBI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "JOB_ID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "MODULE_ID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "JOB_GROUP",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "DESCRIPTION",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_SCRIPT",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_SCRIPT_MANUAL",
+				"type": "varchar"
+			},
+			{
+				"name": "LAST_RUNTIME_TS",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "PRIMARY_SRC_TABLE",
+				"type": "varchar"
+			},
+			{
+				"name": "PRIMARY_TGT_TABLE",
+				"type": "varchar"
+			},
+			{
+				"name": "CONTINUE_ON_ERROR_FLG",
+				"type": "char"
+			},
+			{
+				"name": "INACTIVE_FLG",
+				"type": "char"
+			},
+			{
+				"name": "ATTR1",
+				"type": "varchar"
+			},
+			{
+				"name": "ATTR2",
+				"type": "varchar"
+			},
+			{
+				"name": "ATTR3",
+				"type": "varchar"
+			},
+			{
+				"name": "ATTR4",
+				"type": "varchar"
+			},
+			{
+				"name": "CREATED_BY",
+				"type": "varchar"
+			},
+			{
+				"name": "CREATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LAST_UPDATED_BY",
+				"type": "varchar"
+			},
+			{
+				"name": "LAST_UPDATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "FULL_LOAD_FLAG",
+				"type": "char"
+			},
+			{
+				"name": "PRUNE_DAYS",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "INITIAL_EXTRACT_DATE",
+				"type": "date"
+			},
+			{
+				"name": "JOB_PHASE",
+				"type": "varchar"
+			},
+			{
+				"name": "excution_fullload_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "BD_refresh_job"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

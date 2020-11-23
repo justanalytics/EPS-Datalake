@@ -171,7 +171,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "move_parquet_files_landing_to_archive_copy1",
+						"referenceName": "move_parquet_files_landing_to_archive",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
