@@ -75,10 +75,6 @@
 			"type": "string",
 			"defaultValue": "https://api.powerbi.com/"
 		},
-		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -135,9 +131,6 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
-					},
-					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},

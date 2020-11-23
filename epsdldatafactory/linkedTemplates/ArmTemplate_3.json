@@ -13,271 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/OracleTable_Single_Use')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Oracle1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "OracleTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "DANAOS",
-					"table": "BP_PORTS"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OracleTable_Single_Use_AGNIT_TESTING')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Oracle1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "OracleTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "BIUSER1",
-					"table": "VW_VESSEL_DRY_DOCK_DETAILS"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Oracle_Data_Lake_Tables')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Oracle_datalake",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "OracleTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "EBI_UAT",
-					"table": "REQUISITIONS_CATEGORY"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Oracle_danaos_production')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Oracle_Danaos_Production",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "OracleTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "VLOG",
-					"table": "INSP_INSPECTION_OBSERVATION"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat(dataset().filename,'_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
-							"type": "Expression"
-						},
-						"folderPath": "epsdl/data/landing/",
-						"container": "epsdlcontainer"
-					},
-					"compressionCodec": "none"
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet_DataLake_Tables_Data')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat('requisitions_category','.parquet')",
-							"type": "Expression"
-						},
-						"folderPath": "epsdl/data/landing",
-						"container": "epsdlcontainer"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet_Single_Copy')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat('bp_ports_',formatDateTime(addhours(utcnow(),8),'yyyyMMdd'),'_000000.parquet')",
-							"type": "Expression"
-						},
-						"folderPath": "epsdl/data/landing",
-						"container": "epsdlcontainer"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "COMPANY",
-						"type": "UTF8"
-					},
-					{
-						"name": "SHORT_NAME",
-						"type": "UTF8"
-					},
-					{
-						"name": "NAME",
-						"type": "UTF8"
-					},
-					{
-						"name": "MANAGED_BY",
-						"type": "UTF8"
-					},
-					{
-						"name": "COMPANY_GROUP",
-						"type": "UTF8"
-					},
-					{
-						"name": "CHART",
-						"type": "UTF8"
-					},
-					{
-						"name": "COMPANY_TYPE",
-						"type": "UTF8"
-					},
-					{
-						"name": "BASE_CURRENCY",
-						"type": "UTF8"
-					},
-					{
-						"name": "REMARKS",
-						"type": "UTF8"
-					},
-					{
-						"name": "GROUP_FLAG_1",
-						"type": "UTF8"
-					},
-					{
-						"name": "GROUP_FLAG_2",
-						"type": "UTF8"
-					},
-					{
-						"name": "OFFICIAL_CURRENCY",
-						"type": "UTF8"
-					},
-					{
-						"name": "GLOBAL_VESSEL_ID",
-						"type": "UTF8"
-					},
-					{
-						"name": "CREATE_INTERCOMPANIES",
-						"type": "UTF8"
-					},
-					{
-						"name": "IS_FILING",
-						"type": "UTF8"
-					},
-					{
-						"name": "ACTIVE_FLAG",
-						"type": "UTF8"
-					},
-					{
-						"name": "COMPANY_LEVEL",
-						"type": "DECIMAL",
-						"precision": 38,
-						"scale": 18
-					},
-					{
-						"name": "BANK_LEDGER",
-						"type": "UTF8"
-					},
-					{
-						"name": "GROUP_DETAILS_FROM",
-						"type": "INT96"
-					},
-					{
-						"name": "GROUP_DETAILS_TO",
-						"type": "INT96"
-					},
-					{
-						"name": "TONNAGE_TAX_FROM",
-						"type": "INT96"
-					},
-					{
-						"name": "TONNAGE_TAX_TO",
-						"type": "INT96"
-					},
-					{
-						"name": "VAT_GROUP_FROM",
-						"type": "INT96"
-					},
-					{
-						"name": "VAT_GROUP_TO",
-						"type": "INT96"
-					},
-					{
-						"name": "INCEXP_MANAGED_BY",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Parquet_Single_Copy_AGNIT_TESTING')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2092,7 +1827,7 @@
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2020-11-20T06:24:21Z"
+				"lastPublishTime": "2020-11-20T08:32:18Z"
 			},
 			"dependsOn": []
 		},
@@ -2189,10 +1924,7 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IterateAndCopySQLTables_incremental')]",
@@ -2240,9 +1972,6 @@
 											"storeSettings": {
 												"type": "AzureBlobStorageWriteSettings",
 												"maxConcurrentConnections": 10
-											},
-											"formatSettings": {
-												"type": "ParquetWriteSettings"
 											}
 										},
 										"enableStaging": false,
@@ -2290,10 +2019,7 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Oracle_danaos_production')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Power Bi Usage Metric Update')]",
@@ -2825,10 +2551,7 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-06T04:33:35Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_AGNIT_TESTING')]",
@@ -2893,8 +2616,2095 @@
 				"lastPublishTime": "2020-10-06T04:33:34Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OracleTable_Single_Use_AGNIT_TESTING')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy_AGNIT_TESTING')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_danaos_prod')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_danaos_production",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet_production",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:34Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Parquet_production')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_single_copy_job_datalake')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Data_Lake_Tables",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet_DataLake_Tables_Data",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:35Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetTableListAndTriggerCopyData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.02:00:00",
+							"retry": 1,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select tablename, filename from dbo.JBS_JOB",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "LookupTableList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "IterateAndCopySQLTables",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"tableList": {
+									"value": "@activity('LookupTableList').output.value",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:36Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/IterateAndCopySQLTables')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetTableListAndTriggerCopyData_incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.02:00:00",
+							"retry": 1,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select tablename, filename from dbo.JBS_JOB_v2",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "LookupTableList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "IterateAndCopySQLTables_incremental",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"tableList": {
+									"value": "@activity('LookupTableList').output.value",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2020-10-06T04:33:36Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/IterateAndCopySQLTables_incremental')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InitializeGuzzleBatchRun')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Context Params",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "contextParams",
+							"value": {
+								"value": "@string(json(pipeline().parameters.initialize_batch_body)['contextParams'])",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set System",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "system",
+							"value": {
+								"value": "@json(variables('contextParams'))['system']",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Location",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "location",
+							"value": {
+								"value": "@if(contains(json(variables('contextParams')), 'location'), json(variables('contextParams'))['location'], 'NA')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Stages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "stages",
+							"value": {
+								"value": "@split(json(variables('parameters'))['stage'], ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Initialize Batch",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Set System",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Location",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Stages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "POST",
+									"additionalHeaders": "Content-Type: application/json",
+									"requestBody": {
+										"value": "@{pipeline().parameters.initialize_batch_body}",
+										"type": "Expression"
+									},
+									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Initialize_Batch",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Wait Until Started",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Initialize Batch",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greaterOrEquals(activity('GetCount').output.firstRow.count, 1)",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait5Seconds",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 10
+									}
+								},
+								{
+									"name": "GetCount",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Wait5Seconds",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "select count(*) as count from dbo.batch_control where business_date='@{pipeline().parameters.business_date}' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "GuzzleDB",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							],
+							"timeout": "2.0:01:00"
+						}
+					},
+					{
+						"name": "Run Stage",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetAllBatchesByContexts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "POST",
+									"additionalHeaders": "Content-Type: application/json",
+									"requestBody": {
+										"value": "@{pipeline().parameters.run_stage_body}",
+										"type": "Expression"
+									},
+									"requestTimeout": ""
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Run_Stage",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "GetAllBatchesByContexts",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Wait Until Started",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select batch_id from dbo.batch_control where system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))} and (batch_status='OPEN' or batch_status='FAILED') order by business_date",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "TrackAllBatchesSequentially",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Run Stage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetAllBatchesByContexts').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "If Condition1",
+									"type": "IfCondition",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@not(variables('failureFlag'))",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "WaitUntilBatchFinishes",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "TrackGuzzleBatchRun",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"batch_id": {
+															"value": "@item()['batch_id']",
+															"type": "Expression"
+														},
+														"stages": {
+															"value": "@variables('stages')",
+															"type": "Expression"
+														}
+													}
+												}
+											},
+											{
+												"name": "Set Failure Flag",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "WaitUntilBatchFinishes",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "failureFlag",
+													"value": true
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "RaiseExceptionIfFailure",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "TrackAllBatchesSequentially",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": {
+								"value": "@if(variables('failureFlag'), 1, 'SUCCESS')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "parameters",
+							"value": {
+								"value": "@string(json(pipeline().parameters.run_stage_body)['parameters'])",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"initialize_batch_body": {
+						"type": "string"
+					},
+					"run_stage_body": {
+						"type": "string"
+					},
+					"business_date": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"business_date": {
+						"type": "String"
+					},
+					"stages": {
+						"type": "Array"
+					},
+					"failureFlag": {
+						"type": "Boolean"
+					},
+					"contextParams": {
+						"type": "String"
+					},
+					"system": {
+						"type": "String"
+					},
+					"location": {
+						"type": "String"
+					},
+					"status": {
+						"type": "String"
+					},
+					"parameters": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:18Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/TrackGuzzleBatchRun')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PrepareRequestBodyAndInvokeGuzzleBatch')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetJobConfig",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Context Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "contextParams",
+							"value": {
+								"value": "@split(activity('GetJobConfig').output.firstRow['Guzzle_Obj_Ref'], ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set System",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "system",
+							"value": {
+								"value": "@variables('contextParams')[0]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Location",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "location",
+							"value": {
+								"value": "@if(equals(length(variables('contextParams')), 2), variables('contextParams')[1], 'NA')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Environment",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "environment",
+							"value": {
+								"value": "@json(split(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ',')[0], ':')[1])",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Additional Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "additionalParams",
+							"value": {
+								"value": "@skip(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ','), 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Spark Env",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sparkEnv",
+							"value": {
+								"value": "@activity('GetJobConfig').output.firstRow['Spark_Config']",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Prepare Business Date Json",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date_json",
+							"value": {
+								"value": "@if(pipeline().parameters.isMultiBatch, concat('\"businessDateRange\": {\"startDate\": \"${prev_business_ts}\",\"endDate\":\"', pipeline().parameters.datetime, '\"},\"period\":\"', string(pipeline().parameters.period), '\"'), concat('\"businessDate\":\"', pipeline().parameters.datetime, '\"'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Invoke Guzzle Batch",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Prepare Business Date Json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Spark Env",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Additional Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Environment",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Location",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set System",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "InitializeGuzzleBatchRun",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"initialize_batch_body": {
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+									"type": "Expression"
+								},
+								"run_stage_body": {
+									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }",
+									"type": "Expression"
+								},
+								"business_date": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetFailedBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status='FAILED' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "GetFailedJobInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select\n*,\n(select parameter_value from dbo.job_info_param where 1=1 and parameter_name = 'job_status_url' and job_info_param.job_instance_id = job_info.job_instance_id) job_databricks_url,\n(select concat('<<Your blob storage URL>>',parameter_value,'<<Your blob query string>>') from dbo.job_info_param where 1=1 and parameter_name = 'log_file' and job_info_param.job_instance_id = job_info.job_instance_id) job_log_file\nfrom dbo.job_info\nwhere 1=1\nand batch_id='@{activity('GetFailedBatchInfo').output.firstRow['batch_id']}'\nand status in ('FAILED','ABORTED') and tag not in ('workunit', 'publish')\norder by job_info.job_instance_id desc",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Stages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "stages",
+							"value": {
+								"value": "@split(pipeline().parameters.stage, ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Failed Stage",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Stages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "failed_stage",
+							"value": {
+								"value": "@if(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[0]), '_status')], 'FAILED'), trim(variables('stages')[0]), \nif(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[1]), '_status')], 'FAILED'), trim(variables('stages')[1]), trim(variables('stages')[2])))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ErrorNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetFailedJobInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Failed Stage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "ERROR",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Guzzle Batch Stage: @{variables('failed_stage')}</div>\n<div>Guzzle Job Name: @{activity('GetFailedJobInfo').output.firstRow['name']}</div>\n<div>Batch ID: @{activity('GetFailedBatchInfo').output.firstRow['batch_id']}</div>\n<div>Job Instance ID: @{activity('GetFailedJobInfo').output.firstRow['job_instance_id']}</div>\n<div>Job Log Message: @{activity('GetFailedJobInfo').output.firstRow['message']}</div>\n<div>Guzzle Log URL: @{concat('/guzzle/logs/',activity('GetFailedJobInfo').output.firstRow['job_log_file'])}</div>\n<div>Databricks Log URL: {activity('GetFailedJobInfo').output.firstRow['job_databricks_url']}\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Raise Exception",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ErrorNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": {
+								"value": "@add(1, 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "SuccessNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetSuccessBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "SUCCESS",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div>Guzzle Batch Completed Successfuly</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Batch ID: @{activity('GetSuccessBatchInfo').output.firstRow['batch_id']}</div>\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetSuccessBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status in ('WARNING','SUCCESS') and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Opex",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "SuccessNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Rejection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Trial_Balance",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Rejection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Supply_Log",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Opex",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Supply_Log",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Port_Calls",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Supply_Log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Port_Calls",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Trial_Balance",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Port_Calls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"parameters": {
+					"job_id": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"datetime": {
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
+					},
+					"isMultiBatch": {
+						"type": "bool",
+						"defaultValue": false
+					},
+					"period": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"stage": {
+						"type": "string"
+					},
+					"parent_pipeline_name": {
+						"type": "string"
+					},
+					"parent_pipeline_id": {
+						"type": "string"
+					},
+					"emails": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"start_time": {
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
+					}
+				},
+				"variables": {
+					"business_date_json": {
+						"type": "String"
+					},
+					"system": {
+						"type": "String"
+					},
+					"location": {
+						"type": "String"
+					},
+					"contextParams": {
+						"type": "Array"
+					},
+					"environment": {
+						"type": "String"
+					},
+					"additionalParams": {
+						"type": "Array"
+					},
+					"sparkEnv": {
+						"type": "String"
+					},
+					"status": {
+						"type": "String"
+					},
+					"failed_stage": {
+						"type": "String"
+					},
+					"stages": {
+						"type": "Array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-11-20T06:24:20Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201119_CRLF_Issue')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetJobConfig",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select job_id,batch_id,job_name,guzzle_obj_ref,guzzle_job_params,spark_config,run_stage from [dbo].[JBS_GUZZLE_FLOW] where job_id=2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Context Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "contextParams",
+							"value": {
+								"value": "@split(activity('GetJobConfig').output.firstRow['Guzzle_Obj_Ref'], ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set System",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "system",
+							"value": {
+								"value": "@variables('contextParams')[0]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Location",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Context Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "location",
+							"value": {
+								"value": "@if(equals(length(variables('contextParams')), 2), variables('contextParams')[1], 'NA')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Environment",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "environment",
+							"value": {
+								"value": "@json(split(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ',')[0], ':')[1])",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Additional Params",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "additionalParams",
+							"value": {
+								"value": "@skip(split(activity('GetJobConfig').output.firstRow['Guzzle_Job_Params'], ','), 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Spark Env",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetJobConfig",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sparkEnv",
+							"value": {
+								"value": "@activity('GetJobConfig').output.firstRow['Spark_Config']",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Prepare Business Date Json",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "business_date_json",
+							"value": {
+								"value": "@if(pipeline().parameters.isMultiBatch, concat('\"businessDateRange\": {\"startDate\": \"${prev_business_ts}\",\"endDate\":\"', pipeline().parameters.datetime, '\"},\"period\":\"', string(pipeline().parameters.period), '\"'), concat('\"businessDate\":\"', pipeline().parameters.datetime, '\"'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Invoke Guzzle Batch",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Prepare Business Date Json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Spark Env",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Additional Params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Environment",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Location",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set System",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "InitializeGuzzleBatchRun",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"initialize_batch_body": {
+									"value": "{\"contextParams\":{\"system\":\"@{variables('system')}\" @{if(equals(variables('location'), 'NA'), '', concat(',\"location\":\"', variables('location'), '\"'))}},@{variables('business_date_json')},\"environment\":\"@{variables('environment')}\"}",
+									"type": "Expression"
+								},
+								"run_stage_body": {
+									"value": "{\"system\": \"@{variables('system')}\", @{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\": \"@{variables('sparkEnv')}\", \"stage\": \"@{pipeline().parameters.stage}\", \"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')}}",
+									"type": "Expression"
+								},
+								"business_date": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetFailedBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status='FAILED' and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "GetFailedJobInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select\n*,\n(select parameter_value from dbo.job_info_param where 1=1 and parameter_name = 'job_status_url' and job_info_param.job_instance_id = job_info.job_instance_id) job_databricks_url,\n(select concat('<<Your blob storage URL>>',parameter_value,'<<Your blob query string>>') from dbo.job_info_param where 1=1 and parameter_name = 'log_file' and job_info_param.job_instance_id = job_info.job_instance_id) job_log_file\nfrom dbo.job_info\nwhere 1=1\nand batch_id='@{activity('GetFailedBatchInfo').output.firstRow['batch_id']}'\nand status in ('FAILED','ABORTED') and tag not in ('workunit', 'publish')\norder by job_info.job_instance_id desc",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set Stages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetFailedBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "stages",
+							"value": {
+								"value": "@split(pipeline().parameters.stage, ',')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Failed Stage",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Stages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "failed_stage",
+							"value": {
+								"value": "@if(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[0]), '_status')], 'FAILED'), trim(variables('stages')[0]), \nif(equals(activity('GetFailedBatchInfo').output.firstRow[concat(trim(variables('stages')[1]), '_status')], 'FAILED'), trim(variables('stages')[1]), trim(variables('stages')[2])))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ErrorNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetFailedJobInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Failed Stage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "ERROR",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Guzzle Batch Stage: @{variables('failed_stage')}</div>\n<div>Guzzle Job Name: @{activity('GetFailedJobInfo').output.firstRow['name']}</div>\n<div>Batch ID: @{activity('GetFailedBatchInfo').output.firstRow['batch_id']}</div>\n<div>Job Instance ID: @{activity('GetFailedJobInfo').output.firstRow['job_instance_id']}</div>\n<div>Job Log Message: @{activity('GetFailedJobInfo').output.firstRow['message']}</div>\n<div>Guzzle Log URL: @{concat('/guzzle/logs/',activity('GetFailedJobInfo').output.firstRow['job_log_file'])}</div>\n<div>Databricks Log URL: {activity('GetFailedJobInfo').output.firstRow['job_databricks_url']}\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Raise Exception",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ErrorNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": {
+								"value": "@add(1, 1)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "SuccessNotification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "GetSuccessBatchInfo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EmailNotificationPipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"emails": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"pipeline_name": {
+									"value": "@pipeline().parameters.parent_pipeline_name",
+									"type": "Expression"
+								},
+								"pipeline_id": {
+									"value": "@pipeline().parameters.parent_pipeline_id",
+									"type": "Expression"
+								},
+								"status": "SUCCESS",
+								"business_date": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								},
+								"start_time": {
+									"value": "@pipeline().parameters.datetime",
+									"type": "Expression"
+								},
+								"end_time": {
+									"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								},
+								"failure_info": {
+									"value": "<div style='padding-left: 12px'>\n<div>Guzzle Batch Context</div>\n<div>Guzzle Batch Completed Successfuly</div>\n<div style='padding-left: 12px'>\n<div>System: @{variables('system')}</div>\n<div>Location: @{variables('location')}</div>\n</div>\n<div>Batch ID: @{activity('GetSuccessBatchInfo').output.firstRow['batch_id']}</div>\n</div>\n</div>",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GetSuccessBatchInfo",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Invoke Guzzle Batch",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[batch_control] where batch_status in ('WARNING','SUCCESS') and system='@{variables('system')}' @{if(equals(variables('location'), 'NA'), '', concat('and location', if(equals(variables('location'), 'null'), ' is null', concat('=''', variables('location'), ''''))))}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "GuzzleDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Opex",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "SuccessNotification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Rejection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Trial_Balance",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Rejection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Supply_Log",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Opex",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Supply_Log",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Port_Calls",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Supply_Log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Port_Calls",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_Refresh_Trial_Balance",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Port_Calls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"parameters": {
+					"job_id": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"datetime": {
+						"type": "string",
+						"defaultValue": "2020-07-18 00:00:00"
+					},
+					"isMultiBatch": {
+						"type": "bool",
+						"defaultValue": false
+					},
+					"period": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"stage": {
+						"type": "string"
+					},
+					"parent_pipeline_name": {
+						"type": "string"
+					},
+					"parent_pipeline_id": {
+						"type": "string"
+					},
+					"emails": {
+						"type": "string",
+						"defaultValue": "agnit.chatterjee@justanalytics.com"
+					},
+					"start_time": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"business_date_json": {
+						"type": "String"
+					},
+					"system": {
+						"type": "String"
+					},
+					"location": {
+						"type": "String"
+					},
+					"contextParams": {
+						"type": "Array"
+					},
+					"environment": {
+						"type": "String"
+					},
+					"additionalParams": {
+						"type": "Array"
+					},
+					"sparkEnv": {
+						"type": "String"
+					},
+					"status": {
+						"type": "String"
+					},
+					"failed_stage": {
+						"type": "String"
+					},
+					"stages": {
+						"type": "Array"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-24T14:24:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/InitializeGuzzleBatchRun')]"
 			]
 		}
 	]
