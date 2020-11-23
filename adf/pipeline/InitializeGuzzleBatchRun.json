@@ -58,19 +58,12 @@
 			{
 				"name": "Set Stages",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "stages",
 					"value": {
-						"value": "@split(json(variables('parameters'))['stage'], ',')",
+						"value": "@split(json(pipeline().parameters.run_stage_body)['stage'], ',')",
 						"type": "Expression"
 					}
 				}
@@ -365,19 +358,6 @@
 					"variableName": "status",
 					"value": {
 						"value": "@if(variables('failureFlag'), 1, 'SUCCESS')",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "parameters",
-					"value": {
-						"value": "@string(json(pipeline().parameters.run_stage_body)['parameters'])",
 						"type": "Expression"
 					}
 				}
