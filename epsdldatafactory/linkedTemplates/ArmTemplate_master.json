@@ -53,7 +53,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:8082/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",

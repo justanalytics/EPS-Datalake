@@ -53,7 +53,7 @@
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://vmdatalakedev002.southeastasia.cloudapp.azure.com/"
+			"defaultValue": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:8082/"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_userName": {
 			"type": "string",
@@ -4237,19 +4237,12 @@
 					{
 						"name": "Set Stages",
 						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "stages",
 							"value": {
-								"value": "@split(json(variables('parameters'))['stage'], ',')",
+								"value": "@split(json(pipeline().parameters.run_stage_body)['stage'], ',')",
 								"type": "Expression"
 							}
 						}
@@ -4548,19 +4541,6 @@
 							"variableName": "status",
 							"value": {
 								"value": "@if(variables('failureFlag'), 1, 'SUCCESS')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "parameters",
-							"value": {
-								"value": "@string(json(pipeline().parameters.run_stage_body)['parameters'])",
 								"type": "Expression"
 							}
 						}
@@ -8315,7 +8295,7 @@
 									"type": "Expression"
 								},
 								"run_stage_body": {
-									"value": "{\"parameters\":{@{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\":\"@{variables('sparkEnv')}\",\"system\":\"@{variables('system')}\",\"stage\":\"@{pipeline().parameters.stage}\",\"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')} }",
+									"value": "{\"system\": \"@{variables('system')}\", @{if(equals(variables('location'), 'NA'), '', concat('\"location\":\"', variables('location'), '\",'))} \"guzzle.spark.name\": \"@{variables('sparkEnv')}\", \"stage\": \"@{pipeline().parameters.stage}\", \"environment\":\"@{variables('environment')}\" @{if(greaterOrEquals(length(variables('additionalParams')), 1), concat(',', join(variables('additionalParams'), ',')), '')}}",
 									"type": "Expression"
 								},
 								"business_date": {
