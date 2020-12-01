@@ -606,6 +606,106 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Audit",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_Refresh_Rejection",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Audit",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Incident",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Audit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Incident",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Inspection",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Incident",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Inspection",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Sire Inspection",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Inspection",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Sire Inspection",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Inspection Matching",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Sire Inspection",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"parameters": {
