@@ -770,7 +770,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2')]",
+			"name": "[concat(parameters('factoryName'), '/PrepareRequestBodyAndInvokeGuzzleBatch')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3459,7 +3459,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental_BKP_20201120_Guzzle2')]",
+			"name": "[concat(parameters('factoryName'), '/EPSDL_Master_Pipeline_incremental')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3478,7 +3478,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2",
+								"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -3776,7 +3776,7 @@
 				"lastPublishTime": "2020-10-24T04:47:28Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2')]",
+				"[concat(variables('factoryId'), '/pipelines/PrepareRequestBodyAndInvokeGuzzleBatch')]",
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]"
 			]
 		},
