@@ -2497,6 +2497,28 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Pause_Synapse",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Guzzle_Invokation",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pause_Synapse",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"variables": {
@@ -2516,7 +2538,8 @@
 				"[concat(variables('factoryId'), '/pipelines/GetTableListAndTriggerCopyData_incremental')]",
 				"[concat(variables('factoryId'), '/pipelines/Resume_Synapse')]",
 				"[concat(variables('factoryId'), '/pipelines/Move_File_Archive_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]"
+				"[concat(variables('factoryId'), '/pipelines/Copy_IMOS_Parquet')]",
+				"[concat(variables('factoryId'), '/pipelines/Pause_Synapse')]"
 			]
 		},
 		{
@@ -12189,6 +12212,111 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Audit",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_Refresh_Rejection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Audit",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Incident",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Audit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Incident",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Inspection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Incident",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Inspection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Sire Inspection",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Inspection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Sire Inspection",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PowerBI_DataSet_Refresh_Inspection Matching",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PowerBI_DataSet_Refresh_Sire Inspection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PowerBI_DataSet_Refresh_Inspection Matching",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"parameters": {
@@ -12270,7 +12398,12 @@
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Rejection')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Supply_Log')]",
 				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Port_Calls')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Trial_Balance')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Audit')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Incident')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Sire Inspection')]",
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_DataSet_Refresh_Inspection Matching')]"
 			]
 		},
 		{
