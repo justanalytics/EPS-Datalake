@@ -1,5 +1,5 @@
 {
-	"name": "PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2",
+	"name": "PrepareRequestBodyAndInvokeGuzzleBatch",
 	"properties": {
 		"activities": [
 			{

@@ -1,5 +1,5 @@
 {
-	"name": "EPSDL_Master_Pipeline_incremental_BKP_20201120_Guzzle2",
+	"name": "EPSDL_Master_Pipeline_incremental",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch_BKP_20201120_Guzzle2",
+						"referenceName": "PrepareRequestBodyAndInvokeGuzzleBatch",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
