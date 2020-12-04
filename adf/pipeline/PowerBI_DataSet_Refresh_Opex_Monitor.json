@@ -242,23 +242,23 @@
 		"parameters": {
 			"TenantId": {
 				"type": "String",
-				"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
+				"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
 			},
 			"SPClientId": {
 				"type": "String",
-				"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
+				"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
 			},
 			"SPSecret": {
 				"type": "String",
-				"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
+				"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
 			},
 			"PBIAppWorkspaceId": {
 				"type": "string",
-				"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
+				"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
+				"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
 			},
 			"Email": {
 				"type": "string",
