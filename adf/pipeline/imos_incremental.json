@@ -1,0 +1,58 @@
+{
+	"name": "imos_incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "current_month",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "month",
+					"value": {
+						"value": "@formatDateTime(addhours(utcnow(),8),'MM')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "current_month_copy1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "month",
+					"value": {
+						"value": "@formatDateTime(addhours(utcnow(),8),'MMM')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "current_month_copy2",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "month",
+					"value": {
+						"value": "@formatDateTime(addhours(utcnow(),8),'MMMM')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"month": {
+				"type": "String"
+			},
+			"month_short": {
+				"type": "String"
+			},
+			"month_long": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
