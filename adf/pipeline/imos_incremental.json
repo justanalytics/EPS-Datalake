@@ -90,12 +90,14 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -794,7 +796,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Parquet_Single_Copy",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference"
 					}
 				]
