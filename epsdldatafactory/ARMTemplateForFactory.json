@@ -12115,7 +12115,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "test-data",
+						"fileName": "imos_new_test.cs",
+						"folderPath": "epsdl/data/landing",
 						"container": "epsdlcontainer"
 					},
 					"columnDelimiter": ",",
