@@ -65,7 +65,7 @@
 		},
 		"IMOS_HTTP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://api.veslink.com/v1/imos/reports/DataLake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
+			"defaultValue": "@{concat('https://api.veslink.com/v1/imos/reports/DataLake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6&filter=(ArrivalLocal>=\"',adddays(utcnow(), 0,'yyyy-MM-'), '01\")')}"
 		},
 		"IMOS_Rest_properties_typeProperties_url": {
 			"type": "string",
@@ -10562,7 +10562,7 @@
 									"type": "HttpReadSettings",
 									"requestMethod": "GET",
 									"additionalHeaders": {
-										"value": "filter=(ArrivalLocal>=\"2020-11-02T00:00:00\")",
+										"value": "&filter=(ArrivalLocal>=\"2020-11-02T00:00:00\")",
 										"type": "Expression"
 									},
 									"requestTimeout": ""
