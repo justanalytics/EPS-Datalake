@@ -40,6 +40,764 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "current_month",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "current_month_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "current_month_copy2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET",
+							"additionalHeaders": {
+								"value": "filter=(ArrivalLocal>=\"2020-11-02T00:00:00\")",
+								"type": "Expression"
+							},
+							"requestTimeout": ""
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 1
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 1
+								},
+								"sink": {
+									"name": "Agreed_Speed",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 2
+								},
+								"sink": {
+									"name": "Agreed_Speed_Cons",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 3
+								},
+								"sink": {
+									"name": "Agreed_Speed_Engine_Load",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 4
+								},
+								"sink": {
+									"name": "Anchorage_Delay",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 5
+								},
+								"sink": {
+									"name": "Arr_Dep_Status",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 6
+								},
+								"sink": {
+									"name": "Arrival_Local",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 7
+								},
+								"sink": {
+									"name": "Ballast_Laden_From_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 8
+								},
+								"sink": {
+									"name": "Ballast_Laden_to_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 9
+								},
+								"sink": {
+									"name": "Berth_to_Pilot",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 10
+								},
+								"sink": {
+									"name": "Cargo_Inspector",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 11
+								},
+								"sink": {
+									"name": "Cargo_Scheduler",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 12
+								},
+								"sink": {
+									"name": "Dem_Des_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 13
+								},
+								"sink": {
+									"name": "Dem_Des_Rate",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 14
+								},
+								"sink": {
+									"name": "Departure_Local",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 15
+								},
+								"sink": {
+									"name": "Est_Cost_Base",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 16
+								},
+								"sink": {
+									"name": "Eta_Gmt",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 17
+								},
+								"sink": {
+									"name": "ETB",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 18
+								},
+								"sink": {
+									"name": "Etd_Gmt",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 19
+								},
+								"sink": {
+									"name": "Extra_Port_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 20
+								},
+								"sink": {
+									"name": "Extra_Sea_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 21
+								},
+								"sink": {
+									"name": "Fixture_No",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 22
+								},
+								"sink": {
+									"name": "Idle_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 23
+								},
+								"sink": {
+									"name": "Instructed_SAT_Local",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 24
+								},
+								"sink": {
+									"name": "Instructed_Speed",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 25
+								},
+								"sink": {
+									"name": "Is_Current_Port_Call",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "DateTime",
+									"ordinal": 26
+								},
+								"sink": {
+									"name": "Last_Update_Gmt",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 27
+								},
+								"sink": {
+									"name": "Last_User_ID",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 28
+								},
+								"sink": {
+									"name": "Low_Speed_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 29
+								},
+								"sink": {
+									"name": "Low_Speed_Miles",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 30
+								},
+								"sink": {
+									"name": "LS_Miles",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 31
+								},
+								"sink": {
+									"name": "LS_Port_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 32
+								},
+								"sink": {
+									"name": "LS_Sea_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 33
+								},
+								"sink": {
+									"name": "Master_Seq",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 34
+								},
+								"sink": {
+									"name": "Miles",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 35
+								},
+								"sink": {
+									"name": "Order",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 36
+								},
+								"sink": {
+									"name": "Pilot_to_Berth",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 37
+								},
+								"sink": {
+									"name": "Port_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 38
+								},
+								"sink": {
+									"name": "Port_Exp_Amount_Base",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 39
+								},
+								"sink": {
+									"name": "Port_Exp_Amount_Local",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 40
+								},
+								"sink": {
+									"name": "Port_Exp_Curr",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 41
+								},
+								"sink": {
+									"name": "Port_Exp_Exch_Rate",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 42
+								},
+								"sink": {
+									"name": "Port_Func",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 43
+								},
+								"sink": {
+									"name": "Port_Name",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 44
+								},
+								"sink": {
+									"name": "Port_No",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 45
+								},
+								"sink": {
+									"name": "Port_Status_Code",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 46
+								},
+								"sink": {
+									"name": "Sea_Days",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 47
+								},
+								"sink": {
+									"name": "Seq",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 48
+								},
+								"sink": {
+									"name": "Speed_From_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 49
+								},
+								"sink": {
+									"name": "Speed_Instruction_Type",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 50
+								},
+								"sink": {
+									"name": "Speed_to_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 51
+								},
+								"sink": {
+									"name": "Vessel_Code",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 52
+								},
+								"sink": {
+									"name": "Via",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 53
+								},
+								"sink": {
+									"name": "Voyage_No",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 54
+								},
+								"sink": {
+									"name": "Weather_Factor_From_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "Decimal",
+									"ordinal": 55
+								},
+								"sink": {
+									"name": "Weather_Factor_to_Port",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 56
+								},
+								"sink": {
+									"name": "Remarks_Fixture",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 57
+								},
+								"sink": {
+									"name": "Remarks_Operations",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 58
+								},
+								"sink": {
+									"name": "UN_Code",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 59
+								},
+								"sink": {
+									"name": "Country",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 60
+								},
+								"sink": {
+									"name": "Area",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 61
+								},
+								"sink": {
+									"name": "Port_Range",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 62
+								},
+								"sink": {
+									"name": "Port_Region",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 63
+								},
+								"sink": {
+									"name": "Low_Sulfur_ECA",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 64
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 65
+								},
+								"sink": {
+									"name": "Latitude"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 66
+								},
+								"sink": {
+									"name": "Longitude"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 67
+								},
+								"sink": {
+									"name": "Latitude_Seconds"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 68
+								},
+								"sink": {
+									"name": "Longitude_Seconds"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "IMOS_Report_Dataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet_Single_Copy_IMOS",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
