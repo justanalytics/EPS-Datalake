@@ -10561,10 +10561,6 @@
 								"storeSettings": {
 									"type": "HttpReadSettings",
 									"requestMethod": "GET",
-									"additionalHeaders": {
-										"value": "&filter=(ArrivalLocal>=\"2020-11-02T00:00:00\")",
-										"type": "Expression"
-									},
 									"requestTimeout": ""
 								},
 								"formatSettings": {
