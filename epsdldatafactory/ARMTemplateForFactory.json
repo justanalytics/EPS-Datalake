@@ -10573,12 +10573,14 @@
 								}
 							},
 							"sink": {
-								"type": "ParquetSink",
+								"type": "DelimitedTextSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "ParquetWriteSettings"
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
 								}
 							},
 							"enableStaging": false,
@@ -11278,7 +11280,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet_Single_Copy",
+								"referenceName": "DelimitedText1",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -11300,7 +11302,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IMOS_Report_Dataset')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet_Single_Copy')]"
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
 			]
 		},
 		{
