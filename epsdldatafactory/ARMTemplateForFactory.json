@@ -6181,31 +6181,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -6249,8 +6224,7 @@
 				"lastPublishTime": "2020-10-24T14:21:25Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]"
 			]
 		},
 		{
@@ -6755,31 +6729,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -6823,8 +6772,7 @@
 				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]"
 			]
 		},
 		{
@@ -7327,31 +7275,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -7395,8 +7318,7 @@
 				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]"
 			]
 		},
 		{
@@ -7903,31 +7825,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -7971,8 +7868,7 @@
 				"lastPublishTime": "2020-11-06T14:59:03Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]",
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Success_Email')]"
+				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]"
 			]
 		},
 		{
@@ -8629,7 +8525,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -8650,7 +8549,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -8671,7 +8573,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -8692,7 +8597,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					}
 				],

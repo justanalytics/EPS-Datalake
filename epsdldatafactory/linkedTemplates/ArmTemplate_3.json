@@ -3994,7 +3994,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -4015,7 +4018,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -4036,7 +4042,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					},
 					{
@@ -4057,7 +4066,10 @@
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
-							"parameters": {}
+							"parameters": {
+								"Email": "@pipeline().parameters.emails",
+								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+							}
 						}
 					}
 				],
