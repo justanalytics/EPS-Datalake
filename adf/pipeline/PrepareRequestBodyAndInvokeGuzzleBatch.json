@@ -544,7 +544,11 @@
 						"referenceName": "PowerBI_DataSet_Refresh_Rejection",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": "@pipeline().parameters.emails",
+						"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+					}
 				}
 			},
 			{
@@ -564,7 +568,11 @@
 						"referenceName": "PowerBI_DataSet_Refresh_Supply_Log",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": "@pipeline().parameters.emails",
+						"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+					}
 				}
 			},
 			{
@@ -584,7 +592,11 @@
 						"referenceName": "PowerBI_DataSet_Refresh_Port_Calls",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": "@pipeline().parameters.emails",
+						"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+					}
 				}
 			},
 			{
@@ -604,7 +616,11 @@
 						"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"Email": "@pipeline().parameters.emails",
+						"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+					}
 				}
 			}
 		],
