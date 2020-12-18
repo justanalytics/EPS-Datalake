@@ -1,0 +1,149 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_sri"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "parquet"
+    charset: "UTF-8"
+    source_file_pattern: "landing/ledger_cards*parquet"
+    format_properties:
+      source_name_as_column: true
+schema:
+  strict_schema_check: true
+  schema_derivation_strategy: "source"
+  discard: true
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "w_refresh_ts"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "current_timestamp"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_business_dt"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "'${business_date}'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_job_instance_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "${job_instance_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_batch_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "bigint"
+      discard: false
+    transform_sql:
+      value: "${batch_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_location"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ALL'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_source_system"
+    validate: true
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'PENWOOD'"
+    primary_key:
+      value: true
+      discard: true
+  - nullable:
+      value: true
+      discard: false
+    name: "w_src_file_name"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "src_filename"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: false
+      discard: false
+    name: "integration_key"
+    validate: true
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "coalesce(ledger_card,'')||'~'||'PENWOOD'"
+    primary_key:
+      value: true
+      discard: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: false
+    table: "sri_ledger_cards"
+  operation: "append"
+  truncate_partition_columns:
+  - name: "w_business_dt"
+    value: "${business_date[0..9]}"
+  - name: "w_source_system"
+    value: "${w_data_source}"
+  - name: "w_location"
+    value: "${w_location}"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "rej_sri_ledger_cards"
+  failure_threshold: 99

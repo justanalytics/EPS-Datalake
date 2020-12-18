@@ -1,0 +1,9 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "dim_department"
+- "dim_reqn_audit"
+- "dim_requisitions"
+- "dim_supplier"
+parallel: 4

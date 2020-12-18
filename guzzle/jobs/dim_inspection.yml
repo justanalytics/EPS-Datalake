@@ -1,0 +1,42 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \n      sri_insp_questionnaire_question.ID as qq_id\n      ,sri_insp_questionnaire_question.QUESTIONNAIRE_CATEGORY_ID as qqc_id\n      ,sri_insp_questionnaire_question.QUESTION_ID\n      ,sri_insp_question.DESCRIPTION\n      ,sri_insp_question.details\n      ,sri_insp_question.SERIAL_NO\n      ,sri_insp_questionnaire_category.category_id\n      ,sri_insp_category.category_name\n      ,sri_insp_questionnaire.department\n      ,sri_moc_viq_questions.chapter_no\n      ,sri_moc_viq_questions.chapter\n      ,sri_insp_questionnaire_question.integration_key\n      ,null as w_x_custom\n      ,sri_insp_questionnaire_question.w_job_instance_id\n      ,sri_insp_questionnaire_question.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,sri_insp_questionnaire_question.w_source_system as w_data_src_id\n      ,sri_insp_questionnaire_question.w_location\n      ,sri_insp_questionnaire_question.w_batch_id\n      ,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_insp_questionnaire_question sri_insp_questionnaire_question\n\njoin ${p_epsdl_sri_db}.sri_insp_questionnaire_category sri_insp_questionnaire_category\n        on sri_insp_questionnaire_question.QUESTIONNAIRE_CATEGORY_ID = sri_insp_questionnaire_category.id\n        and sri_insp_questionnaire_category.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_category sri_insp_category\n        on sri_insp_questionnaire_category.CATEGORY_ID = sri_insp_category.id\n        and sri_insp_category.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_question sri_insp_question\n        on sri_insp_questionnaire_question.QUESTION_ID = sri_insp_question.id\n        and sri_insp_question.w_business_dt='${business_date}'\n\nleft join ${p_epsdl_sri_db}.sri_insp_questionnaire sri_insp_questionnaire\n        on sri_insp_questionnaire_category.questionnaire_id = sri_insp_questionnaire.id\n        and sri_insp_questionnaire.w_business_dt='${business_date}'\n\nleft join \n        (\n        select distinct substr(question_number,1,(instr(question_number,'.')-1)) as chapter_no, chapter\n        from ${p_epsdl_sri_db}.sri_moc_viq_questions\n        where w_business_dt='${business_date}'\n         ) sri_moc_viq_questions\n        on substr(sri_insp_question.serial_no,1,(instr(sri_insp_question.serial_no,'.')-1)) = sri_moc_viq_questions.chapter_no\n\nwhere sri_insp_questionnaire_question.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_inspection"
+  merge_columns:
+  - "qq_id"
+  - "qqc_id"
+  - "question_id"
+  - "description"
+  - "details"
+  - "serial_no"
+  - "category_id"
+  - "category_name"
+  - "department"
+  - "chapter"
+  - "chapter_no"
+  endpoint: "lo_delta_tables"

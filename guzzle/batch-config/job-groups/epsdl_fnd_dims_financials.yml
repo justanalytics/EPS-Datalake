@@ -9,4 +9,5 @@ jobs:
 - "dim_gl_vessel"
 - "dim_data_security"
 - "dim_gl_department"
-parallel: 7
+- "dim_gl_intercompany"
+parallel: 4

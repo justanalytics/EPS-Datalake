@@ -1,0 +1,30 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with \ntemp_query as\n(select \ncompany.company_id,\naccount.account_id,\nvessel.vessel_id,\nservice.service_id,\ndepartment.department_id,\nintercompany.intercompany_id,\nfuture1.future1_id,\nfuture2.future2_id,\ncast(year(journal_date)||'-'||(case when month(journal_date)<10 then '0'||month(journal_date) else month(journal_date) end)||'-01' as date) as journal_period,\n(SUM(tot_book_debit) - SUM(tot_book_credit)) balance,\nSUM(tot_book_debit) as tot_book_debit,\nSUM(tot_book_credit) as tot_book_credit\nfrom\n${p_epsdl_db}.fact_gl_transactions documents\nleft join\n(select * from ${p_epsdl_db}.dim_gl_vessel ) vessel\non\ndocuments.vessel_id=vessel.vessel_id\nleft join\n(select * from ${p_epsdl_db}.dim_gl_account) account\non\ndocuments.account_id=account.account_id\nleft join\n${p_epsdl_db}.dim_gl_company company\non\ndocuments.company_id=company.company_id\nleft join\n${p_epsdl_db}.Dim_gl_service service\non\nservice.service_id=documents.service_id\nleft join\n${p_epsdl_db}.Dim_gl_department department\non\ndepartment.department_id=DOCUMENTS.department_id\nleft join\n${p_epsdl_db}.Dim_gl_intercompany intercompany\non\nintercompany.intercompany_id=DOCUMENTS.intercompany_id\nleft join\n${p_epsdl_db}.Dim_gl_future1 future1\non\nfuture1.future1_id=DOCUMENTS.future1_id\nleft join\n${p_epsdl_db}.Dim_gl_future2 future2\non\nfuture2.future2_id=DOCUMENTS.future2_id\nleft join\n${p_epsdl_db}.dim_period period\non\nperiod.date=documents.journal_date\nwhere \ndocuments.Journal_series NOT IN ('YC','QT','PD','QC','QS')\ngroup by\ncompany.company_id,\naccount.account_id,vessel.vessel_id,\nservice.service_id,\ndepartment.department_id,\nintercompany.intercompany_id,\nfuture1.future1_id,\nfuture2.future2_id,\ncast(year(journal_date)||'-'||(case when month(journal_date)<10 then '0'||month(journal_date) else month(journal_date) end)||'-01' as date)\n)\n\n\nselect\nsrc.*,htd_qry.htd_balance\nfrom \ntemp_query src\njoin\n(\nselect \ncompany_id,\naccount_id,\nvessel_id,\nservice_id,\ndepartment_id,\nintercompany_id,\nfuture1_id,\nfuture2_id,\nsum(balance) as htd_balance\nfrom temp_query\nwhere journal_period < date_add(last_day(current_date),1)\ngroup by\ncompany_id,\naccount_id,\nvessel_id,\nservice_id,\ndepartment_id,\nintercompany_id,\nfuture1_id,\nfuture2_id\n) htd_qry\non\nhtd_qry.company_id=src.company_id\nand\nhtd_qry.account_id=src.account_id\nand\nhtd_qry.vessel_id=src.vessel_id\nand\nhtd_qry.service_id=src.service_id\nand\nhtd_qry.department_id=src.department_id\nand\nhtd_qry.intercompany_id=src.intercompany_id\nand\nhtd_qry.future1_id=src.future1_id\nand\nhtd_qry.future2_id=src.future2_id"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_gl_balance"
+    pre_sql:
+    - "set spark.sql.autoBroadcastJoinThreshold=-1"
+  endpoint: "lo_delta_tables"

@@ -1,0 +1,28 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with mv_navi_audit_main AS\n(\n  select audit_id,vessel_code,created_date,'OFFICE' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_off_main\n  where w_business_dt='${business_date}'\n  union all\n  select audit_id,vessel_code,created_date,'MASTER' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_vsl_main\n  where w_business_dt='${business_date}'\n)\n, mv_navi_audit_answers AS\n(\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_off_answers\n    where w_business_dt='${business_date}'\n    union all\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_vsl_answers \n    where q_type <> 'NAV_AUDIT_OFF'\n    and w_business_dt='${business_date}'\n)\nSELECT \n        request_id as audit_id\n        ,vessel_code\n        ,moc_id\n        ,inspection_date as audit_date\n        ,'MOC' as flag\n        ,coalesce(request_id,'')||'~'||coalesce(vessel_code,'')||'~'||coalesce(inspection_date,'')||'~'||'MOC' as integration_key\n        ,null as w_x_custom\n        ,w_job_instance_id\n        ,w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,w_source_system as w_data_src_id\n        ,w_location\n        ,w_batch_id\n        ,'${business_date}' as business_date \nFROM ${p_epsdl_sri_db}.sri_moc_inspection_requests\nWHERE upper(insp_status) IN ('INSPECTED','FAILED','SIRE REPORT REPLIED','SIRE REPORT RECEIVED','INSPN PROCESS COMPLT','ACCEPTED')\nand w_business_dt='${business_date}'\n    \nUNION ALL\n    \nSELECT DISTINCT \n        a.audit_id\n        ,a.vessel_code\n        ,null\n        ,a.created_date as audit_date\n        ,'MASTER' as flag\n        ,coalesce(a.audit_id,'')||'~'||coalesce(a.vessel_code,'')||'~'||coalesce(a.created_date,'')||'~'||'MASTER' as integration_key\n        ,null as w_x_custom\n        ,a.w_job_instance_id\n        ,a.w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,a.w_source_system as w_data_src_id\n        ,a.w_location\n        ,a.w_batch_id\n        ,'${business_date}' as business_date \nFROM mv_navi_audit_main a\nJOIN mv_navi_audit_answers b\n        on a.audit_id  = b.audit_id\n        and a.vessel_code = b.vessel_code\nWHERE b.q_type like '%VSL'\nAND a.created_date IS NOT NULL\n    \nUNION ALL\n    \nSELECT DISTINCT \n        a.id as audit_id\n        ,a.vessel_code\n        ,null\n        ,a.date_done as audit_date\n        ,case when g.department = 13 then 'OFFICE-TECH' when g.department = 21 then 'OFFICE-OPS' end flag\n        ,coalesce(a.id,'')||'~'||coalesce(a.vessel_code,'')||'~'||coalesce(a.date_done,'')||'~'||case when g.department = 13 then 'OFFICE-TECH' when g.department = 21 then 'OFFICE-OPS' end as integration_key\n        ,null as w_x_custom\n        ,a.w_job_instance_id\n        ,a.w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,a.w_source_system as w_data_src_id\n        ,a.w_location\n        ,a.w_batch_id\n        ,'${business_date}' as business_date \nFROM ${p_epsdl_sri_db}.sri_insp_inspection a\n\njoin ${p_epsdl_sri_db}.sri_insp_inspection_questionnaire c\n        on a.id = c.inspection_id\n        and c.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_answer b\n        on c.insp_answer_id = b.id\n        and b.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_questionnaire_question e\n        on c.insp_questionnaire_question_id = e.id\n        and e.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_questionnaire_category f\n        on e.questionnaire_category_id = f.id\n        and f.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_questionnaire g\n        on f.questionnaire_id = g.id\n        and g.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_category h\n        on f.category_id = h.id\n        and h.w_business_dt='${business_date}'\n\njoin ${p_epsdl_sri_db}.sri_insp_question i\n        on e.question_id = i.id\n        and i.w_business_dt='${business_date}'\n\nWHERE b.id = 4\nand g.department in (13,21)\nand a.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+target:
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_insp_moc_nav_trans_date"
+  endpoint: "lo_delta_tables"

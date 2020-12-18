@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nagreed_speed,\nagreed_speed_cons,\nagreed_speed_engine_load,\nanchorage_delay,\narr_dep_status,\narrival_local,\nballast_laden_from_port,\nballast_laden_to_port,\nberth_to_pilot,\ncargo_inspector,\ncargo_scheduler,\ndem_des_days,\ndem_des_rate,\ndeparture_local,\nest_cost_base,\neta_gmt,\netb,\netd_gmt,\nextra_port_days,\nextra_sea_days,\nfixture_no,\nidle_days,\ninstructed_sat_local,\ninstructed_speed,\nis_current_port_call,\nlast_update_gmt,\nlast_user_id,\nlow_speed_days,\nlow_speed_miles,\nls_miles,\nls_port_days,\nls_sea_days,\nmaster_seq,\nmiles,\norder,\npilot_to_berth,\nport_days,\nport_exp_amount_base,\nport_exp_amount_local,\nport_exp_curr,\nport_exp_exch_rate,\nport_func,\nport_name,\nport_no,\nport_status_code,\nsea_days,\nseq,\nspeed_from_port,\nspeed_instruction_type,\nspeed_to_port,\nvessel_code,\nvia,\nvoyage_no,\nweather_factor_from_port,\nweather_factor_to_port,\nremarks_fixture,\nremarks_operations,\nun_code,\ncountry,\narea,\nport_range,\nport_region,\nlow_sulfur_eca,\nname,\nintegration_key,\n_validation_error as validation_error,\nw_source_system,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom \n${p_epsdl_sri_db}.rej_sri_imos_expected_call"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_imos_expected_call"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

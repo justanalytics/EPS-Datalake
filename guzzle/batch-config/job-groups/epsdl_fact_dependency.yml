@@ -1,0 +1,8 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "fact_port_calls_master"
+- "fact_gl_balance"
+- "fact_requisitions_category"
+parallel: 3

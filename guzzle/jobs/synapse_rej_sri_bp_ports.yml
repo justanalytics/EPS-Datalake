@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nport_code,\nport_name,\nport_country,\nunctad_code,\nlatitude,\nlongitude,\nlatitude_num,\nlongitude_num,\nport_tables,\nalias_port,\nbp_sequence,\ndraft,\nalias_flag,\nalias_index,\nshort_port_name,\nshort_country_name,\nshort_alias_port,\nport_country_code,\nnondistance_flag,\nnearest_port_code,\nnearest_port_name,\nnearest_unctad_code,\nold_bp_version,\nintegration_key,\nw_source_system,\nrej_sri_bp_ports._validation_error as validation_error,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom \n${p_epsdl_sri_db}.rej_sri_bp_ports rej_sri_bp_ports "
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_bp_ports"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

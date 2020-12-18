@@ -1,0 +1,46 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \n      sri_insp_inspection.id as inspection_id\n      ,sri_insp_inspection_questionnaire.id as iiq_id\n      ,sri_insp_questionnaire_question.id as qq_id\n      ,sri_insp_question.id as question_id\n      ,sri_insp_questionnaire_question.QUESTIONNAIRE_CATEGORY_ID as qqc_id\n      ,sri_insp_category.id as insp_category_id\n      ,sri_insp_templates.id as template_id\n\n      ,sri_insp_inspection.vessel_code as vessel_code\n      ,sri_insp_inspection.date_done as date_done\n      ,sri_insp_inspection.FILE_NAME as file_name\n      ,sri_insp_inspection.PORT as port\n      ,sri_insp_inspection.STATUS as status\n      \n      ,sri_insp_inspection_questionnaire.INSP_ANSWER_ID as insp_answer_id\n      ,sri_insp_templates.name as template_name\n      ,coalesce(sri_insp_inspection.id,'')||'~'||coalesce(sri_insp_inspection_questionnaire.id,'')||'~'||coalesce(sri_insp_questionnaire_question.id,'')||'~'||coalesce(sri_insp_question.id,'')||'~'||coalesce(sri_insp_questionnaire_question.QUESTIONNAIRE_CATEGORY_ID,'')||'~'||coalesce(sri_insp_category.id,'')||'~'||coalesce(sri_insp_templates.id,'') as integration_key\n      ,dim_vessel.vessel_id\n      ,null as w_x_custom\n      ,sri_insp_inspection.w_job_instance_id\n      ,sri_insp_inspection.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,sri_insp_inspection.w_source_system as w_data_src_id\n      ,sri_insp_inspection.w_location\n      ,sri_insp_inspection.w_batch_id\n      ,'${business_date}' as business_date\nfrom \n      ${p_epsdl_sri_db}.sri_insp_inspection sri_insp_inspection\n\n  join ${p_epsdl_sri_db}.sri_insp_inspection_questionnaire sri_insp_inspection_questionnaire\n          on sri_insp_inspection_questionnaire.inspection_id= sri_insp_inspection.id\n          and sri_insp_inspection_questionnaire.w_business_dt='${business_date}'\n\n  join ${p_epsdl_sri_db}.sri_insp_questionnaire_question sri_insp_questionnaire_question\n          on sri_insp_inspection_questionnaire.INSP_QUESTIONNAIRE_QUESTION_ID = sri_insp_questionnaire_question.id\n          and sri_insp_questionnaire_question.w_business_dt='${business_date}'\n\n  join ${p_epsdl_sri_db}.sri_insp_questionnaire_category sri_insp_questionnaire_category\n          on sri_insp_questionnaire_question.QUESTIONNAIRE_CATEGORY_ID = sri_insp_questionnaire_category.id\n          and sri_insp_questionnaire_category.w_business_dt='${business_date}'\n\n  join ${p_epsdl_sri_db}.sri_insp_category sri_insp_category\n          on sri_insp_questionnaire_category.CATEGORY_ID = sri_insp_category.id\n          and sri_insp_category.w_business_dt='${business_date}'\n\n  join ${p_epsdl_sri_db}.sri_insp_templates sri_insp_templates\n          on sri_insp_inspection.template_id = sri_insp_templates.id\n          and sri_insp_templates.w_business_dt='${business_date}'\n\n  join ${p_epsdl_sri_db}.sri_insp_question sri_insp_question\n          on sri_insp_questionnaire_question.QUESTION_ID = sri_insp_question.id\n          and sri_insp_question.w_business_dt='${business_date}'\n\n--   left join ${p_epsdl_sri_db}.sri_insp_answer sri_insp_answer\n--           on sri_insp_inspection_questionnaire.insp_answer_id = sri_insp_answer.id\n--           and sri_insp_answer.w_business_dt='${business_date}'\n  \n  left join ${p_epsdl_db}.dim_gl_vessel dim_vessel\n          on sri_insp_inspection.vessel_code = dim_vessel.vessel_code\n\nwhere sri_insp_inspection.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_inspection"
+  merge_columns:
+  - "inspection_id"
+  - "iiq_id"
+  - "qq_id"
+  - "question_id"
+  - "qqc_id"
+  - "insp_category_id"
+  - "template_id"
+  - "vessel_code"
+  - "date_done"
+  - "file_name"
+  - "port"
+  - "status"
+  - "insp_answer_id"
+  - "template_name"
+  - "vessel_id"
+  endpoint: "lo_delta_tables"

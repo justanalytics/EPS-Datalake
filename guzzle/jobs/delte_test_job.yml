@@ -1,0 +1,52 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "csv_to_json_test"
+  description: "This job converts data from CSV file to JSON file and validates id and age column's datatype and null value."
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    charset: "UTF-8"
+    format_properties:
+      column_delimiter: ","
+      quote_delimiter: "\""
+      contains_header: true
+      escape_char: "\\\\"
+    source_file_pattern: "landing/users*.csv"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns:
+  - nullable:
+      value: false
+      discard: true
+    name: "id"
+    validate: true
+    partition_column: false
+    data_type:
+      value: "int"
+      discard: true
+    primary_key:
+      value: true
+      discard: true
+  - nullable:
+      value: false
+      discard: true
+    name: "age"
+    validate: true
+    partition_column: false
+    data_type:
+      value: "int"
+      discard: true
+    primary_key:
+      value: false
+      discard: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "t2_users_delta"
+  operation: "append"

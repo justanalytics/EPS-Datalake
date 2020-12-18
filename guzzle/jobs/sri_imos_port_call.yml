@@ -131,7 +131,7 @@ schema:
 target:
   endpoint: "lo_delta_tables"
   properties:
-    auto_create_table: false
+    auto_create_table: true
     table: "${p_epsdl_sri_db}.sri_imos_port_call"
   operation: "append"
   truncate_partition_columns:

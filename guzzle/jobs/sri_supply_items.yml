@@ -124,7 +124,7 @@ schema:
       value: "string"
       discard: true
     transform_sql:
-      value: "coalesce(document_code,'')||'~'||coalesce(item_serial_no,'')||'~'||coalesce(invoice_code,'')||'~'||coalesce(order_code,'')||'~'||coalesce(parcial,'')||'~'||'TANKPAC'"
+      value: "coalesce(document_code,'')||'~'||coalesce(item_serial_no,'')||'~'||coalesce(order_code,'')||'~'||coalesce(parcial,'')||'~'||'TANKPAC'"
     primary_key:
       value: true
       discard: true

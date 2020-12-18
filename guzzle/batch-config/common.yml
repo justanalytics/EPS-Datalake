@@ -65,17 +65,19 @@ context_stage_mappings:
     rerun_batch: false
     partial_load: false
     job_groups:
-    - "epdl_sri_financial"
     - "epsdl_sri_purchasing"
+    - "epdl_sri_financial"
+    - "epsdl_sri_voyage"
   - name: "FND"
     rerun_batch: false
     partial_load: false
     job_groups:
     - "epsdl_fnd_dims_financials"
+    - "epsdl_fnd_dims_purchasing"
     - "epsdl_fnd_facts_combined"
+    - "epsdl_fact_dependency"
   - name: "PLP"
     rerun_batch: false
     partial_load: false
     job_groups:
     - "epsdl_plp"
-    - "epsdl_housekeep"

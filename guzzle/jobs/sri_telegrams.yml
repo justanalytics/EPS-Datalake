@@ -8,7 +8,7 @@ source:
   properties:
     format: "parquet"
     charset: "UTF-8"
-    source_file_pattern: "${p_staging}/telegrams.*parquet"
+    source_file_pattern: "${p_staging}/Telegrams*parquet"
     format_properties:
       source_name_as_column: true
 schema:

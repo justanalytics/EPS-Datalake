@@ -1,0 +1,145 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_sri"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "parquet"
+    charset: "UTF-8"
+    source_file_pattern: "${p_staging}/nav_audit_off_answers*.parquet"
+    format_properties:
+      source_name_as_column: true
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "w_refresh_ts"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "current_timestamp"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_business_dt"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+    transform_sql:
+      value: "'${business_date}'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_job_instance_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "${job_instance_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_batch_id"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "bigint"
+      discard: false
+    transform_sql:
+      value: "${batch_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_location"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'ALL'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_source_system"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "'VLOG'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_src_file_name"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "src_filename"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "integration_key"
+    validate: false
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+    transform_sql:
+      value: "coalesce(AUDIT_ID,'')||'~'||coalesce(VESSEL_CODE,'')||'~'||coalesce(Q_NO,'')||'~'||coalesce(Q_TYPE,'')||'~'||'MANUAL'"
+    primary_key:
+      value: false
+      discard: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.sri_nav_audit_off_answers"
+  operation: "append"
+  truncate_partition_columns:
+  - name: "w_business_dt"
+    value: "${business_date}"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.rej_sri_nav_audit_off_answers"
+  failure_threshold: 99

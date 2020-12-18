@@ -8,7 +8,7 @@ source:
   properties:
     format: "parquet"
     charset: "UTF-8"
-    source_file_pattern: "${p_staging}/expected_call.*parquet"
+    source_file_pattern: "${p_staging}/Expected_call*.parquet"
     format_properties:
       source_name_as_column: true
 schema:

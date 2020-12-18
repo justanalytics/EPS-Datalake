@@ -133,14 +133,14 @@ schema:
       value: true
       discard: true
   - nullable:
-      value: false
-      discard: true
-    name: "vessel_code"
+      value: true
+      discard: false
+    name: "start_date"
     validate: true
     partition_column: false
     data_type:
-      value: "string"
-      discard: false
+      value: "date"
+      discard: true
     primary_key:
       value: false
       discard: false
@@ -158,4 +158,4 @@ reject:
   properties:
     auto_create_table: true
     table: "${p_epsdl_sri_db}.rej_sri_vessel_master"
-  failure_threshold: 99
+  failure_threshold: 80

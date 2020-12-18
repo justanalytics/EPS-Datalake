@@ -53,4 +53,45 @@ jobs:
 - "synapse_rej_sri_vessel_hierarchy"
 - "synapse_rej_sri_vessel_team_map"
 - "synapse_rej_sri_vessel_master"
-parallel: 6
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_department"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_requisitions"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_reqn_audit"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_requisitions_category"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "dim_supplier"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_supply_items"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_supplier_invoicing"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_requisitions_category"
+- "synapse_rej_sri_supplier_invoicing"
+- "synapse_rej_sri_reqn_audit_log"
+- "synapse_rej_sri_supplier_registry"
+- "synapse_rej_sri_delivery_point"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_gl_balance"
+- plp_adls_synapse:
+    job_parameters:
+      p_table_name: "fact_port_calls_master"
+- "synapse_rej_sri_bp_ports"
+- "synapse_rej_sri_expected_call"
+- "synapse_rej_sri_imos_expected_call"
+- "synapse_rej_sri_imos_port_call"
+- "synapse_rej_sri_ports_library"
+- "synapse_rej_sri_telegrams"
+- "synapse_rej_sri_telegrams_custom"
+parallel: 4

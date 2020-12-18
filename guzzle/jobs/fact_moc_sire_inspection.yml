@@ -1,0 +1,28 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with mv_navi_audit_main AS\n(\n  select audit_id,vessel_code,created_date,'OFFICE' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_off_main\n  where w_business_dt='${business_date}'\n  union all\n  select audit_id,vessel_code,created_date,'MASTER' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_vsl_main\n  where w_business_dt='${business_date}'\n)\n, mv_navi_audit_answers AS\n(\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_off_answers\n    where w_business_dt='${business_date}'\n    union all\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_vsl_answers \n    where q_type <> 'NAV_AUDIT_OFF'\n    and w_business_dt='${business_date}'\n)\nSELECT distinct \n    request_id as audit_id\n    ,vessel_code\n    ,moc_id\n    ,inspection_date as audit_date\n    ,'MOC' as flag\n    ,coalesce(request_id,'')||'~'||coalesce(vessel_code,'')||'~'||coalesce(inspection_date,'')||'~'||'MOC' as integration_key\n    ,null as w_x_custom\n    ,w_job_instance_id\n    ,w_refresh_ts\n    ,null as w_curr_rec_flg\n    ,w_source_system as w_data_src_id\n    ,w_location\n    ,w_batch_id\n    ,'${business_date}' as business_date \n  FROM ${p_epsdl_sri_db}.sri_moc_inspection_requests\n  where w_business_dt='${business_date}'\n  and upper(insp_status) in ('INSPECTED','FAILED','SIRE REPORT REPLIED','SIRE REPORT RECEIVED','INSPN PROCESS COMPLT','ACCEPTED') \n  \n  UNION ALL\n  SELECT distinct \n    a.audit_id\n    ,a.vessel_code\n    ,null\n    ,a.created_date as audit_date\n    ,b.q_type as flag \n    ,coalesce(a.audit_id,'')||'~'||coalesce(a.vessel_code,'')||'~'||coalesce(a.created_date,'')||'~'||coalesce(b.q_type,'') as integration_key\n    ,null as w_x_custom\n    ,a.w_job_instance_id\n    ,a.w_refresh_ts\n    ,null as w_curr_rec_flg\n    ,a.w_source_system as w_data_src_id\n    ,a.w_location\n    ,a.w_batch_id\n    ,'${business_date}' as business_date \n  FROM mv_navi_audit_main a\n  JOIN mv_navi_audit_answers b\n  ON a.audit_id=b.audit_id\n  AND a.vessel_code=b.vessel_code\n  AND b.q_type LIKE 'SIRE%'\n  AND a.created_date is not null"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'APPLN1'"
+target:
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_moc_sire_inspection"
+  endpoint: "lo_delta_tables"

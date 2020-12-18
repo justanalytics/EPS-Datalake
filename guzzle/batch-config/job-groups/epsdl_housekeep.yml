@@ -62,4 +62,16 @@ jobs:
 - epsdl_housekeep:
     job_parameters:
       p_table_name: "sri_account_mapping"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_supplier_invoicing"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_delivery_point"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_supplier_registry"
+- epsdl_housekeep:
+    job_parameters:
+      p_table_name: "sri_reqn_audit_log"
 parallel: 4

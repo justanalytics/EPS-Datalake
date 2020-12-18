@@ -1,0 +1,41 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \ncategory_id\n,category_name\n,parent_id\n,created_by\n,created_date\n,modified_by\n,modified_date\n,category_type\n,consequence\n,incident_type\n,integration_key\n,null as w_x_custom\n,w_job_instance_id\n,w_refresh_ts\n,null as w_curr_rec_flg\n,w_source_system as w_data_src_id\n,w_location\n,w_batch_id\n,'${business_date}' as business_date \nfrom ${p_epsdl_sri_db}.sri_incident_categories sri_incident_categories\nwhere sri_incident_categories.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_incident_categories"
+  merge_columns:
+  - "category_id"
+  - "category_name"
+  - "parent_id"
+  - "created_by"
+  - "created_date"
+  - "modified_by"
+  - "modified_date"
+  - "category_type"
+  - "consequence"
+  - "incident_type"
+  endpoint: "lo_delta_tables"

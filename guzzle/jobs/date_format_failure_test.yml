@@ -1,0 +1,45 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    charset: "UTF-8"
+    source_file_pattern: "archive/vessel_master_BKP_20200904*csv"
+    format_properties:
+      column_delimiter: ","
+      quote_delimiter: "\""
+      escape_char: "\\\\"
+      contains_header: true
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: true
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "start_date"
+    validate: true
+    partition_column: false
+    data_type:
+      value: "date"
+      discard: true
+    primary_key:
+      value: false
+      discard: false
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.vessel_master_BKP_20200912.csv"
+  operation: "overwrite"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.rej_vessel_master_BKP_20200912.csv"
+  failure_threshold: 80

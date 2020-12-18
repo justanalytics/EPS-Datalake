@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nvessel_code,\ntelegram_date,\ntelegram_type,\nhbn_co_in_storage,\nlbn_co_in_storage,\nsupplied_hbn_co,\nsupplied_lbn_co,\noil_bilge,\nfw_consumed,\nsupplied_hsfo_port,\nsupplied_lsfo_port,\nsupplied_fo_port,\nsupplied_hsdo_port,\nsupplied_lsdo_port,\nsupplied_do_port,\nsupplied_mgo_port,\nsupplied_hbn_co_port,\nsupplied_lbn_co_port,\nsupplied_co_port,\nsupplied_so_port,\nsupplied_go_port,\nme_hsfo_port,\nme_lsfo_port,\nme_hsdo_port,\nme_lsdo_port,\nae_hsfo_port,\nae_lsfo_port,\nae_hsdo_port,\nae_lsdo_port,\nboiler_hsfo_port,\nboiler_lsfo_port,\nboiler_hsdo_port,\nboiler_lsdo_port,\ncargo_onboard,\nport_or_location,\nfuel_s,\ncreation_user,\ncreation_date,\nlast_user,\nlast_date,\ncreated_onboard,\nme_horse_power,\nme_cnt_indic,\nhsfo_fuel_s,\nlsfo_fuel_s,\nhsdo_fuel_s,\nlsdo_fuel_s,\nhsgo_fuel_s,\nlsgo_fuel_s,\nnor,\ninstructed_speed,\nrequired_speed,\nwind_rel_dir,\ncurrent_rel_dir,\nvia_port,\nmiles_to_via_port,\neta_via_port,\ncp_me_fo_cons,\ncp_fo_cons,\ncp_do_cons,\nboiler_water_rob,\nball_hsfo_cons,\nball_lsfo_cons,\nball_hsdo_cons,\nball_lsdo_cons,\ndeball_hsfo_cons,\ndeball_lsfo_cons,\ndeball_hsdo_cons,\ndeball_lsdo_cons,\nheat_hsfo_cons,\nheat_lsfo_cons,\nheat_hsdo_cons,\nheat_lsdo_cons,\nclean_hsfo_cons,\nclean_lsfo_cons,\nclean_hsdo_cons,\nclean_lsdo_cons,\ntg_hsfo_cons,\ntg_lsfo_cons,\ntg_hsdo_cons,\ntg_lsdo_cons,\nball_hsfo_port,\nball_lsfo_port,\nball_hsdo_port,\nball_lsdo_port,\ndeball_hsfo_port,\ndeball_lsfo_port,\ndeball_hsdo_port,\ndeball_lsdo_port,\nheat_hsfo_port,\nheat_lsfo_port,\nheat_hsdo_port,\nheat_lsdo_port,\nclean_hsfo_port,\nclean_lsfo_port,\nclean_hsdo_port,\nclean_lsdo_port,\ntg_hsfo_port,\ntg_lsfo_port,\ntg_hsdo_port,\ntg_lsdo_port,\nengine_parms,\ndisch_hsfo_cons,\ndisch_lsfo_cons,\ndisch_hsdo_cons,\ndisch_lsdo_cons,\nload_hsfo_cons,\nload_lsfo_cons,\nload_hsdo_cons,\nload_lsdo_cons,\nidle_hsfo_cons,\nidle_lsfo_cons,\nidle_hsdo_cons,\nidle_lsdo_cons,\nmaneuv_hsfo_cons,\nmaneuv_lsfo_cons,\nmaneuv_hsdo_cons,\nmaneuv_lsdo_cons,\ndisch_hsfo_port,\ndisch_lsfo_port,\ndisch_hsdo_port,\ndisch_lsdo_port,\nload_hsfo_port,\nload_lsfo_port,\nload_hsdo_port,\nload_lsdo_port,\nidle_hsfo_port,\nidle_lsfo_port,\nidle_hsdo_port,\nidle_lsdo_port,\nmaneuv_hsfo_port,\nmaneuv_lsfo_port,\nmaneuv_hsdo_port,\nmaneuv_lsdo_port,\nball_hrs,\nheat_hrs,\ndisch_hrs,\nload_hrs,\nidle_hrs,\nmaneuv_hrs,\nhbn_co_cons,\nlbn_co_cons,\nco_cons,\nso_cons,\ngo_cons,\nport_name_full,\napproved,\nmax_temp_tc_in_2,\nmax_temp_tc_out_2,\nremarks_office,\neca_area,\nberth_unberth,\nsts_operations,\nport_action,\nhsgo_rob,\nlsgo_rob,\nsupplied_hsgo_rob,\nsupplied_lsgo_rob,\nsupplied_hsgo_port,\nsupplied_lsgo_port,\nhsfo_bdn_no,\nlsfo_bdn_no,\nhsdo_bdn_no,\nlsdo_bdn_no,\nhsfo_bdn_date,\nlsfo_bdn_date,\nhsdo_bdn_date,\nlsdo_bdn_date,\nnext_port_gmt_offset,\nsrc_filename,\nsrc_fullfilepath,\nsrc_fulldirname,\nsrc_reldirname,\nintegration_key,\n_validation_error as validation_error,\nw_source_system,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom \n${p_epsdl_sri_db}.rej_sri_telegrams_custom"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_telegrams_custom"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

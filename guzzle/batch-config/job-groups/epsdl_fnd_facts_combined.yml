@@ -7,4 +7,9 @@ jobs:
 - "fact_ship_days"
 - "fact_dry_dock_details"
 - "fact_gl_budget"
-parallel: 5
+- "fact_supply_items"
+- "fact_supplier_invoicing"
+- "dim_requisitions_category"
+- "fact_port_calls_danaos"
+- "fact_port_calls_imos"
+parallel: 4

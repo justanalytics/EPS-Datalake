@@ -1,0 +1,24 @@
+version: 1
+job:
+  type: "ingestion"
+source:
+  endpoint: "lo_dbfs"
+  properties:
+    format: "delimited"
+    charset: "UTF-8"
+    format_properties:
+      column_delimiter: ","
+      quote_delimiter: "\""
+      escape_char: "\\\\"
+      contains_header: true
+    source_file_pattern: "vessel*.csv"
+schema:
+  strict_schema_check: true
+  schema_derivation_strategy: "source"
+  discard: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "dim_gl_vessel"
+  operation: "append"

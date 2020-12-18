@@ -1,0 +1,23 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nvessel_code,\ntelegram_date,\ntelegram_type,\nport_name,\nlongitude_degrees,\nlongitude_seconds,\nlongitude_n_s,\nlatitude_degrees,\nlatitude_seconds,\nlatitude_e_w,\ngmt_difference,\ngmt_plus,\nfo_rob,\nfo_log,\ndo_rob,\ndo_log,\ngas_oil_rob,\ngas_oil_log,\nfo_meter_indication,\ndo_meter_indication,\nboiller_meter,\nco_in_use,\nco_in_storage,\nso_in_use,\nso_in_storage,\ngo_in_use,\ngo_in_storage,\ndraft_fore,\ndraft_aft,\nengine_rpm,\ntc_rpm,\nfuel_rack,\npropeller_pitch,\nmiles_slc,\nhours_slc,\nminutes_slc,\nwind_direction,\nwind_force,\nsea_direction,\nsea_force,\ncurrent_direction,\ncurrent_speed,\nswell_direction,\nswell_force,\nvessel_course,\ngenerators_kw_shaft,\ngenerators_kw_diesel,\ncargo_total,\ncargo_volume,\nbalast_flag,\ntimecharter_flag,\nsupplied_fo,\nsupplied_do,\nsupplied_gas_oil,\nsupplied_co,\nsupplied_so,\nsupplied_go,\nfresh_water_rob,\nfresh_water_bunkered,\nport_static_time,\nmaneouvering_time,\nmaneouvering_miles,\nconsumption_fo_static,\nconsumption_fo_man,\nconsumption_do_static,\nconsumption_do_man,\nconsumption_gas_oil_static,\nconsumption_gas_oil_man,\nnext_port,\neta_next_port,\nmaster_name,\nchief_eng_name,\nremarks_position,\nmiles_to_port,\nmessage,\nlon_r,\nlat_r,\nfw_boiler_cons,\ncargo_name_1,\ncargo_temperature_1,\ntemp_scal_1,\ncargo_name_2,\ncargo_temperature_2,\ntemp_scal_2,\nheating_fo_cons,\nheating_do_cons,\nheating_go_cons,\nlocal_time_est,\ncargo_type,\nballast_qty_mtn,\naverage_speed,\nengine_miles,\naverage_me_cons,\nslow_steaming_reason,\nslow_steaming_hours,\nslow_steaming_min,\nslow_steaming_me_cons,\nstoppages_hours,\nstoppages_min,\nstoppages_reason,\nslow_steaming_miles,\ndraft_mid,\nengine_2_rpm,\ntc_rpm_2,\ntc_rpm_3,\ntc_rpm_4,\nme_exch_gas_min,\nme_exch_gas_max,\nme_scav_air_pres,\nme_load_ind,\nslip_factor,\nme_fo_cons,\ndo_cons,\nboiler_cons_fo,\nboiler_cons_do,\nturbo_gen_kw,\ndiesel_gen_no,\ndw_production,\ndw_consumption,\ndw_rob,\nsea_temperature,\nshifting_miles,\nshifting_cons_fo,\nshifting_cons_do,\nshifting_timehours,\net_berthing,\nh_oil_rob,\nh_oil_supplied,\ngmt_time_zone,\nfw_produced,\nloaded_cargo_mt,\ndisch_cargo,\nship_fig_agreed,\ncash_to_master,\ncash_cur,\nscav_air_temp,\nport_air_cooler_pres_drop,\nstbd_air_cooler_pres_drop,\noutdoor_temp,\nnext_port_action,\nfree_text,\nae_cons_fo,\nae_cons_do,\nport_days,\nvoy,\nsub_voy_no,\nexp_ref,\nsetl_tank,\nadverse_current,\nindicated_speed,\ndg_cons_do,\neop_fo_rob,\neop_lsfo_rob,\neop_do_rob,\neop_go_rob,\nsupplied_ifo,\nsupplied_hfo,\nhsfo_rob,\nlsfo_rob,\nhsdo_rob,\nlsdo_rob,\nsupplied_hsfo_rob,\nsupplied_lsfo_rob,\nsupplied_hsdo_rob,\nsupplied_lsdo_rob,\nme_hsfo_cons,\nme_lsfo_cons,\nme_hsdo_cons,\nme_lsdo_cons,\nae_hsfo_cons,\nae_lsfo_cons,\nae_hsdo_cons,\nae_lsdo_cons,\nboiler_hsfo_cons,\nboiler_lsfo_cons,\nboiler_hsdo_cons,\nboiler_lsdo_cons,\nme_fo_consumption,\nme_do_consumption,\nae_fo_consumption,\nae_do_consumption,\nboiler_fo_consumption,\nboiler_do_consumption,\nsent_status,\nnor_anchored,\nsludge_land,\nlo_press_before_filter,\nlo_press_after_filter,\nme_exch_gas_min_2,\nme_exch_gas_min_3,\nme_exch_gas_min_4,\nme_exch_gas_min_5,\nme_exch_gas_min_6,\nme_exch_gas_min_7,\nme_exch_gas_min_8,\nme_exch_gas_max_2,\nme_exch_gas_max_3,\nme_exch_gas_max_4,\nme_exch_gas_max_5,\nme_exch_gas_max_6,\nme_exch_gas_max_7,\nme_exch_gas_max_8,\nme_ifo_cons,\nme_port,\nme_stbd,\nberthed,\nifo_rob,\ncon_ae_stbd_fwd_cyl,\ncon_ae_stbd_fwd_sys,\ncon_ae_stbd_fwd_ae,\ncon_ae_stbd_ctr_cyl,\ncon_ae_stbd_ctr_sys,\ncon_ae_stbd_ctr_ae,\ncon_ae_stbd_aft,\ncon_ae_port_aft,\npresent_speed,\nmiles_slc_log,\nhours_slc_log,\nminutes_slc_log,\nlosses_mdo,\nlosses_hfo,\nme_ctr,\nagent,\nnr_of_tugs,\nanchored,\ncargo_doc_ob,\nmaneuvering_time,\ncargo_gear_working,\ndg1_hours,\ndg1_kw,\ndg2_hours,\ndg2_kw,\ndg3_hours,\ndg3_kw,\ndg4_hours,\ndg4_kw,\nsg_hours,\nsg_kw,\ncon_ae_port_fwd,\ncon_ae_port_ctr,\nae_total_ifo,\nae_total_hfo,\nsrc_filename,\nsrc_fullfilepath,\nsrc_fulldirname,\nsrc_reldirname,\nintegration_key,\nrej_sri_telegrams._validation_error as validation_error,\nw_source_system,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom \n${p_epsdl_sri_db}.rej_sri_telegrams rej_sri_telegrams"
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_telegrams"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

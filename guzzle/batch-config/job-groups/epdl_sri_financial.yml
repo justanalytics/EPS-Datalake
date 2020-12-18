@@ -4,8 +4,6 @@ properties: {}
 jobs:
 - "sri_danaos_documents"
 - "sri_cubic_documents"
-- "sri_company_master"
-- "sri_company_hierarchy"
 - "sri_budget_opex_monitor"
 - "sri_account"
 - "sri_service_hierarchy"
@@ -21,4 +19,8 @@ jobs:
 - "sri_department"
 - "sri_data_security"
 - "sri_account_mapping"
-parallel: 9
+- "sri_tpmoff_documents"
+- "sri_eps_charter_documents"
+- "sri_companies"
+- "sri_intercompany"
+parallel: 4

@@ -1,0 +1,35 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \n      sri_insp_inspection_observation.id\n      ,sri_insp_inspection_observation.job_code\n      ,sri_insp_inspection_observation.details\n      ,sri_insp_inspection_observation.inspection_id\n      ,sri_insp_inspection_observation.integration_key\n      ,null as w_x_custom\n      ,sri_insp_inspection_observation.w_job_instance_id\n      ,sri_insp_inspection_observation.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,sri_insp_inspection_observation.w_source_system as w_data_src_id\n      ,sri_insp_inspection_observation.w_location\n      ,sri_insp_inspection_observation.w_batch_id\n      ,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_insp_inspection_observation sri_insp_inspection_observation\nwhere sri_insp_inspection_observation.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_inspection_observation"
+  merge_columns:
+  - "id"
+  - "job_code"
+  - "details"
+  - "inspection_id"
+  endpoint: "lo_delta_tables"

@@ -1,0 +1,51 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select\njournal_company\n,journal_date\n,journal_line\n,journal_number\n,journal_posting\n,journal_series\n,journal_status\n,journal_user\n,journal_user_2\n,last_updated\n,matching_company\n,matching_line\n,matching_number\n,matching_series\n,mc_reference\n,name\n,narrative\n,our_company\n,w_source_system\n,from_to\n,integration_key\n,null as w_x_custom\n,w_job_instance_id\n,w_refresh_ts\n,null as w_curr_rec_flg\n,w_source_system as w_data_src_id\n,w_location\n,w_batch_id\n,'${business_date[0..9]}' as business_date\nfrom ${p_epsdl_sri_db}.sri_documents\nwhere w_business_dt='${business_date[0..9]}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ALL'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_documents_attributes"
+  merge_columns:
+  - "journal_company"
+  - "journal_date"
+  - "journal_line"
+  - "journal_number"
+  - "journal_posting"
+  - "journal_series"
+  - "journal_status"
+  - "journal_user"
+  - "journal_user_2"
+  - "last_updated"
+  - "matching_company"
+  - "matching_line"
+  - "matching_number"
+  - "matching_series"
+  - "mc_reference"
+  - "name"
+  - "narrative"
+  - "our_company"
+  - "w_source_system"
+  - "from_to"
+  endpoint: "lo_delta_tables"

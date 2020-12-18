@@ -1,0 +1,11 @@
+description: ""
+version: 1
+properties: {}
+jobs:
+- "sri_imos_port_call"
+- "sri_expected_call"
+- "sri_ports_library"
+- "sri_telegrams"
+- "sri_telegrams_custom"
+- "sri_bp_ports"
+parallel: 1
