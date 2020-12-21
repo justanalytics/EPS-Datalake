@@ -1921,8 +1921,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "TANKPAC",
-					"table": "SUPPLIER_INVOICING"
+					"schema": "NSLADMIN",
+					"table": "DELIVERY_POINT"
 				}
 			},
 			"dependsOn": [

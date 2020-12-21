@@ -7725,8 +7725,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "TANKPAC",
-					"table": "SUPPLIER_INVOICING"
+					"schema": "NSLADMIN",
+					"table": "DELIVERY_POINT"
 				}
 			},
 			"dependsOn": [
@@ -8236,7 +8236,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('supplier_invoicing','_20201221_000000','.parquet')",
+							"value": "@concat('delivery_point','_20201221_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
