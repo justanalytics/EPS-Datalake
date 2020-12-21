@@ -67,30 +67,6 @@
 			"type": "string",
 			"defaultValue": "https://api.powerbi.com/"
 		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_TenantId": {
-			"type": "string",
-			"defaultValue": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPClientId": {
-			"type": "string",
-			"defaultValue": "f2128599-61e0-4ec8-aa6d-de904319802d"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPSecret": {
-			"type": "string",
-			"defaultValue": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIAppWorkspaceId": {
-			"type": "string",
-			"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIDatasetId": {
-			"type": "string",
-			"defaultValue": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_Email": {
-			"type": "string",
-			"defaultValue": "agnit.chatterjee@justanalytics.com"
-		},
 		"epsdlselfhostedintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
@@ -169,15 +145,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"FileServer1_password": {
-						"value": "[parameters('FileServer1_password')]"
-					},
-					"FileServer1_properties_typeProperties_host": {
-						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
-					},
-					"FileServer1_properties_typeProperties_userId": {
-						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -199,6 +166,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"FileServer1_password": {
+						"value": "[parameters('FileServer1_password')]"
+					},
 					"Oracle1_connectionString": {
 						"value": "[parameters('Oracle1_connectionString')]"
 					},
@@ -208,23 +178,11 @@
 					"Oracle_datalake_connectionString": {
 						"value": "[parameters('Oracle_datalake_connectionString')]"
 					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_TenantId": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_TenantId')]"
+					"FileServer1_properties_typeProperties_host": {
+						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
 					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPClientId": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPClientId')]"
-					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPSecret": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPSecret')]"
-					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIAppWorkspaceId": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIAppWorkspaceId')]"
-					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIDatasetId": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIDatasetId')]"
-					},
-					"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_Email": {
-						"value": "[parameters('EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_Email')]"
+					"FileServer1_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					}
 				}
 			},

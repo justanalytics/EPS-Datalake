@@ -50,24 +50,6 @@
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://api.powerbi.com/"
 		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_TenantId": {
-			"value": "cc3f0441-9868-4f81-a6f2-6d91c68fe354"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPClientId": {
-			"value": "f2128599-61e0-4ec8-aa6d-de904319802d"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_SPSecret": {
-			"value": "7qLOQ8e956yGNvpbHwf.E.LoFu_~KA527X"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIAppWorkspaceId": {
-			"value": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_PBIDatasetId": {
-			"value": "bd73f006-b99e-4473-b407-70ed2c1b0f9e"
-		},
-		"EPS_UAT_PBI_Refresh_properties_PowerBI_DataSet_Refresh_UAT_parameters_Email": {
-			"value": "agnit.chatterjee@justanalytics.com"
-		},
 		"epsdlselfhostedintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
 		},
