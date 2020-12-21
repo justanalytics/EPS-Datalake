@@ -1435,7 +1435,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('requisitions','.parquet')",
+							"value": "@concat('supplier_invoicing','_20201221_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",

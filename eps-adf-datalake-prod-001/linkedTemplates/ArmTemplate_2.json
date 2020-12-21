@@ -1922,7 +1922,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "TANKPAC",
-					"table": "REQUISITIONS"
+					"table": "SUPPLIER_INVOICING"
 				}
 			},
 			"dependsOn": [
