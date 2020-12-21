@@ -3995,8 +3995,14 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {
-								"Email": "@pipeline().parameters.emails",
-								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -4019,8 +4025,14 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {
-								"Email": "@pipeline().parameters.emails",
-								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -4043,8 +4055,14 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {
-								"Email": "@pipeline().parameters.emails",
-								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -4067,8 +4085,14 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {
-								"Email": "@pipeline().parameters.emails",
-								"Datetime": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))"
+								"Email": {
+									"value": "@pipeline().parameters.emails",
+									"type": "Expression"
+								},
+								"Datetime": {
+									"value": "@trim(replace(pipeline().parameters.datetime, ' 00:00:00', ''))",
+									"type": "Expression"
+								}
 							}
 						}
 					}
