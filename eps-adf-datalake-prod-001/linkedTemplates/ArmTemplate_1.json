@@ -1284,7 +1284,7 @@
 						"folderPath": "epsdl/data/landing",
 						"container": "epsdlcontainer"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
@@ -1311,7 +1311,7 @@
 						"folderPath": "epsdl/data/landing",
 						"container": "epsdlcontainer"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": [
 					{
