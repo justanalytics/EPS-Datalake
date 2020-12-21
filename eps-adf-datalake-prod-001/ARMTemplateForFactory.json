@@ -7725,8 +7725,8 @@
 				"type": "OracleTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "NSLADMIN",
-					"table": "REQN_AUDIT_LOG"
+					"schema": "DANAOS",
+					"table": "EXPECTED_CALL"
 				}
 			},
 			"dependsOn": [
@@ -8236,7 +8236,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('reqn_audit_log','_20201221_000000','.parquet')",
+							"value": "@concat('Expected_call','_20201221_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
