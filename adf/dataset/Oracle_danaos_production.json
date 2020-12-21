@@ -9,8 +9,8 @@
 		"type": "OracleTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "NSLADMIN",
-			"table": "REQN_AUDIT_LOG"
+			"schema": "DANAOS",
+			"table": "EXPECTED_CALL"
 		}
 	}
 }
