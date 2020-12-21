@@ -1922,7 +1922,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "DANAOS",
-					"table": "TELEGRAMS"
+					"table": "TELEGRAMS_CUSTOM"
 				}
 			},
 			"dependsOn": [
