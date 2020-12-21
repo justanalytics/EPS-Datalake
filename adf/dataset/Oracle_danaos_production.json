@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "NSLADMIN",
-			"table": "SUPPLIER_REGISTRY"
+			"table": "REQN_AUDIT_LOG"
 		}
 	}
 }
