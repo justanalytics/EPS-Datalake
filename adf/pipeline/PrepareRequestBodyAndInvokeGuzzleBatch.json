@@ -498,11 +498,11 @@
 				}
 			},
 			{
-				"name": "powerbi_refresh",
+				"name": "powerbi_refresh_opex",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "powerbi_refresh_rejection",
+						"activity": "SuccessNotification",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -532,7 +532,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "SuccessNotification",
+						"activity": "PowerBI_DataSet_Refresh_Supply_Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -555,6 +555,66 @@
 							"type": "Expression"
 						}
 					}
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Trial_Balance",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "powerbi_refresh_opex",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Port_Calls",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Trial_Balance",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Port_Calls",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PowerBI_DataSet_Refresh_Supply_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PowerBI_DataSet_Refresh_Port_Calls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PowerBI_DataSet_Refresh_Supply_Log",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
