@@ -1922,7 +1922,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "NSLADMIN",
-					"table": "DELIVERY_POINT"
+					"table": "SUPPLIER_REGISTRY"
 				}
 			},
 			"dependsOn": [

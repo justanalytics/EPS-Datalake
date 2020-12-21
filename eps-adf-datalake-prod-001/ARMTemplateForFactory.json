@@ -7726,7 +7726,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "NSLADMIN",
-					"table": "DELIVERY_POINT"
+					"table": "SUPPLIER_REGISTRY"
 				}
 			},
 			"dependsOn": [
@@ -8236,7 +8236,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('delivery_point','_20201221_000000','.parquet')",
+							"value": "@concat('supplier_registry','_20201221_000000','.parquet')",
 							"type": "Expression"
 						},
 						"folderPath": "epsdl/data/landing/",
