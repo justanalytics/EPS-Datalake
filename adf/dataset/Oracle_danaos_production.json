@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "TANKPAC",
-			"table": "REQUISITIONS"
+			"table": "SUPPLY_ITEMS"
 		}
 	}
 }
