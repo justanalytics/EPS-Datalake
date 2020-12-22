@@ -229,11 +229,11 @@
 			},
 			"PBIAppWorkspaceId": {
 				"type": "string",
-				"defaultValue": "e25d3b9f-7534-4f0c-b663-6d88d8fc9dab"
+				"defaultValue": "12e74f77-05e7-4fc8-a802-188561589315"
 			},
 			"PBIDatasetId": {
 				"type": "string",
-				"defaultValue": "f83db4b9-cfda-4f28-ad67-2f25f196ce81"
+				"defaultValue": "56eee509-aaa9-4e56-9e64-3245ac0edf8c"
 			},
 			"Email": {
 				"type": "string",
