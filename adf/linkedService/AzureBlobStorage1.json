@@ -6,7 +6,7 @@
 		"type": "AzureBlobStorage",
 		"typeProperties": {
 			"connectionString": "DefaultEndpointsProtocol=https;AccountName=epsdlsdatalakedev001;",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkVQUy1BREYtREFUQUxBS0UtREVWLTAwMV9hYTE2ZjdmYi05MjNiLTQyZWQtODI4MC05OTEzMWVmYjhjZmUiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkVQUy1BREYtREFUQUxBS0UtREVWLTAwMV81ZDlmYjhhOS0yMjk4LTQ4YjMtOWJiNS0yMmM1NzAxYTM2NDciDQp9"
 		}
 	}
 }
