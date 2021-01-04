@@ -23,10 +23,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
 		},
-		"FileServer1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'FileServer1'"
-		},
 		"HttpServer1GuzzleService_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'HttpServer1GuzzleService'"
@@ -42,14 +38,6 @@
 		"Oracle_datalake_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Oracle_datalake'"
-		},
-		"FileServer1_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "203.92.109.65"
-		},
-		"FileServer1_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "vendor1.POC1"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
@@ -8362,15 +8350,9 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "epsdlselfhostedintegrationruntime",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
@@ -8423,30 +8405,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/FileServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FileServer1_properties_typeProperties_host')]",
-					"userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('FileServer1_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "epsdlselfhostedintegrationruntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/HttpServer1GuzzleService')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -8490,15 +8448,9 @@
 				"type": "Oracle",
 				"typeProperties": {
 					"connectionString": "[parameters('Oracle1_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "epsdlselfhostedintegrationruntime",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Oracle_Danaos_Production')]",
@@ -8509,15 +8461,9 @@
 				"type": "Oracle",
 				"typeProperties": {
 					"connectionString": "[parameters('Oracle_Danaos_Production_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "epsdlselfhostedintegrationruntime",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Oracle_datalake')]",
@@ -8528,15 +8474,9 @@
 				"type": "Oracle",
 				"typeProperties": {
 					"connectionString": "[parameters('Oracle_datalake_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "epsdlselfhostedintegrationruntime",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/epsdlselfhostedintegrationruntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RestService1')]",
