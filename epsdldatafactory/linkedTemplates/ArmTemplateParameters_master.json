@@ -17,9 +17,6 @@
 		"AzureSynapseAnalytics1_connectionString": {
 			"value": ""
 		},
-		"FileServer1_password": {
-			"value": ""
-		},
 		"HttpServer1GuzzleService_password": {
 			"value": ""
 		},
@@ -31,12 +28,6 @@
 		},
 		"Oracle_datalake_connectionString": {
 			"value": ""
-		},
-		"FileServer1_properties_typeProperties_host": {
-			"value": "203.92.109.65"
-		},
-		"FileServer1_properties_typeProperties_userId": {
-			"value": "vendor1.POC1"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"value": "https://epsdlguzzlevm-2d89c68b94.southeastasia.cloudapp.azure.com:9090/"

@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "epsdldatafactory"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
@@ -22,6 +26,14 @@
 		"HttpServer1GuzzleService_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'HttpServer1GuzzleService'"
+		},
+		"Oracle1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Oracle1'"
+		},
+		"Oracle_Danaos_Production_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Oracle_Danaos_Production'"
 		},
 		"HttpServer1GuzzleService_properties_typeProperties_url": {
 			"type": "string",
@@ -42,10 +54,6 @@
 		"IMOS_Rest_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.veslink.com/v1/imos/reports/Datalake_Voyage_Itinerary?apiToken=d35c8411a3292ebb9ee83c6163040cf9ed30848ea985df6ef3a5361a58e0e7d6"
-		},
-		"RestService1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://api.powerbi.com/"
 		}
 	},
 	"variables": {
@@ -646,6 +654,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -760,289 +781,30 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RestService1')]",
+			"name": "[concat(parameters('factoryName'), '/Oracle1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"type": "RestService",
+				"type": "Oracle",
 				"typeProperties": {
-					"url": "[parameters('RestService1_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Anonymous"
+					"connectionString": "[parameters('Oracle1_connectionString')]"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/epsdlselfhostedintegrationruntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"name": "[concat(parameters('factoryName'), '/Oracle_Danaos_Production')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
+				"annotations": [],
+				"type": "Oracle",
+				"typeProperties": {
+					"connectionString": "[parameters('Oracle_Danaos_Production_connectionString')]"
+				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PowerBI_DataSet_Refresh')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Oauth2 Login",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": {
-								"value": "@concat('https://login.microsoftonline.com/',pipeline().parameters.TenantId,'/oauth2/token')",
-								"type": "Expression"
-							},
-							"method": "POST",
-							"headers": {
-								"Content-Type": "application/x-www-form-urlencoded"
-							},
-							"body": {
-								"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',pipeline().parameters.SPClientId,'&client_secret=',encodeUriComponent(pipeline().parameters.SPSecret))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Call Dataset Refresh",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Oauth2 Login",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": true,
-							"secureInput": true
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": {
-								"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes')",
-								"type": "Expression"
-							},
-							"method": "POST",
-							"headers": {
-								"Authorization": {
-									"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
-									"type": "Expression"
-								}
-							},
-							"body": {
-								"helloww": "worldddd"
-							}
-						}
-					},
-					{
-						"name": "Until Refresh Complete",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "Call Dataset Refresh",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@not(equals('Unknown',variables('RefreshStatus')))",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Wait1",
-									"type": "Wait",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": 30
-									}
-								},
-								{
-									"name": "Get Dataset Refresh Status",
-									"type": "WebActivity",
-									"dependsOn": [
-										{
-											"activity": "Wait1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"url": {
-											"value": "@concat('https://api.powerbi.com/v1.0/myorg/groups/',pipeline().parameters.PBIAppWorkspaceId,'/datasets/',pipeline().parameters.PBIDatasetId,'/refreshes?$top=1')",
-											"type": "Expression"
-										},
-										"method": "GET",
-										"headers": {
-											"Authorization": {
-												"value": "@concat(string(activity('Oauth2 Login').output.token_type),' ',string(activity('Oauth2 Login').output.access_token))",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
-									"name": "Set RefreshStatus",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Get Dataset Refresh Status",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "RefreshStatus",
-										"value": {
-											"value": "@activity('Get Dataset Refresh Status').output.value[0].status",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"timeout": "7.00:00:00"
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Until Refresh Complete",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(variables('RefreshStatus'),'Completed')",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "Execute Pipeline1",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Failure_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
-									"name": "RaiseException",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Execute Pipeline1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "RefreshStatus",
-										"value": {
-											"value": "@add(1, 1)",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"parameters": {
-					"TenantId": {
-						"type": "String",
-						"defaultValue": "bc5c7327-b12e-48db-a856-175591ecd2f0"
-					},
-					"SPClientId": {
-						"type": "String",
-						"defaultValue": "8465ee6f-bb69-480c-9dd9-7ae4b9c81514"
-					},
-					"SPSecret": {
-						"type": "String",
-						"defaultValue": "lkh-9MjYN-Bf7GZ8vKt98~_y7SK01aAwKS"
-					},
-					"PBIAppWorkspaceId": {
-						"type": "string",
-						"defaultValue": "2f2ce11d-59ad-4e92-96cc-82aaaab85444"
-					},
-					"PBIDatasetId": {
-						"type": "string",
-						"defaultValue": "d2f1d271-6cf1-4abb-b01f-8f983c2cccee"
-					},
-					"Email": {
-						"type": "string",
-						"defaultValue": "agnit.chatterjee@justanalytics.com"
-					},
-					"Datetime": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RefreshStatus": {
-						"type": "String",
-						"defaultValue": "Unknown"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2020-10-24T14:21:25Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PowerBI_Refresh_Failure_Email')]"
-			]
 		}
 	]
 }
