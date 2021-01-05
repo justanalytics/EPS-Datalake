@@ -65,7 +65,7 @@
 		},
 		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
-			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
+			"defaultValue": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/eps-rg-datalake-prod-sg-1/providers/Microsoft.DataFactory/factories/eps-adf-datalake-prod-001/integrationruntimes/integrationRuntime1"
 		},
 		"containerUri": {
 			"type": "string",
@@ -94,9 +94,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBlobStorage1_connectionString": {
-						"value": "[parameters('AzureBlobStorage1_connectionString')]"
-					},
 					"AzureDatabricks1_accessToken": {
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
@@ -108,12 +105,6 @@
 					},
 					"HttpServer1GuzzleService_password": {
 						"value": "[parameters('HttpServer1GuzzleService_password')]"
-					},
-					"Oracle1_connectionString": {
-						"value": "[parameters('Oracle1_connectionString')]"
-					},
-					"Oracle_Danaos_Production_connectionString": {
-						"value": "[parameters('Oracle_Danaos_Production_connectionString')]"
 					},
 					"HttpServer1GuzzleService_properties_typeProperties_url": {
 						"value": "[parameters('HttpServer1GuzzleService_properties_typeProperties_url')]"
@@ -129,6 +120,12 @@
 					},
 					"IMOS_Rest_properties_typeProperties_url": {
 						"value": "[parameters('IMOS_Rest_properties_typeProperties_url')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
@@ -147,15 +144,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"Oracle_datalake_connectionString": {
-						"value": "[parameters('Oracle_datalake_connectionString')]"
-					},
-					"RestService1_properties_typeProperties_url": {
-						"value": "[parameters('RestService1_properties_typeProperties_url')]"
-					},
-					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
@@ -176,6 +164,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"Oracle1_connectionString": {
+						"value": "[parameters('Oracle1_connectionString')]"
+					},
+					"Oracle_Danaos_Production_connectionString": {
+						"value": "[parameters('Oracle_Danaos_Production_connectionString')]"
+					},
+					"Oracle_datalake_connectionString": {
+						"value": "[parameters('Oracle_datalake_connectionString')]"
 					}
 				}
 			},

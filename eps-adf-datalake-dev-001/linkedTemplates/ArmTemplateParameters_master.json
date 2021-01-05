@@ -48,7 +48,7 @@
 			"value": "https://api.powerbi.com/"
 		},
 		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
-			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/JustAnalytics-DataLake-24_Mar2020_POC/providers/Microsoft.DataFactory/factories/epsdldatafactory/integrationruntimes/epsdlselfhostedintegrationruntime"
+			"value": "/subscriptions/e3b5b493-9c0a-4a7f-a504-8a07bd0d69f1/resourcegroups/eps-rg-datalake-prod-sg-1/providers/Microsoft.DataFactory/factories/eps-adf-datalake-prod-001/integrationruntimes/integrationRuntime1"
 		},
 		"containerUri": {
 			"value": ""
