@@ -6426,8 +6426,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2021-01-05T23:00:00Z",
-						"timeZone": "UTC",
-						"schedule": {}
+						"timeZone": "UTC"
 					}
 				}
 			},
