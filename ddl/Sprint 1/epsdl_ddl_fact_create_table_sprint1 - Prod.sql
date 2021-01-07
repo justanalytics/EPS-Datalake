@@ -1,4 +1,4 @@
-CREATE TABLE epsdld.fact_gl_transactions
+CREATE TABLE epsdlp.fact_gl_transactions
 (
  `accrual_type` string,
  `accrued_by_user` string,
@@ -138,16 +138,16 @@ CREATE TABLE epsdld.fact_gl_transactions
  `w_job_instance_id` bigint ,
  `w_refresh_ts` timestamp ,
  `w_curr_rec_flg` string,
- `w_data_src_id` double,
+ `w_data_src_id` string,
  `w_location` string ,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp) using delta
  PARTITIONED BY  (
  `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/fact_gl_transactions' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/fact_gl_transactions' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.fact_gl_budget
+CREATE TABLE epsdlp.fact_gl_budget
 (
  `vessel_code` string,
  `matching_date` date,
@@ -164,16 +164,16 @@ CREATE TABLE epsdld.fact_gl_budget
  `w_job_instance_id` bigint ,
  `w_refresh_ts` timestamp ,
  `w_curr_rec_flg` string,
- `w_data_src_id` double,
+ `w_data_src_id` string,
  `w_location` string ,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp) using delta
  PARTITIONED BY  (
  `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/fact_gl_budget' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/fact_gl_budget' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.fact_dry_dock_details
+CREATE TABLE epsdlp.fact_dry_dock_details
 (
  `vessel_code` string ,
  `vessel_id` string ,
@@ -183,9 +183,9 @@ CREATE TABLE epsdld.fact_dry_dock_details
  `dt_planned_entry` timestamp ,
  `dt_planned_exit` timestamp,
  `matching_date` date,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -196,10 +196,10 @@ CREATE TABLE epsdld.fact_dry_dock_details
 using delta
  PARTITIONED BY  (
  `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/fact_dry_dock_details' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/fact_dry_dock_details' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.fact_ship_days
+CREATE TABLE epsdlp.fact_ship_days
 (
  `vessel_code` string ,
  `vessel_id` string ,
@@ -207,9 +207,9 @@ CREATE TABLE epsdld.fact_ship_days
  `start_date` date,
  `sold_date` date,
  `ship_days` int,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -220,10 +220,10 @@ CREATE TABLE epsdld.fact_ship_days
 using delta
  PARTITIONED BY  (
  `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/fact_ship_days' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/fact_ship_days' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.fact_os_po
+CREATE TABLE epsdlp.fact_os_po
 (
  `parcial` decimal(38,18),
  `order_qty` decimal(38,18),
@@ -270,14 +270,14 @@ CREATE TABLE epsdld.fact_os_po
  `line_type` string,
  `vessel_current_year_flag` string,
  `order_code_line_type` string,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_job_instance_id` bigint ,
  `w_curr_rec_flg` string,
  `w_x_custom` string,
  `w_refresh_ts` timestamp ,
  `w_location` string ,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp) using delta
  PARTITIONED BY  (
  `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/fact_os_po' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/fact_os_po' TBLPROPERTIES ('transactional'='false');

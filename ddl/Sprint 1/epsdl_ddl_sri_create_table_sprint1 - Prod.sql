@@ -1,4 +1,4 @@
-CREATE TABLE  epsdlsrid.rej_sri_account
+CREATE TABLE  epsdlsrip.sri_account
 (
  `oracle_natural_account` string,
  `description` string,
@@ -19,7 +19,6 @@ CREATE TABLE  epsdlsrid.rej_sri_account
  `danaos_description_sub` string,
  `danaos_description_main` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -33,16 +32,15 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_account' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_account' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdlsrid.rej_sri_account_mapping
+CREATE TABLE  epsdlsrip.sri_account_mapping
 (
  `oracle_natural_account` string,
  `ledger_card` string,
  `source_system` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -56,10 +54,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_account_mapping' TBLPROPERTIES ('transactional'='false'); 
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_account_mapping' TBLPROPERTIES ('transactional'='false'); 
 
 
-CREATE TABLE  epsdlsrid.rej_sri_reporting_lines
+CREATE TABLE  epsdlsrip.sri_reporting_lines
 (
  `oracle_natural_account` string,
  `account_group` string,
@@ -69,7 +67,6 @@ CREATE TABLE  epsdlsrid.rej_sri_reporting_lines
  `acct_grouping_level1` string,
  `ledger_card` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -83,10 +80,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_reporting_lines' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_reporting_lines' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE   epsdlsrid.rej_sri_company_hierarchy
+CREATE TABLE   epsdlsrip.sri_company_hierarchy
 (
  `child_value` string,
  `child_description` string,
@@ -112,7 +109,6 @@ CREATE TABLE   epsdlsrid.rej_sri_company_hierarchy
  `danaos_co_code` string,
  `database` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -126,10 +122,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_company_hierarchy' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_company_hierarchy' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdlsrid.rej_sri_company_master
+CREATE TABLE  epsdlsrip.sri_company_master
 (
  `child_value` string,
  `danaos_co_code` string,
@@ -160,7 +156,6 @@ CREATE TABLE  epsdlsrid.rej_sri_company_master
  `vat_group_to` timestamp,
  `incexp_managed_by` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -174,10 +169,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_company_master' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_company_master' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdlsrid.rej_sri_vessel_hierarchy
+CREATE TABLE  epsdlsrip.sri_vessel_hierarchy
 (
  `vessel_code` string,
  `vessel_name` string,
@@ -188,7 +183,6 @@ CREATE TABLE  epsdlsrid.rej_sri_vessel_hierarchy
  `fleet_code` string,
  `fleet` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -202,10 +196,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_vessel_hierarchy' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_vessel_hierarchy' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdlsrid.rej_sri_vessel_master
+CREATE TABLE  epsdlsrip.sri_vessel_master
 (
  `vessel_code` string,
  `owning_entity` string,
@@ -243,7 +237,6 @@ CREATE TABLE  epsdlsrid.rej_sri_vessel_master
  `region` string,
  `include_in_drc` int,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -257,10 +250,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_vessel_master' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_vessel_master' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdlsrid.rej_sri_service_hierarchy
+CREATE TABLE  epsdlsrip.sri_service_hierarchy
 (
  `service_code` string,
  `service_description` string,
@@ -283,7 +276,6 @@ CREATE TABLE  epsdlsrid.rej_sri_service_hierarchy
  `parent9_code` string,
  `parent9_description` string,
  `integration_key` string,
- `_validation_error` string,
  `w_source_system` string,
  `w_src_file_name` string,
  `w_refresh_ts` timestamp,
@@ -297,10 +289,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_service_hierarchy' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_service_hierarchy' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_documents 
+CREATE TABLE epsdlsrip.sri_documents 
 ( 
 `document_date` timestamp,
 `document_type` string,
@@ -418,12 +410,11 @@ CREATE TABLE epsdlsrid.rej_sri_documents
 `transaction_cost` string,
 `accrual_flag` decimal(38,18),
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -432,10 +423,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_documents' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_documents' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_requisitions 
+CREATE TABLE epsdlsrip.sri_requisitions 
 ( 
 `vessel_code` string,
 `department` string,
@@ -539,12 +530,11 @@ CREATE TABLE epsdlsrid.rej_sri_requisitions
 `import_flag` string,
 `quotation_comments` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -553,16 +543,16 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_requisitions' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_requisitions' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_expected_call_da
+CREATE TABLE epsdlsrip.sri_expected_call_da
 (
 `vessel_code` string,
 `exp_ref` timestamp,
 `agent_code` string,
 `port_name` string,
-`eta` string, 
+`eta` string,  ---- remember to cast this col to datetime when needed
 `currency` string,
 `rate` decimal(38,18),
 `initial_journal_company` string,
@@ -630,12 +620,11 @@ CREATE TABLE epsdlsrid.rej_sri_expected_call_da
 `dadesk_invoiceref_third` string,
 `dadesk_invoiceref_final` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -644,10 +633,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_expected_call_da' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_expected_call_da' TBLPROPERTIES ('transactional'='false');
 
 
-create table epsdlsrid.rej_sri_vessel_dry_dock_details
+create table epsdlsrip.sri_vessel_dry_dock_details
 (   
 `vessel_code` string,
 `project_id` double,
@@ -685,12 +674,11 @@ create table epsdlsrid.rej_sri_vessel_dry_dock_details
 `vessel_short_name` string,
 `fleet` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -699,10 +687,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_vessel_dry_dock_details' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_vessel_dry_dock_details' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_budget_opex_monitor 
+CREATE TABLE IF NOT EXISTS epsdlsrip.sri_budget_opex_monitor 
 ( 
 `vessel_code` string, 
 `vessel_name` string, 
@@ -710,12 +698,11 @@ CREATE TABLE epsdlsrid.rej_sri_budget_opex_monitor
 `budget_value` decimal(10,2), 
 `total_period` bigint,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -724,10 +711,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_budget_opex_monitor' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_budget_opex_monitor' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_supply_items 
+CREATE TABLE IF NOT EXISTS epsdlsrip.sri_supply_items 
 ( 
 `document_code` string,
 `item_serial_no` decimal(38,18),
@@ -845,12 +832,11 @@ CREATE TABLE epsdlsrid.rej_sri_supply_items
 `invoice_sorting`	bigint,
 `created_by_vessel`	string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -859,10 +845,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_supply_items' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_supply_items' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_item_ledgers 
+CREATE TABLE IF NOT EXISTS epsdlsrip.sri_item_ledgers 
 (
 `ledger_card` string,
 `department` string,
@@ -870,12 +856,11 @@ CREATE TABLE epsdlsrid.rej_sri_item_ledgers
 `catalogue_group` string,
 `check_budget` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -884,10 +869,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_item_ledgers' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_item_ledgers' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_del_departments 
+CREATE TABLE epsdlsrip.sri_del_departments 
 ( 
 `name` string,
 `code` string,
@@ -895,12 +880,11 @@ CREATE TABLE epsdlsrid.rej_sri_del_departments
 `dept_reference` string,
 `office_code` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -909,10 +893,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_del_departments' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_del_departments' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_order_details 
+CREATE TABLE epsdlsrip.sri_order_details 
 ( 
 `document_code` string,
 `document_date` timestamp,
@@ -948,12 +932,11 @@ CREATE TABLE epsdlsrid.rej_sri_order_details
 `index_value` double,
 `create_date` timestamp,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -962,22 +945,21 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_order_details' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_order_details' TBLPROPERTIES ('transactional'='false');
 
 
-create table epsdlsrid.rej_sri_dept_mapping
+create table epsdlsrip.sri_dept_mapping
 (  
 `type` string,
 `dept_code` string,   
 `acc_code` string,  
 `acrl_code` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -986,22 +968,21 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_dept_mapping' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_dept_mapping' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_vessel_team_map
+CREATE TABLE epsdlsrip.sri_vessel_team_map
 (
 `company` string,
 `type` string,
 `accounts_team` string,
 `business_team` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -1010,10 +991,10 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_vessel_team_map' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_vessel_team_map' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdlsrid.rej_sri_department 
+CREATE TABLE epsdlsrip.sri_department 
 ( 
 `child_value` string, 
 `description` string, 
@@ -1036,12 +1017,11 @@ CREATE TABLE epsdlsrid.rej_sri_department
 `parent9` string, 
 `parent9_description` string, 
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -1050,21 +1030,22 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_department' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_department' TBLPROPERTIES ('transactional'='false');
+DIMENSION,LEVEL,VALUE
 
 
-CREATE TABLE epsdlsrid.rej_sri_data_security 
+CREATE TABLE epsdlsrip.sri_data_security 
 ( 
-`user_email` string, 
-`company_codes` string, 
-`vessel_codes` string,
+`email_address` string, 
+`dimension` string, 
+`level` string,
+`value` string,
 `integration_key` string,
-`_validation_error` string,
 `w_source_system` string,
 `w_src_file_name` string,
 `w_refresh_ts` timestamp,
 `w_job_instance_id` string,
-`w_business_dt` date,
+`w_business_dt` timestamp,
 `w_location` string,
 `w_batch_id` bigint
 ) using delta
@@ -1073,4 +1054,4 @@ PARTITIONED BY  (
 `w_source_system`,
 `w_location`,
 `w_batch_id`
-)  LOCATION '/mnt/epsdldeltadev/epsdlsrid/rej_sri_data_security' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlsrip/sri_data_security' TBLPROPERTIES ('transactional'='false');

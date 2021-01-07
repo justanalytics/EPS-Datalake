@@ -1,5 +1,5 @@
 
-insert into epsdld.dim_gl_account
+insert into epsdlp.dim_gl_account
 --(
 --oracle_natural_account,
 --ledger_card,
@@ -68,7 +68,7 @@ null
 
 
 
-insert into epsdld.dim_gl_reporting_lines
+insert into epsdlp.dim_gl_reporting_lines
 -- (
 -- oracle_natural_account,
 -- account_group,
@@ -115,7 +115,7 @@ null
 
 
 
-insert into epsdld.dim_gl_company
+insert into epsdlp.dim_gl_company
 -- (
 -- child_value,
 -- child_description,
@@ -239,7 +239,7 @@ null
 );
 
 
-insert into epsdld.dim_gl_vessel
+insert into epsdlp.dim_gl_vessel
 -- (
 -- addl_attribute1,
 -- addl_attribute2,
@@ -348,10 +348,10 @@ null,
 null,
 null,
 null
-)
+);
 
-insert into epsdld.dim_gl_service
-(
+insert into epsdlp.dim_gl_service
+-- (
 -- service_code,
 -- service_description,
 -- parent1_code,
@@ -382,7 +382,7 @@ insert into epsdld.dim_gl_service
 -- w_job_instance_id,
 -- w_curr_rec_flg,
 -- w_location
-)
+-- )
 VALUES
 (
 '00',
@@ -418,7 +418,7 @@ null
 );
 
 
-insert into epsdld.dim_gl_department
+insert into epsdlp.dim_gl_department
 -- (
 -- child_value,
 -- description,
@@ -486,9 +486,9 @@ null
 );
 
 
-CREATE TABLE IF NOT EXISTS epsdld.dim_period 
+CREATE TABLE IF NOT EXISTS epsdlp.dim_period 
 using delta 
-LOCATION '/mnt/epsdldeltadev/epsdld/dim_period' TBLPROPERTIES ('transactional'='false')
+LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_period' TBLPROPERTIES ('transactional'='false')
 AS
 WITH dates AS (
     SELECT date_add("1990-01-01", a.pos) as date

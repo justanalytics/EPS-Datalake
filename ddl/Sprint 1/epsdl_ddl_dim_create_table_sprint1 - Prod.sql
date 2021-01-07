@@ -1,4 +1,4 @@
-CREATE TABLE epsdld.dim_gl_account
+CREATE TABLE epsdlp.dim_gl_account
 (
  `oracle_natural_account` string,
  `ledger_card` string,
@@ -22,9 +22,9 @@ CREATE TABLE epsdld.dim_gl_account
  `source_system` string,
  `integration_key` string,
  `account_id` string,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -32,10 +32,10 @@ CREATE TABLE epsdld.dim_gl_account
  `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_account' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_account' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE  epsdld.dim_gl_reporting_lines
+CREATE TABLE  epsdlp.dim_gl_reporting_lines
 (
  `oracle_natural_account` string,
  `account_group` string,
@@ -48,9 +48,9 @@ CREATE TABLE  epsdld.dim_gl_reporting_lines
  `source_system` string,
  `integration_key` string,
  `account_id` string,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -58,10 +58,10 @@ CREATE TABLE  epsdld.dim_gl_reporting_lines
  `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-)  LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_reporting_lines' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_reporting_lines' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.dim_gl_company
+CREATE TABLE epsdlp.dim_gl_company
 (
   `child_value` string,
  `child_description` string,
@@ -113,9 +113,9 @@ CREATE TABLE epsdld.dim_gl_company
  `incexp_managed_by` string,
  `integration_key` string,
  `company_id` string,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -123,10 +123,10 @@ CREATE TABLE epsdld.dim_gl_company
  `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_company' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_company' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.dim_gl_vessel
+CREATE TABLE epsdlp.dim_gl_vessel
 (
  `addl_attribute1` string ,
  `addl_attribute2` string ,
@@ -170,11 +170,11 @@ CREATE TABLE epsdld.dim_gl_vessel
  `vessel_ownership` string,
  `region` string,
  `integration_key` string,
- `vessel_id` string
+ `vessel_id` string,
  `include_in_drc` int,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -182,10 +182,10 @@ CREATE TABLE epsdld.dim_gl_vessel
  `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_vessel' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_vessel' TBLPROPERTIES ('transactional'='false');
 
 
-create table epsdld.dim_gl_service 
+create table epsdlp.dim_gl_service 
 (
  `service_code` string,
  `service_description` string,
@@ -209,9 +209,9 @@ create table epsdld.dim_gl_service
  `parent9_description` string,
  `integration_key` string,
  `service_id` string,
- `w_batch_id` double ,
+ `w_batch_id` bigint ,
  `business_date` timestamp ,
- `w_data_src_id` double ,
+ `w_data_src_id` string ,
  `w_refresh_ts` timestamp ,
  `w_x_custom` string,
  `w_job_instance_id` bigint ,
@@ -219,10 +219,10 @@ create table epsdld.dim_gl_service
  `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-) LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_service' TBLPROPERTIES ('transactional'='false');
+) LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_service' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.dim_gl_department 
+CREATE TABLE epsdlp.dim_gl_department 
 ( 
 `child_value` string, 
 `description` string, 
@@ -246,9 +246,9 @@ CREATE TABLE epsdld.dim_gl_department
 `parent9_description` string, 
 `integration_key` string,
 `department_id` string,
-`w_batch_id` double ,
+`w_batch_id` bigint ,
 `business_date` timestamp ,
-`w_data_src_id` double ,
+`w_data_src_id` string ,
 `w_refresh_ts` timestamp ,
 `w_x_custom` string,
 `w_job_instance_id` bigint ,
@@ -256,18 +256,18 @@ CREATE TABLE epsdld.dim_gl_department
 `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-)  LOCATION '/mnt/epsdldeltadev/epsdld/dim_gl_department' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_gl_department' TBLPROPERTIES ('transactional'='false');
 
 
-CREATE TABLE epsdld.dim_data_security 
+CREATE TABLE epsdlp.dim_data_security 
 ( 
 `user_email` string, 
 `company_codes` string, 
 `vessel_codes` string,
 `integration_key` string,
-`w_batch_id` double ,
+`w_batch_id` bigint ,
 `business_date` timestamp ,
-`w_data_src_id` double ,
+`w_data_src_id` string ,
 `w_refresh_ts` timestamp ,
 `w_x_custom` string,
 `w_job_instance_id` bigint ,
@@ -275,4 +275,4 @@ CREATE TABLE epsdld.dim_data_security
 `w_location` string) using delta
 PARTITIONED BY  (
 `business_date`
-)  LOCATION '/mnt/epsdldeltadev/epsdld/dim_data_security' TBLPROPERTIES ('transactional'='false');
+)  LOCATION '/mnt/epsdldeltaprod/epsdlp/dim_data_security' TBLPROPERTIES ('transactional'='false');
