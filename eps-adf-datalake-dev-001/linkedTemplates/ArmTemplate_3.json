@@ -2123,9 +2123,6 @@
 											"storeSettings": {
 												"type": "AzureBlobStorageWriteSettings",
 												"maxConcurrentConnections": 10
-											},
-											"formatSettings": {
-												"type": "ParquetWriteSettings"
 											}
 										},
 										"enableStaging": false,
@@ -2224,9 +2221,6 @@
 											"storeSettings": {
 												"type": "AzureBlobStorageWriteSettings",
 												"maxConcurrentConnections": 10
-											},
-											"formatSettings": {
-												"type": "ParquetWriteSettings"
 											}
 										},
 										"enableStaging": false,
@@ -2908,9 +2902,6 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
