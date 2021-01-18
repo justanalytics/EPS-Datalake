@@ -226,31 +226,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -793,31 +768,6 @@
 										}
 									}
 								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
-										}
-									}
-								}
 							]
 						}
 					}
@@ -1356,31 +1306,6 @@
 										"value": {
 											"value": "@add(1, 1)",
 											"type": "Expression"
-										}
-									}
-								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
 										}
 									}
 								}
@@ -2488,31 +2413,6 @@
 										"value": {
 											"value": "@add(1, 1)",
 											"type": "Expression"
-										}
-									}
-								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "PowerBI_Refresh_Success_Email_Call",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "PowerBI_Refresh_Success_Email",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"emails": {
-												"value": "@pipeline().parameters.Email",
-												"type": "Expression"
-											},
-											"datetime": {
-												"value": "@pipeline().parameters.Datetime",
-												"type": "Expression"
-											}
 										}
 									}
 								}
