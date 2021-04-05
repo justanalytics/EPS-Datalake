@@ -1,0 +1,43 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select invoice_num\n       ,invoice_id\n       ,ledger_id\n       ,account_id\n       ,company_id\n       ,vessel_id\n       ,service_id\n       ,department_id\n       ,intercompany_id\n       ,future1_id\n       ,future2_id\n       ,code_combination_id\n       ,journal_id\n       ,journal_number\n       ,journal_line\n       ,description        \n       ,approval_status\n       ,url\n       ,integration_key\n       ,w_refresh_ts\n       ,w_x_custom\n       ,w_job_instance_id\n       ,w_curr_rec_flg\n       ,w_data_src_id\n       ,w_location\n       ,w_batch_id\n       ,business_date \nfrom (\n  select  invoice.invoice_num\n          ,invoice.invoice_id\n          ,invoice.ledger_id\n          ,coalesce(dim_gl_account.account_id,'000000') as account_id\n          ,coalesce(dim_gl_company.company_id,'0000') as company_id\n          ,coalesce(dim_gl_vessel.vessel_id,'0000') as vessel_id\n          ,coalesce(dim_gl_service.service_id,'00') as service_id\n          ,coalesce(dim_gl_department.department_id,'000') as department_id\n          ,coalesce(dim_gl_intercompany.intercompany_id,'0000') as intercompany_id\n          ,coalesce(dim_gl_future1.future1_id,'000') as future1_id\n          ,coalesce(dim_gl_future2.future2_id,'0000') as future2_id\n               ,coalesce(dim_gl_company.child_value,'')||'~'||coalesce(dim_gl_vessel.vessel_code,'')||'~'||coalesce(dim_gl_vessel.vessel_code,'')||'~'||coalesce(dim_gl_account.oracle_natural_account,'')||'~'||coalesce(dim_gl_intercompany.intercompany_code,'')||'~'||coalesce(dim_gl_department.child_value,'')||'~'||coalesce(dim_gl_future1.future1_code,'')||'~'||coalesce(dim_gl_future2.future2_code,'')as code_combination_id\n\n          ,invoice.je_header_id || '~' || invoice.je_line_num as journal_id\n          ,invoice.je_header_id journal_number\n          ,invoice.je_line_num journal_line\n          ,invoice.description        \n          ,invoice.approval_status\n          ,url.url\n          ,invoice.ledger_id || '~' || invoice.je_header_id || '~' || invoice.je_line_num  as integration_key\n          ,invoice.w_refresh_ts\n          ,null as w_x_custom\n          ,invoice.w_job_instance_id\n          ,null as w_curr_rec_flg\n          ,invoice.w_source_system as w_data_src_id\n          ,invoice.w_location\n          ,invoice.w_batch_id\n          ,invoice.w_business_dt as business_date\n          ,row_number() over (partition by invoice.ledger_id || '~' || invoice.je_header_id || '~' || invoice.je_line_num order by invoice.ledger_id || '~' || invoice.je_header_id || '~' || invoice.je_line_num) as row_num\n\n  from ${p_epsdl_sri_db}.sri_oracle_gl_ap_invoice invoice\n  join ${p_epsdl_sri_db}.sri_oracle_gl_invoice_url url ON invoice.invoice_id = url.invoice_id and url.url is not null\n\n  LEFT JOIN ${p_epsdl_sri_db}.sri_oracle_gl_account gl_account ON invoice.code_combination_id = gl_account.code_combination_id\n      AND gl_account.w_business_dt = '${business_date}'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59001') as company ON company.segment_code = gl_account.segment1\n      AND company.w_business_dt = '${business_date}'\n  LEFT JOIN (select * from ${p_epsdl_db}.dim_gl_company where w_data_src_id='ORACLE') dim_gl_company \n  on company.segment_code=dim_gl_company.child_value and dim_gl_company.w_data_src_id='ORACLE'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59002') as vessel ON vessel.segment_code = gl_account.segment2\n      AND vessel.w_business_dt = '${business_date}'\n  LEFT JOIN (select * from ${p_epsdl_db}.dim_gl_vessel where w_data_src_id='ORACLE') dim_gl_vessel\n  on vessel.segment_code=dim_gl_vessel.vessel_code and dim_gl_vessel.w_data_src_id='ORACLE'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59003') as service ON service.segment_code = gl_account.segment3\n      AND service.w_business_dt = '${business_date}'\n  LEFT JOIN (select * from ${p_epsdl_db}.dim_gl_service where w_data_src_id='ORACLE') dim_gl_service\n  on service.segment_code=dim_gl_service.service_code and dim_gl_service.w_data_src_id='ORACLE' and dim_gl_service.integration_key != '00'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59004') as department ON department.segment_code = gl_account.segment4\n      AND department.w_business_dt = '${business_date}'\n  LEFT JOIN (select * from ${p_epsdl_db}.dim_gl_department where w_data_src_id='ORACLE') dim_gl_department\n  on department.segment_code=dim_gl_department.child_value and dim_gl_department.w_data_src_id='ORACLE' and dim_gl_department.integration_key != '000'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59005') as natural_account ON natural_account.segment_code = gl_account.segment5\n      AND natural_account.w_business_dt = '${business_date}'\n  left join (select * from ${p_epsdl_db}.dim_gl_account where w_data_src_id='ORACLE') dim_gl_account\n  on natural_account.segment_code = dim_gl_account.oracle_natural_account and dim_gl_account.w_data_src_id='ORACLE'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59006') as intercompany ON intercompany.segment_code = gl_account.segment6\n      AND intercompany.w_business_dt = '${business_date}'\n  left join (select * from ${p_epsdl_db}.dim_gl_intercompany where w_data_src_id='ORACLE') dim_gl_intercompany\n  on intercompany.segment_code=dim_gl_intercompany.intercompany_code and dim_gl_intercompany.w_data_src_id='ORACLE'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59007') as future1 ON future1.segment_code = gl_account.segment7\n      AND future1.w_business_dt = '${business_date}'\n  left join ${p_epsdl_db}.dim_gl_future1 dim_gl_future1\n  on future1.segment_code=dim_gl_future1.future1_code and dim_gl_future1.w_data_src_id='ORACLE' and dim_gl_future1.integration_key != '000'\n\n  LEFT JOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59008') as future2 ON future2.segment_code = gl_account.segment8\n      AND future2.w_business_dt = '${business_date}'\n  left join ${p_epsdl_db}.dim_gl_future2 dim_gl_future2\n  on future2.segment_code=dim_gl_future2.future2_code and dim_gl_future2.w_data_src_id='ORACLE' and dim_gl_future2.integration_key != '0000'\n\n  where invoice.w_business_dt='${business_date}'\n  and url.w_business_dt='${business_date}'\n)\nwhere row_num=1"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+    framework_column: "w_refresh_ts"
+    framework_generated: true
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  - name: "w_data_src_id"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_gl_invoice_url"
+    pre_sql:
+    - "set spark.sql.autoBroadcastJoinThreshold=-1"
+  merge_columns:
+  - "invoice_num"
+  - "invoice_id"
+  - "ledger_id"
+  - "w_location"
+  endpoint: "lo_delta_tables"

@@ -1,0 +1,41 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  incremental: false
+  properties:
+    sql: "select  sri_intercompany.ledger_code ,sri_intercompany.name ,sri_intercompany.source_system ,sri_intercompany.ledger_type ,sri_intercompany.oracle_coa_code ,sri_intercompany.oracle_coa_description ,sri_intercompany.intercompany_code ,sri_intercompany.integration_key ,sha2(coalesce(sri_intercompany.oracle_coa_code,'')||coalesce(sri_intercompany.ledger_code,'000000')||coalesce(sri_intercompany.source_system,'default')||'MANUAL', 512) as intercompany_id ,null as w_x_custom ,sri_intercompany.w_job_instance_id ,sri_intercompany.w_refresh_ts ,null as w_curr_rec_flg ,sri_intercompany.w_source_system as w_data_src_id ,sri_intercompany.w_location ,sri_intercompany.w_batch_id ,'${business_date}' as business_date from ${p_epsdl_sri_db}.sri_intercompany sri_intercompany where sri_intercompany.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_intercompany_danaos"
+  merge_columns:
+  - "ledger_code"
+  - "name"
+  - "source_system"
+  - "ledger_type"
+  - "oracle_coa_code"
+  - "oracle_coa_description"
+  - "intercompany_code"
+  - "intercompany_id"
+  endpoint: "lo_delta_tables"

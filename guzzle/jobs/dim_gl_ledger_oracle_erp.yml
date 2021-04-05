@@ -1,0 +1,46 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select ledger_id \n      ,ledger_name \n      ,short_name\n      ,ledger_desc \n      ,ledger_category_code \n      ,chart_of_accounts_id \n      ,currency_code\n      ,period_set_name\n      ,sla_accounting_method_code\n      ,sla_accounting_method_name\n      ,user_period_type\n      ,creation_date\n      ,created_by\n      ,last_update_date\n      ,last_updated_by\n      ,integration_key\n      ,null as w_x_custom\n      ,w_job_instance_id\n      ,w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,'ORACLE' as w_data_src_id\n      ,w_location\n      ,w_batch_id\n      ,'ORACLE' as w_source_system\n      ,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_oracle_gl_ledger\nwhere w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_ledger"
+  merge_columns:
+  - "ledger_id"
+  - "ledger_name"
+  - "short_name"
+  - "ledger_desc"
+  - "ledger_category_code"
+  - "chart_of_accounts_id"
+  - "currency_code"
+  - "period_set_name"
+  - "sla_accounting_method_code"
+  - "sla_accounting_method_name"
+  - "user_period_type"
+  - "last_update_date"
+  - "last_updated_by"
+  endpoint: "lo_delta_tables"

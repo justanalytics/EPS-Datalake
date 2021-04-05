@@ -1,13 +1,13 @@
-version: 1
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_order_details.document_code,\nrej_sri_order_details.document_date,\nrej_sri_order_details.order_code,\nrej_sri_order_details.order_due_date,\nrej_sri_order_details.order_port,\nrej_sri_order_details.supplier,\nrej_sri_order_details.short_name,\nrej_sri_order_details.report_value,\nrej_sri_order_details.order_agent,\nrej_sri_order_details.agent,\nrej_sri_order_details.approver,\nrej_sri_order_details.total_items,\nrej_sri_order_details.order_qty,\nrej_sri_order_details.total_poitems_cancelled,\nrej_sri_order_details.delivery_port,\nrej_sri_order_details.delivery_date,\nrej_sri_order_details.dlvr_qty,\nrej_sri_order_details.item_count,\nrej_sri_order_details.follow_up,\nrej_sri_order_details.delivery_point_id,\nrej_sri_order_details.po_description,\nrej_sri_order_details.total_weight,\nrej_sri_order_details.project_id,\nrej_sri_order_details.vessel_code,\nrej_sri_order_details.status_code,\nrej_sri_order_details.order_status,\nrej_sri_order_details.order_ready_flag,\nrej_sri_order_details.po_remarks,\nrej_sri_order_details.order_last_port,\nrej_sri_order_details.order_last_point,\nrej_sri_order_details.delivery_activity_id,\nrej_sri_order_details.index_value,\nrej_sri_order_details.create_date,\nrej_sri_order_details.integration_key,\nrej_sri_order_details._validation_error as validation_error,\nrej_sri_order_details.w_source_system,\nrej_sri_order_details.w_src_file_name,\nrej_sri_order_details.w_refresh_ts,\nrej_sri_order_details.w_job_instance_id,\nrej_sri_order_details.w_business_dt,\nrej_sri_order_details.w_location,\nrej_sri_order_details.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_order_details rej_sri_order_details"
 job:
   type: "ingestion"
   tags:
   - "epsdl_plp"
   description: "Sync databricks and synapse"
-source:
-  endpoint: "lo_delta_tables"
-  properties:
-    query: "select\nrej_sri_order_details.document_code,\nrej_sri_order_details.document_date,\nrej_sri_order_details.order_code,\nrej_sri_order_details.order_due_date,\nrej_sri_order_details.order_port,\nrej_sri_order_details.supplier,\nrej_sri_order_details.short_name,\nrej_sri_order_details.report_value,\nrej_sri_order_details.order_agent,\nrej_sri_order_details.agent,\nrej_sri_order_details.approver,\nrej_sri_order_details.total_items,\nrej_sri_order_details.order_qty,\nrej_sri_order_details.total_poitems_cancelled,\nrej_sri_order_details.delivery_port,\nrej_sri_order_details.delivery_date,\nrej_sri_order_details.dlvr_qty,\nrej_sri_order_details.item_count,\nrej_sri_order_details.follow_up,\nrej_sri_order_details.delivery_point_id,\nrej_sri_order_details.po_description,\nrej_sri_order_details.total_weight,\nrej_sri_order_details.project_id,\nrej_sri_order_details.vessel_code,\nrej_sri_order_details.status_code,\nrej_sri_order_details.order_status,\nrej_sri_order_details.order_ready_flag,\nrej_sri_order_details.po_remarks,\nrej_sri_order_details.order_last_port,\nrej_sri_order_details.order_last_point,\nrej_sri_order_details.delivery_activity_id,\nrej_sri_order_details.index_value,\nrej_sri_order_details.create_date,\nrej_sri_order_details.integration_key,\nrej_sri_order_details._validation_error as validation_error,\nrej_sri_order_details.w_source_system,\nrej_sri_order_details.w_src_file_name,\nrej_sri_order_details.w_refresh_ts,\nrej_sri_order_details.w_job_instance_id,\nrej_sri_order_details.w_business_dt,\nrej_sri_order_details.w_location,\nrej_sri_order_details.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_order_details rej_sri_order_details"
+version: 1
 schema:
   strict_schema_check: false
   schema_derivation_strategy: "source"

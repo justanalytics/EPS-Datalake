@@ -1,0 +1,56 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select sri_oracle_gl_segment.segment_code as service_code\n      ,sri_oracle_gl_segment.segment_desc as service_description\n      ,sri_oracle_gl_segment.dependent_segment_code as parent1_code\n      ,NULL as parent1_description\n      ,NULL as parent2_code\n      ,NULL as parent2_description\n      ,NULL as parent3_code\n      ,NULL as parent3_description\n      ,NULL as parent4_code\n      ,NULL as parent4_description\n      ,NULL as parent5_code\n      ,NULL as parent5_description\n      ,NULL as parent6_code\n      ,NULL as parent6_description\n      ,NULL as parent7_code\n      ,NULL as parent7_description\n      ,NULL as parent8_code\n      ,NULL as parent8_description\n      ,NULL as parent9_code\n      ,NULL as parent9_description\n      ,sri_oracle_gl_segment.integration_key\n      ,sha2(sri_oracle_gl_segment.segment_code||'ORACLE', 512) as service_id\n      ,null as w_x_custom\n      ,sri_oracle_gl_segment.w_job_instance_id\n      ,sri_oracle_gl_segment.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,'ORACLE' as w_data_src_id\n      ,sri_oracle_gl_segment.w_location\n      ,sri_oracle_gl_segment.w_batch_id\n      ,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_oracle_gl_segment sri_oracle_gl_segment\nwhere sri_oracle_gl_segment.segment_lov_id='59003'\nand sri_oracle_gl_segment.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_service"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_service where service_id is null"
+  merge_columns:
+  - "service_code"
+  - "service_description"
+  - "parent1_code"
+  - "parent1_description"
+  - "parent2_code"
+  - "parent2_description"
+  - "parent3_code"
+  - "parent3_description"
+  - "parent4_code"
+  - "parent4_description"
+  - "parent5_code"
+  - "parent5_description"
+  - "parent6_code"
+  - "parent6_description"
+  - "parent7_code"
+  - "parent7_description"
+  - "parent8_code"
+  - "parent8_description"
+  - "parent9_code"
+  - "parent9_description"
+  - "service_id"
+  endpoint: "lo_delta_tables"

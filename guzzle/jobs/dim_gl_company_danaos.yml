@@ -1,0 +1,41 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \nchild_value\n,description\n,le\n,danaos_co_code\n,databasename\n,sha2(coalesce(child_value,'')||coalesce(danaos_co_code,'0000')||coalesce(databasename,'default'||'MANUAL'), 512) as company_id\n,integration_key\n,null as w_x_custom\n,w_job_instance_id\n,w_refresh_ts\n,null as w_curr_rec_flg\n,w_source_system as w_data_src_id\n,w_location\n,w_batch_id\n,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_companies \nwhere w_business_dt='${business_date}' \nand child_value is not null"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_company_danaos"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_company where company_id is null"
+  merge_columns:
+  - "child_value"
+  - "description"
+  - "le"
+  - "danaos_co_code"
+  - "databasename"
+  - "company_id"
+  endpoint: "lo_delta_tables"

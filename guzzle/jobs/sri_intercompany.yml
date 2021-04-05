@@ -1,0 +1,95 @@
+version: 1
+job:
+  type: "ingestion"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    format_properties:
+      infer_schema: false
+      quote_delimiter: "\""
+      column_delimiter: ","
+      escape_char: "\\\\"
+      contains_header: true
+    source_file_pattern: "${p_staging}/intercompany*csv"
+    charset: "UTF-8"
+    partial_load: false
+schema:
+  strict_schema_check: true
+  schema_derivation_strategy: "source"
+  discard: true
+  columns:
+  - name: "w_refresh_ts"
+    nullable:
+      value: true
+    transform_sql:
+      value: "current_timestamp"
+    data_type:
+      value: "timestamp"
+  - name: "w_business_dt"
+    nullable:
+      value: true
+    transform_sql:
+      value: "'${business_date}'"
+    data_type:
+      value: "timestamp"
+  - name: "w_job_instance_id"
+    nullable:
+      value: true
+    transform_sql:
+      value: "${job_instance_id}"
+    data_type:
+      value: "string"
+  - name: "w_batch_id"
+    nullable:
+      value: true
+    transform_sql:
+      value: "${batch_id}"
+    data_type:
+      value: "bigint"
+  - name: "w_location"
+    nullable:
+      value: true
+    transform_sql:
+      value: "'ALL'"
+    data_type:
+      value: "string"
+  - name: "w_source_system"
+    nullable:
+      value: true
+    transform_sql:
+      value: "'MANUAL'"
+    data_type:
+      value: "string"
+  - name: "w_src_file_name"
+    nullable:
+      value: true
+    transform_sql:
+      value: "src_filename"
+    data_type:
+      value: "string"
+  - nullable:
+      value: false
+    name: "integration_key"
+    data_type:
+      value: "string"
+      validate: true
+    transform_sql:
+      value: "coalesce(source_system,'')||'~'||coalesce(ledger_code,'')||'~'||'MANUAL'"
+    primary_key:
+      value: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: false
+    table: "${p_epsdl_sri_db}.sri_intercompany"
+  operation: "append"
+  truncate_partition_columns:
+  - name: "w_business_dt"
+    value: "${business_date}"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.rej_sri_intercompany"
+  failure_threshold: 99

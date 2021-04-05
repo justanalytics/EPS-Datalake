@@ -1,0 +1,50 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with mv_navi_audit_main AS\n(\n  select audit_id,vessel_code,created_date,'OFFICE' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_off_main\n  where w_business_dt='${business_date}'\n  union all\n  select audit_id,vessel_code,created_date,'MASTER' as type ,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n  from ${p_epsdl_sri_db}.sri_nav_audit_vsl_main\n  where w_business_dt='${business_date}'\n)\n, mv_navi_audit_answers AS\n(\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_off_answers\n    where w_business_dt='${business_date}'\n    union all\n    select audit_id,vessel_code,q_no,q_type,q_answer,w_job_instance_id,w_refresh_ts,w_source_system,w_location,w_batch_id\n    from ${p_epsdl_sri_db}.sri_nav_audit_vsl_answers \n    where q_type <> 'NAV_AUDIT_OFF'\n    and w_business_dt='${business_date}'\n)\n\nselect\n        sri_moc_inspection_requests.REQUEST_ID as audit_id\n        , cast(sri_moc_inspection_requests.REQUEST_ID as string) as req_id\n        , sri_moc_inspection_requests.INSP_STATUS\n        , sri_moc_inspection_requests.VESSEL_CODE\n        , sri_moc_inspection_requests.MOC_ID\n        , sri_moc_inspection_requests.INSPECTION_DATE as audit_date\n        , null as type\n        , sri_moc_inspection_requests.insp_type as flag\n        , sri_moc_deficiencies.DEFICIENCY_ID\n        , sri_moc_deficiencies.SECTION as question_number\n        , sri_moc_deficiencies.DEFICIENCY as observation\n        , sri_moc_deficiencies.REPLY\n        , sri_moc_deficiencies.STATUS as DEFICIENCY_STATUS\n        , sri_moc_deficiencies.risk_factor as risk_factor\n        , sri_moc_inspection_requests.is_sire as is_sire\n        , coalesce(sri_moc_inspection_requests.REQUEST_ID,'')||'~'||coalesce(sri_moc_inspection_requests.VESSEL_CODE,'')||'~'||coalesce(sri_moc_deficiencies.SECTION,'')||'~'||coalesce(sri_moc_deficiencies.DEFICIENCY_ID,'') as integration_key\n        ,dim_vessel.vessel_id\n        ,null as w_x_custom\n        ,sri_moc_inspection_requests.w_job_instance_id\n        ,sri_moc_inspection_requests.w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,sri_moc_inspection_requests.w_source_system as w_data_src_id\n        ,sri_moc_inspection_requests.w_location\n        ,sri_moc_inspection_requests.w_batch_id\n        ,'${business_date}' as business_date \nfrom ${p_epsdl_sri_db}.sri_moc_inspection_requests sri_moc_inspection_requests\n\njoin ${p_epsdl_sri_db}.sri_moc_deficiencies  sri_moc_deficiencies\n    on sri_moc_inspection_requests.REQUEST_ID = sri_moc_deficiencies.REQUEST_ID\n    and sri_moc_inspection_requests.vessel_code = sri_moc_deficiencies.vessel_code\n    and sri_moc_deficiencies.w_business_dt='${business_date}'\n  \nleft join (select * from ${p_epsdl_db}.dim_gl_vessel where w_data_src_id='MANUAL') dim_vessel\n        on sri_moc_inspection_requests.vessel_code = dim_vessel.vessel_code\n\nwhere upper(sri_moc_inspection_requests.INSP_STATUS) in ('INSPECTED','FAILED','SIRE REPORT REPLIED','SIRE REPORT RECEIVED','INSPN PROCESS COMPLT','ACCEPTED')\nand sri_moc_inspection_requests.w_business_dt='${business_date}'\n\nunion all\n\nselect \n        a.audit_id\n        ,a.audit_id||a.vessel_code as req_id\n        ,null\n        ,a.vessel_code\n        ,null\n        ,a.created_date as audit_date\n        ,a.type\n        ,b.q_type as flag \n        ,null\n        ,b.q_no as question_number\n        ,b.q_answer as observation\n        ,null as reply\n        ,null as DEFICIENCY_STATUS\n        ,null as risk_factor\n        ,null as is_sire\n        ,coalesce(a.audit_id,'')||'~'||coalesce(a.vessel_code,'')||'~'||coalesce(b.q_no,'')||'~'||coalesce(a.type,'')||'~'||coalesce(b.q_type,'') as integration_key\n        ,dim_vessel.vessel_id\n        ,null as w_x_custom\n        ,a.w_job_instance_id\n        ,a.w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,a.w_source_system as w_data_src_id\n        ,a.w_location\n        ,a.w_batch_id\n        ,'${business_date}' as business_date \n\nfrom mv_navi_audit_main a\njoin mv_navi_audit_answers b \n        on a.audit_id = b.audit_id \n        and a.vessel_code = b.vessel_code \n\nleft join (select * from ${p_epsdl_db}.dim_gl_vessel where w_data_src_id='MANUAL') dim_vessel\n        on a.vessel_code = dim_vessel.vessel_code"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_sire_inspection"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_vessel where vessel_id is null"
+  merge_columns:
+  - "audit_id"
+  - "req_id"
+  - "insp_status"
+  - "vessel_code"
+  - "moc_id"
+  - "audit_date"
+  - "type"
+  - "flag"
+  - "deficiency_id"
+  - "question_number"
+  - "observation"
+  - "reply"
+  - "deficiency_status"
+  - "vessel_id"
+  - "is_sire"
+  endpoint: "lo_delta_tables"

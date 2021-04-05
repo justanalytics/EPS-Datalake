@@ -1,0 +1,21 @@
+version: 1
+job:
+  type: "processing"
+source:
+  endpoint: "lo_delta_tables"
+  incremental: false
+  properties:
+    sql: "select distinct \n        replace(upper(q_category),'&','AND') as chapter\n        ,min(cast(q_cat_sort_no as string)) as chapter_number\n        ,q_type as flag \n        ,coalesce(replace(upper(q_category),'&','AND'),'')||'~'||coalesce(q_type,'') as integration_key\n        ,null as w_x_custom\n        ,w_job_instance_id\n        ,w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,w_source_system as w_data_src_id\n        ,w_location\n        ,w_batch_id\n        ,'${business_date}' as business_date \nfrom ${p_epsdl_sri_db}.sri_nav_audit_qn_master \nwhere q_type like 'SIRE%' \nand w_business_dt='${business_date}'\nGROUP BY \n        replace(upper(q_category),'&','AND')\n        ,q_type \n        ,w_job_instance_id\n        ,w_refresh_ts\n        ,w_source_system\n        ,w_location\n        ,w_batch_id\n        ,'${business_date}'\nunion all\n\nselect distinct \n        replace(upper(chapter),'&','AND') as chapter\n        ,substr(question_number,1,(instr(question_number,'.')-1)) as chapter_number\n        ,'MOC' flag \n        ,coalesce(replace(upper(chapter),'&','AND'),'')||'~'||'MOC' as integration_key\n        ,null as w_x_custom\n        ,w_job_instance_id\n        ,w_refresh_ts\n        ,null as w_curr_rec_flg\n        ,w_source_system as w_data_src_id\n        ,w_location\n        ,w_batch_id\n        ,'${business_date}' as business_date \nfrom ${p_epsdl_sri_db}.sri_moc_viq_questions\nwhere w_business_dt='${business_date}'"
+target:
+  primary_key_columns:
+  - "integration_key"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_chapter"
+  merge_columns:
+  - "chapter"
+  - "chapter_number"
+  - "flag"
+  endpoint: "lo_delta_tables"

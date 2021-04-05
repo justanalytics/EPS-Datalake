@@ -1,0 +1,23 @@
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select \nrequest_id,\ninsp_status,\nvessel_code,\nmoc_id,\ninspection_port,\ninspection_date,\noperation,\nagent_id,\ninspector_id,\nrequest_date,\nconfirmed_or_rejected,\ndate_confirm_reject,\ndeficiency_recd,\nsire_recd_date,\ndate_replied_to_sire,\ndate_accepted,\nexpiry_date,\nexpences,\nexpences_in_usd,\nsuptd_attended,\ncombined,\nbasis_sire,\nvessel_advised_date,\noffice_advised_date,\nagent_advised_date,\ndate_defs_to_vessel,\ndate_defs_replied,\ndate_sire_to_vessel,\ntech_alerted,\ntech_alert_date,\ntech_dept_replied,\ntech_reply_date,\ntech_declined_reason,\ntech_status,\ntech_pic,\ncreate_date,\ncreated_by,\nlast_modified_date,\nlast_modified_by,\nlocal_currency,\nstatus,\ninsp_type,\nocimf_report_number,\nagent,\nmoc,\nbasis_sire_moc,\ninspection_remarks,\ninspection_grade,\npo_number,\ndetention,\nis_sire,\nintegration_key,\nrej_sri_moc_inspection_requests._validation_error as validation_error,\nw_source_system,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_moc_inspection_requests rej_sri_moc_inspection_requests"
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+version: 1
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_moc_inspection_requests"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

@@ -1,0 +1,41 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select null as ledger_code\n      ,null as name\n      ,null as source_system\n      ,null as ledger_type\n      ,null as oracle_coa_code\n      ,null as oracle_coa_description\n      ,sri_oracle_gl_segment.segment_code as intercompany_code\n      ,sri_oracle_gl_segment.integration_key\n      ,sha2(sri_oracle_gl_segment.segment_code||'ORACLE', 512) as intercompany_id\n      ,null as w_x_custom\n      ,sri_oracle_gl_segment.w_job_instance_id\n      ,sri_oracle_gl_segment.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,'ORACLE' as w_data_src_id\n      ,sri_oracle_gl_segment.w_location\n      ,sri_oracle_gl_segment.w_batch_id\n      ,'${business_date}' as business_date\n      ,'ORACLE' as w_source_system\nfrom ${p_epsdl_sri_db}.sri_oracle_gl_segment \nwhere segment_lov_id='59006'\nand sri_oracle_gl_segment.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "intercompany_code"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_intercompany_oracle_erp"
+  merge_columns:
+  - "ledger_code"
+  - "name"
+  - "source_system"
+  - "ledger_type"
+  - "oracle_coa_code"
+  - "oracle_coa_description"
+  - "intercompany_code"
+  - "intercompany_id"
+  endpoint: "lo_delta_tables"

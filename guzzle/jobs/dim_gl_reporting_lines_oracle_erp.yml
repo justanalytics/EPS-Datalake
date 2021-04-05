@@ -1,0 +1,47 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "SELECT sri_reporting_lines.oracle_natural_account\n\t,sri_reporting_lines.account_group\n\t,sri_reporting_lines.acct_grouping_level4\n\t,sri_reporting_lines.acct_grouping_level3\n\t,sri_reporting_lines.acct_grouping_level2\n\t,sri_reporting_lines.acct_grouping_level1_ acct_grouping_level1\n\t,sri_reporting_lines.integration_key\n\t,sha2(coalesce(sri_reporting_lines.oracle_natural_account, '')||'000000'||'default'||'ORACLE', 512) AS account_id\n\t,NULL AS w_x_custom\n\t,sri_reporting_lines.w_job_instance_id\n\t,sri_reporting_lines.w_refresh_ts\n\t,NULL AS w_curr_rec_flg\n\t,'ORACLE' AS w_data_src_id\n\t,sri_reporting_lines.w_location\n\t,sri_reporting_lines.w_batch_id\n\t,'${business_date}' AS business_date\n\t,'000000' AS ledger_card\n\t,coalesce(sri_oracle_gl_segment.w_source_system, 'default') AS source_system\n\t,sri_reporting_lines.danaos_name AS danaos_name\nFROM (select * from ${p_epsdl_sri_db}.sri_reporting_lines where w_business_dt = '${business_date}' and ledger_card='000000') sri_reporting_lines\nLEFT OUTER JOIN ${p_epsdl_sri_db}.sri_oracle_gl_segment sri_oracle_gl_segment ON sri_reporting_lines.oracle_natural_account = sri_oracle_gl_segment.segment_code\n\tAND sri_oracle_gl_segment.w_business_dt = '${business_date}'\n    AND sri_oracle_gl_segment.segment_lov_id='59005'\nWHERE sri_reporting_lines.oracle_natural_account IS NOT NULL\n"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "ledger_card"
+  - "source_system"
+  - "oracle_natural_account"
+  operation: "overwrite"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_reporting_lines_oracle_erp"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_reporting_lines where account_id is null"
+  merge_columns:
+  - "account_group"
+  - "acct_grouping_level4"
+  - "acct_grouping_level3"
+  - "acct_grouping_level2"
+  - "acct_grouping_level1"
+  - "account_id"
+  - "danaos_name"
+  - "integration_key"
+  - "source_system"
+  - "w_data_src_id"
+  endpoint: "lo_delta_tables"

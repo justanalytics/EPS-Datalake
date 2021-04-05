@@ -1,0 +1,150 @@
+version: 1
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_sri"
+source:
+  endpoint: "lo_lfs"
+  properties:
+    format: "delimited"
+    format_properties:
+      infer_schema: false
+      quote_delimiter: "\""
+      column_delimiter: ","
+      escape_char: "\\\\"
+      contains_header: true
+    source_file_pattern: "${p_staging}/INPUT/Oracle_GL_AP_Invoices.*csv"
+    charset: "UTF-8"
+    partial_load: false
+schema:
+  strict_schema_check: true
+  schema_derivation_strategy: "source"
+  discard: true
+  columns:
+  - nullable:
+      value: true
+      discard: false
+    name: "w_refresh_ts"
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "current_timestamp"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_business_dt"
+    partition_column: false
+    data_type:
+      value: "timestamp"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "'${business_date}'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_job_instance_id"
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "${job_instance_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_batch_id"
+    partition_column: false
+    data_type:
+      value: "bigint"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "${batch_id}"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_location"
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "'ALL'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_source_system"
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "'ORACLE'"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: true
+      discard: false
+    name: "w_src_file_name"
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+      validate: false
+    transform_sql:
+      value: "src_filename"
+    primary_key:
+      value: false
+      discard: false
+  - nullable:
+      value: false
+      discard: false
+    name: "integration_key"
+    partition_column: false
+    data_type:
+      value: "string"
+      discard: false
+      validate: true
+    transform_sql:
+      value: "coalesce(INVOICE_ID,'')||'~'||coalesce(JE_HEADER_ID,'')||'~'||coalesce(JE_LINE_NUM,'')||'~'||'ORACLE'"
+    primary_key:
+      value: true
+      discard: true
+target:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.sri_oracle_gl_ap_invoice"
+  operation: "append"
+  truncate_partition_columns:
+  - name: "w_business_dt"
+    value: "${business_date}"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.rej_sri_oracle_gl_ap_invoice"
+  failure_threshold: 99

@@ -1,0 +1,32 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  incremental: false
+  properties:
+    sql: "select \nledger_code,\nname,\nsource_system,\nledger_type,\noracle_coa_code,\noracle_coa_description,\nintercompany_code,\nintegration_key,\nintercompany_id,\nw_batch_id,\nbusiness_date,\nw_data_src_id,\nw_refresh_ts,\nw_x_custom,\nw_job_instance_id,\nw_curr_rec_flg,\n'MANUAL' as w_source_system,\nw_location\nfrom ${p_epsdl_db}.dim_gl_intercompany_danaos \nwhere intercompany_id <> '0'\n\nunion\n\nselect \nledger_code,\nname,\nsource_system,\nledger_type,\noracle_coa_code,\noracle_coa_description,\nintercompany_code,\nintegration_key,\nintercompany_id,\nw_batch_id,\nbusiness_date,\nw_data_src_id,\nw_refresh_ts,\nw_x_custom,\nw_job_instance_id,\nw_curr_rec_flg,\n'ORACLE' as w_source_system,\nw_location\nfrom ${p_epsdl_db}.dim_gl_intercompany_oracle_erp \nwhere intercompany_id <> '0000'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+target:
+  operation: "overwrite"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_intercompany"
+    post_sql:
+    - "insert into ${p_epsdl_db}.dim_gl_intercompany \nvalues\n(\n'0000',\nnull,\n'default',\nnull,\n'0000',\nnull,\n'0000',\n'0000',\n'0000',\nnull,\nnull,\n'MANUAL',\nnull,\nnull,\nnull,\nnull,\nnull\n)"
+  endpoint: "lo_delta_tables"

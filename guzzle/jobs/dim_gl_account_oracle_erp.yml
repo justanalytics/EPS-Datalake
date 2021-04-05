@@ -1,0 +1,54 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select sri_account.oracle_natural_account as oracle_natural_account\n      ,'000000' as ledger_card\n      ,master.SEGMENT_DESC as description\n      ,sri_account.parent1_description as parent1_code\n      ,sri_account.parent2_code as parent1_description\n      ,sri_account.parent2_description as parent2_code\n      ,sri_account.parent3_code as parent2_description\n      ,sri_account.parent3_description as parent3_code\n      ,sri_account.parent4_code as parent3_description\n      ,sri_account.parent4_description as parent4_code\n      ,sri_account.parent5_code as parent4_description\n      ,sri_account.parent5_description as parent5_code\n      ,sri_account.parent5_description as parent5_description\n      ,sri_account.financial_category\n      ,sri_account.financial_sub_category\n      ,null as danaos_name\n      ,null as danaos_description_details\n      ,null as danaos_description_sub\n      ,null as danaos_description_main\n      ,'ORACLE' as source_system\n      ,coalesce(sri_account.oracle_natural_account,'')||'~'||'ORACLE' as integration_key\n      ,sha2(coalesce(sri_account.oracle_natural_account,'')||'000000'||'default'||'ORACLE', 512) as account_id\n      ,null as w_x_custom\n      ,master.w_job_instance_id\n      ,master.w_refresh_ts\n      ,null as w_curr_rec_flg\n      ,'ORACLE' as w_data_src_id\n      ,master.w_location\n      ,master.w_batch_id\n      ,'${business_date}' as business_date\nfrom ${p_epsdl_sri_db}.sri_account sri_account\nleft join\n(select * from ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59005') master\non master.segment_code=sri_account.oracle_natural_account\nand master.w_business_dt='${business_date}'\nwhere sri_account.w_business_dt='${business_date}'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'ORACLE'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "oracle_natural_account"
+  - "w_data_src_id"
+  - "ledger_card"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_account_oracle_erp"
+  merge_columns:
+  - "oracle_natural_account"
+  - "parent1_code"
+  - "parent1_description"
+  - "parent2_code"
+  - "parent2_description"
+  - "parent3_code"
+  - "parent3_description"
+  - "parent4_code"
+  - "parent4_description"
+  - "parent5_code"
+  - "parent5_description"
+  - "financial_category"
+  - "financial_sub_category"
+  - "account_id"
+  - "danaos_name"
+  - "danaos_description_details"
+  - "danaos_description_sub"
+  - "danaos_description_main"
+  - "description"
+  endpoint: "lo_delta_tables"

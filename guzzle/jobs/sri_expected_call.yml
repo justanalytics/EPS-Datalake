@@ -1,16 +1,22 @@
-version: 1
-job:
-  type: "ingestion"
-  tags:
-  - "epsdl_sri"
 source:
   endpoint: "lo_lfs"
   properties:
     format: "parquet"
+    format_properties: {}
+    source_file_pattern: "${p_staging}/Expected_call*.parquet"
     charset: "UTF-8"
-    source_file_pattern: "${p_staging}/expected_call.*parquet"
-    format_properties:
-      source_name_as_column: true
+    partial_load: false
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_sri"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "${p_epsdl_sri_db}.rej_sri_expected_call"
+  failure_threshold: 99
+version: 1
 schema:
   strict_schema_check: true
   schema_derivation_strategy: "target"
@@ -20,11 +26,11 @@ schema:
       value: true
       discard: false
     name: "w_refresh_ts"
-    validate: false
     partition_column: false
     data_type:
       value: "timestamp"
       discard: false
+      validate: false
     transform_sql:
       value: "current_timestamp"
     primary_key:
@@ -34,11 +40,11 @@ schema:
       value: true
       discard: false
     name: "w_business_dt"
-    validate: false
     partition_column: false
     data_type:
       value: "timestamp"
       discard: false
+      validate: false
     transform_sql:
       value: "'${business_date}'"
     primary_key:
@@ -48,11 +54,11 @@ schema:
       value: true
       discard: false
     name: "w_job_instance_id"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "${job_instance_id}"
     primary_key:
@@ -62,11 +68,11 @@ schema:
       value: true
       discard: false
     name: "w_batch_id"
-    validate: false
     partition_column: false
     data_type:
       value: "bigint"
       discard: false
+      validate: false
     transform_sql:
       value: "${batch_id}"
     primary_key:
@@ -76,11 +82,11 @@ schema:
       value: true
       discard: false
     name: "w_location"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "'ALL'"
     primary_key:
@@ -90,11 +96,11 @@ schema:
       value: true
       discard: false
     name: "w_source_system"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "'DANAOS'"
     primary_key:
@@ -104,11 +110,11 @@ schema:
       value: true
       discard: false
     name: "w_src_file_name"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "src_filename"
     primary_key:
@@ -118,11 +124,11 @@ schema:
       value: true
       discard: false
     name: "integration_key"
-    validate: true
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: true
     transform_sql:
       value: "coalesce(vessel_code,'')||'~'||coalesce(voy_id,'')||'~'||exp_ref||'~'||'danaos'"
     primary_key:
@@ -137,9 +143,3 @@ target:
   truncate_partition_columns:
   - name: "w_business_dt"
     value: "${business_date}"
-reject:
-  endpoint: "lo_delta_tables"
-  properties:
-    auto_create_table: true
-    table: "${p_epsdl_sri_db}.rej_sri_expected_call"
-  failure_threshold: 99

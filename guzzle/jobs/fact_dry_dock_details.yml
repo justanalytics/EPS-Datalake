@@ -6,7 +6,7 @@ job:
 source:
   endpoint: "lo_delta_tables"
   properties:
-    sql: "with dd_days as \n(\nselect p.date as full_date,vessel_code, row_number() over (partition by p.date,vessel_code order by null) rnum,\n  dt_planned_entry, dt_actual_entry,to_date(planned_exit,'DD-MON-YYYY') dt_planned_exit,\n  dt_actual_exit\n  from \n  ${p_epsdl_sri_db}.sri_vessel_dry_dock_details dd\n join ${p_epsdl_db}.dim_period p on p.date  between  coalesce(dt_actual_entry,p.date) and coalesce(dt_actual_exit,p.date)\n  where dd.project_status = 'ACTUAL'\nand dd.w_business_dt='${business_date}'\n)\n\nSelect\nv.vessel_code\n,coalesce(v.vessel_id,'0000') as vessel_id\n,case when dd.full_date is not null then 1 end dd_days\n,dd.dt_planned_entry\n,dd.dt_actual_entry\n,dd.dt_actual_exit\n,dd.dt_planned_exit\n,coalesce(dd.full_date,'1900-01-01') as matching_date\n,v.w_data_src_id\n,v.business_date\n,v.w_refresh_ts\n,v.w_job_instance_id\n,v.w_location\n,v.w_batch_id\n,null as w_x_custom\n,null as w_curr_rec_flg\n,v.integration_key\nfrom \n${p_epsdl_db}.dim_gl_vessel v\nleft join dd_days dd on  dd.vessel_code = v.vessel_code and dd.rnum  = 1"
+    sql: "with dd_days as \n(\nselect p.date as full_date,vessel_code, row_number() over (partition by p.date,vessel_code order by null) rnum,\n  dt_planned_entry, dt_actual_entry,to_date(planned_exit,'DD-MON-YYYY') dt_planned_exit,\n  dt_actual_exit\n  from \n  ${p_epsdl_sri_db}.sri_vessel_dry_dock_details dd\n join ${p_epsdl_db}.dim_period p on p.date  between  coalesce(dt_actual_entry,p.date) and coalesce(dt_actual_exit,p.date)\n  where dd.project_status = 'ACTUAL'\nand dd.w_business_dt='${business_date}'\n)\n\nSelect\nv.vessel_code\n,coalesce(v.vessel_id,'0000') as vessel_id\n,case when dd.full_date is not null then 1 end dd_days\n,dd.dt_planned_entry\n,dd.dt_actual_entry\n,dd.dt_actual_exit\n,dd.dt_planned_exit\n,coalesce(dd.full_date,'1900-01-01') as matching_date\n,v.w_data_src_id\n,v.business_date\n,v.w_refresh_ts\n,v.w_job_instance_id\n,v.w_location\n,v.w_batch_id\n,null as w_x_custom\n,null as w_curr_rec_flg\n,v.integration_key\nfrom \n(select * from ${p_epsdl_db}.dim_gl_vessel where w_data_src_id='MANUAL') v\nleft join dd_days dd on  dd.vessel_code = v.vessel_code and dd.rnum  = 1"
   additional_columns:
   - name: "w_refresh_ts"
     value: "current_timestamp"
@@ -20,11 +20,13 @@ source:
     value: "'ALL'"
   - name: "w_source_system"
     value: "'NSLADMIN'"
+  incremental: false
 target:
   primary_key_columns:
   - "matching_date"
   - "integration_key"
   operation: "overwrite"
+  soft_delete: false
   properties:
     template: "default"
     table: "${p_epsdl_db}.fact_dry_dock_details"

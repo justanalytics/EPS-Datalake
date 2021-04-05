@@ -1,13 +1,13 @@
-version: 1
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select \nrej_sri_budget_opex_monitor.vessel_code\n,rej_sri_budget_opex_monitor.vessel_name\n,rej_sri_budget_opex_monitor.ledger_card\n,rej_sri_budget_opex_monitor.budget_value\n,rej_sri_budget_opex_monitor.total_period\n,rej_sri_budget_opex_monitor.integration_key\n,rej_sri_budget_opex_monitor._validation_error as validation_error\n,rej_sri_budget_opex_monitor.w_source_system\n,rej_sri_budget_opex_monitor.w_src_file_name\n,rej_sri_budget_opex_monitor.w_refresh_ts\n,rej_sri_budget_opex_monitor.w_job_instance_id\n,rej_sri_budget_opex_monitor.w_business_dt\n,rej_sri_budget_opex_monitor.w_location\n,rej_sri_budget_opex_monitor.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_budget_opex_monitor rej_sri_budget_opex_monitor"
 job:
   type: "ingestion"
   tags:
   - "epsdl_plp"
   description: "Sync databricks and synapse"
-source:
-  endpoint: "lo_delta_tables"
-  properties:
-    query: "select \nrej_sri_budget_opex_monitor.vessel_code\n,rej_sri_budget_opex_monitor.vessel_name\n,rej_sri_budget_opex_monitor.ledger_card\n,rej_sri_budget_opex_monitor.budget_value\n,rej_sri_budget_opex_monitor.total_period\n,rej_sri_budget_opex_monitor.integration_key\n,rej_sri_budget_opex_monitor._validation_error as validation_error\n,rej_sri_budget_opex_monitor.w_source_system\n,rej_sri_budget_opex_monitor.w_src_file_name\n,rej_sri_budget_opex_monitor.w_refresh_ts\n,rej_sri_budget_opex_monitor.w_job_instance_id\n,rej_sri_budget_opex_monitor.w_business_dt\n,rej_sri_budget_opex_monitor.w_location\n,rej_sri_budget_opex_monitor.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_budget_opex_monitor rej_sri_budget_opex_monitor"
+version: 1
 schema:
   strict_schema_check: false
   schema_derivation_strategy: "source"

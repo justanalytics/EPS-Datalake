@@ -1,0 +1,19 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_fact"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "SELECT gl_traansactions.journal_header\n\t,gl_traansactions.journal_line_num\n\t\n\t,company.segment_lov_id AS company_lov\n\t,company.segment_code AS company_code\n\t\n\t,vessel.segment_lov_id AS vessel_lov\n\t,vessel.segment_code AS vessel_code\n\t\n\t,service.segment_lov_id AS service_lov\n\t,service.segment_code AS service_code\n\t\n\t,department.segment_lov_id AS department_lov\n\t,department.segment_code AS department_code\n\t\n\t,natural_account.segment_lov_id AS natural_account_lov\n\t,natural_account.segment_code AS account_code\n\t\n\t,intercompany.segment_lov_id AS intercompany_lov\n\t,intercompany.segment_code AS intercompany_code\n\t\n\t,future1.segment_lov_id AS future1_lov\n\t,future1.segment_code AS future1_code\n\t\n\t,future2.segment_lov_id AS future2_lov\n\t,future2.segment_code AS future2_code\nFROM ${p_epsdl_sri_db}.sri_oracle_gl_transaction gl_traansactions\n\nJOIN ${p_epsdl_sri_db}.sri_oracle_gl_account gl_account ON gl_traansactions.code_combination_id = gl_account.code_combination_id\n\tAND gl_account.w_business_dt = '${business_date}'\n\t\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59001') as company ON company.segment_code = gl_account.segment1\n\tAND company.w_business_dt = '${business_date}'\n\t\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59002') as vessel ON vessel.segment_code = gl_account.segment2\n\tAND vessel.w_business_dt = '${business_date}'\n\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59003') as service ON service.segment_code = gl_account.segment3\n\tAND service.w_business_dt = '${business_date}'\n\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59004') as department ON department.segment_code = gl_account.segment4\n\tAND department.w_business_dt = '${business_date}'\n\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59005') as natural_account ON natural_account.segment_code = gl_account.segment5\n\tAND natural_account.w_business_dt = '${business_date}'\n\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59006') as intercompany ON intercompany.segment_code = gl_account.segment6\n\tAND intercompany.w_business_dt = '${business_date}'\n\t\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59007') as future1 ON future1.segment_code = gl_account.segment7\n\tAND future1.w_business_dt = '${business_date}'\n\t\nJOIN (SELECT * FROM ${p_epsdl_sri_db}.sri_oracle_gl_segment where segment_lov_id='59008') as future2 ON future2.segment_code = gl_account.segment8\n\tAND future2.w_business_dt = '${business_date}'\n\t\nWHERE gl_traansactions.w_business_dt = '${business_date}'\n"
+  incremental: false
+target:
+  operation: "overwrite"
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_gl_transactions_intermediate_oracle_erp"
+    pre_sql:
+    - "set spark.sql.autoBroadcastJoinThreshold=-1"
+  endpoint: "lo_delta_tables"
+  soft_delete: false

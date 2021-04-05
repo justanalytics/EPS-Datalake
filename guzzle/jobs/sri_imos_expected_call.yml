@@ -1,8 +1,3 @@
-version: 1
-job:
-  type: "ingestion"
-  tags:
-  - "epsdl_dim"
 source:
   endpoint: "lo_lfs"
   properties:
@@ -10,7 +5,6 @@ source:
     charset: "UTF-8"
     source_file_pattern: "archive/imos_port_call*csv"
     format_properties:
-      source_name_as_column: true
       infer_schema: false
       quote_delimiter: "\""
       column_delimiter: ","
@@ -81,6 +75,17 @@ source:
       - Name: "64"
       escape_char: "\\\\"
       contains_header: true
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_dim"
+reject:
+  endpoint: "lo_delta_tables"
+  properties:
+    auto_create_table: true
+    table: "epsdlsrid.rej_sri_imos_expected_call_v2"
+  failure_threshold: 99
+version: 1
 schema:
   strict_schema_check: false
   schema_derivation_strategy: "schema"
@@ -90,11 +95,11 @@ schema:
       value: true
       discard: false
     name: "w_refresh_ts"
-    validate: false
     partition_column: false
     data_type:
       value: "timestamp"
       discard: false
+      validate: false
     transform_sql:
       value: "current_timestamp"
     primary_key:
@@ -104,11 +109,11 @@ schema:
       value: true
       discard: false
     name: "business_date"
-    validate: false
     partition_column: false
     data_type:
       value: "timestamp"
       discard: false
+      validate: false
     transform_sql:
       value: "'${business_date}'"
     primary_key:
@@ -118,11 +123,11 @@ schema:
       value: true
       discard: false
     name: "w_job_instance_id"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "${job_instance_id}"
     primary_key:
@@ -132,11 +137,11 @@ schema:
       value: true
       discard: false
     name: "w_batch_id"
-    validate: false
     partition_column: false
     data_type:
       value: "bigint"
       discard: false
+      validate: false
     transform_sql:
       value: "${batch_id}"
     primary_key:
@@ -146,11 +151,11 @@ schema:
       value: true
       discard: false
     name: "w_location"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "'ALL'"
     primary_key:
@@ -160,11 +165,11 @@ schema:
       value: true
       discard: false
     name: "w_data_src_id"
-    validate: false
     partition_column: false
     data_type:
       value: "string"
       discard: false
+      validate: false
     transform_sql:
       value: "'ONETIME'"
     primary_key:
@@ -176,9 +181,3 @@ target:
     auto_create_table: true
     table: "epsdlsrid.sri_imos_expected_call_v2"
   operation: "overwrite"
-reject:
-  endpoint: "lo_delta_tables"
-  properties:
-    auto_create_table: true
-    table: "epsdlsrid.rej_sri_imos_expected_call_v2"
-  failure_threshold: 99

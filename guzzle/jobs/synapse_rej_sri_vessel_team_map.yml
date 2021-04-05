@@ -1,13 +1,13 @@
-version: 1
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nrej_sri_vessel_team_map.company,\nrej_sri_vessel_team_map.type,\nrej_sri_vessel_team_map.accounts_team,\nrej_sri_vessel_team_map.business_team,\nrej_sri_vessel_team_map.integration_key,\nrej_sri_vessel_team_map._validation_error as validation_error,\nrej_sri_vessel_team_map.w_source_system,\nrej_sri_vessel_team_map.w_src_file_name,\nrej_sri_vessel_team_map.w_refresh_ts,\nrej_sri_vessel_team_map.w_job_instance_id,\nrej_sri_vessel_team_map.w_business_dt,\nrej_sri_vessel_team_map.w_location,\nrej_sri_vessel_team_map.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_vessel_team_map rej_sri_vessel_team_map"
 job:
   type: "ingestion"
   tags:
   - "epsdl_plp"
   description: "Sync databricks and synapse"
-source:
-  endpoint: "lo_delta_tables"
-  properties:
-    query: "select\nrej_sri_vessel_team_map.company,\nrej_sri_vessel_team_map.type,\nrej_sri_vessel_team_map.accounts_team,\nrej_sri_vessel_team_map.business_team,\nrej_sri_vessel_team_map.integration_key,\nrej_sri_vessel_team_map._validation_error as validation_error,\nrej_sri_vessel_team_map.w_source_system,\nrej_sri_vessel_team_map.w_src_file_name,\nrej_sri_vessel_team_map.w_refresh_ts,\nrej_sri_vessel_team_map.w_job_instance_id,\nrej_sri_vessel_team_map.w_business_dt,\nrej_sri_vessel_team_map.w_location,\nrej_sri_vessel_team_map.w_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_vessel_team_map rej_sri_vessel_team_map"
+version: 1
 schema:
   strict_schema_check: false
   schema_derivation_strategy: "source"

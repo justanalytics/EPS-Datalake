@@ -1,0 +1,46 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "select \nsri_reporting_lines.oracle_natural_account\n,sri_reporting_lines.account_group\n,sri_reporting_lines.acct_grouping_level4\n,sri_reporting_lines.acct_grouping_level3\n,sri_reporting_lines.acct_grouping_level2\n,sri_reporting_lines.acct_grouping_level1_ acct_grouping_level1\n,sri_reporting_lines.integration_key\n,sha2(coalesce(sri_reporting_lines.oracle_natural_account,'')||coalesce(sri_account_mapping.ledger_card,'000000')||coalesce(sri_account_mapping.source_system,'default')||'MANUAL', 512) as account_id\n,null as w_x_custom\n,sri_reporting_lines.w_job_instance_id\n,sri_reporting_lines.w_refresh_ts\n,null as w_curr_rec_flg\n,sri_reporting_lines.w_source_system as w_data_src_id\n,sri_reporting_lines.w_location\n,sri_reporting_lines.w_batch_id\n,'${business_date}' as business_date\n,coalesce(sri_account_mapping.ledger_card,'000000') as ledger_card\n,coalesce(sri_account_mapping.source_system,'default') as source_system\n,sri_account.danaos_name as danaos_name\nfrom ${p_epsdl_sri_db}.sri_reporting_lines sri_reporting_lines\nleft join ${p_epsdl_sri_db}.sri_account sri_account\n    on sri_account.oracle_natural_account=sri_reporting_lines.oracle_natural_account\n    and sri_account.w_business_dt='${business_date}'\nleft outer join ${p_epsdl_sri_db}.sri_account_mapping sri_account_mapping \n    on sri_reporting_lines.ledger_card = sri_account_mapping.ledger_card\n    and sri_account_mapping.source_system = 'DANAOS'\n    and sri_account_mapping.w_business_dt='${business_date}'\nwhere sri_reporting_lines.w_business_dt='${business_date}' and sri_reporting_lines.ledger_card <> '000000'"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'MANUAL'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "ledger_card"
+  - "source_system"
+  - "oracle_natural_account"
+  operation: "overwrite"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.dim_gl_reporting_lines_danaos"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_reporting_lines where account_id is null"
+  merge_columns:
+  - "account_group"
+  - "acct_grouping_level4"
+  - "acct_grouping_level3"
+  - "acct_grouping_level2"
+  - "acct_grouping_level1"
+  - "account_id"
+  - "danaos_name"
+  - "integration_key"
+  - "source_system"
+  endpoint: "lo_delta_tables"

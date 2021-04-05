@@ -20,6 +20,7 @@ source:
     value: "'ALL'"
   - name: "w_source_system"
     value: "'TANKPAC'"
+  incremental: false
 target:
   primary_key_columns:
   - "integration_key"

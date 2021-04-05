@@ -1,0 +1,23 @@
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    query: "select\nid,\nvessel_code,\nincident_place_id,\nincident_date,\nincident_time,\nincident_location_id,\nincident_risk_factor_id,\nincident_title,\nincident_type,\nincident_ref_no,\nprimary_cat_id,\nsec_cat_id,\nminor_cat_id,\nvessel_movement,\nsea_condition,\nweather_condition,\ncourse_of_events,\nextent_of_damage,\nimmediate_actions,\nimmeditae_causes,\nunderlying_causes,\nroot_causes,\nlessons_learnt,\nmaster_sign,\nchief_engineer_sign,\nchief_officer_sign,\nassistant_engineer_sign,\nsub_cat_id,\nomodified_date,\nis_closed,\nvmodified_date,\nis_finalised,\nis_office_finalised,\nquestionair_completed,\nmaster_staff_code,\nchief_engineer_staff_code,\nchief_officer_staff_code,\nassistant_engineer_staff_code,\nhasworkflow,\nidentified_by,\nbreach,\nintegration_key,\nrej_sri_incident_report._validation_error as validation_error,\nw_source_system,\nw_src_file_name,\nw_refresh_ts,\nw_job_instance_id,\nw_business_dt,\nw_location,\nw_batch_id\nfrom ${p_epsdl_sri_db}.rej_sri_incident_report rej_sri_incident_report"
+job:
+  type: "ingestion"
+  tags:
+  - "epsdl_plp"
+  description: "Sync databricks and synapse"
+version: 1
+schema:
+  strict_schema_check: false
+  schema_derivation_strategy: "source"
+  discard: false
+  columns: []
+target:
+  endpoint: "lo_dataanalytics_azuresynapseanalytics"
+  properties:
+    table: "${p_epsdl_plp_db}.rej_sri_incident_report"
+    format_properties:
+      write_semantics: "polybase"
+      max_str_length: 4000
+  operation: "overwrite"

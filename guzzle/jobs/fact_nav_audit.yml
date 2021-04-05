@@ -1,0 +1,53 @@
+version: 1
+job:
+  type: "processing"
+  tags:
+  - "epsdl_dim"
+source:
+  endpoint: "lo_delta_tables"
+  properties:
+    sql: "with MV_NAVI_AUDIT_MAIN as \n(\nselect AUDIT_ID,VESSEL_CODE,VESSEL_POSITION,CREATED_BY,CREATED_DATE,FROM_DATE,TO_DATE,EXECUTIVE_SUMMARY,MASTER_NAME,'OFFICE' TYPE,\nnull as w_x_custom,\nw_job_instance_id,\nw_refresh_ts,\nnull as w_curr_rec_flg,\nw_source_system as w_data_src_id,\nw_location,\nw_batch_id,\nw_business_dt\nfrom ${p_epsdl_sri_db}.sri_NAV_AUDIT_OFF_MAIN where w_business_dt='${business_date}'\nunion all\nselect AUDIT_ID,VESSEL_CODE,VESSEL_POSITION,CREATED_BY,CREATED_DATE,FROM_DATE,TO_DATE,EXECUTIVE_SUMMARY,MASTER_NAME,'MASTER' TYPE,\nnull as w_x_custom,\nw_job_instance_id,\nw_refresh_ts,\nnull as w_curr_rec_flg,\nw_source_system as w_data_src_id,\nw_location,\nw_batch_id,\nw_business_dt\nfrom ${p_epsdl_sri_db}.sri_NAV_AUDIT_VSL_MAIN where w_business_dt='${business_date}'\n),\nMV_NAVI_AUDIT_ANSWERS as \n(\nselect AUDIT_ID,VESSEL_CODE,Q_NO,Q_TYPE,Q_ANSWER,Q_REMARKS,created_by,CREATED_DATE,MODIFIED_BY,MODIFIED_DATE,'OFFICE' TYPE  from ${p_epsdl_sri_db}.sri_NAV_AUDIT_OFF_answers where w_business_dt='${business_date}'\nunion all\nselect AUDIT_ID,VESSEL_CODE,Q_NO,Q_TYPE,Q_ANSWER,Q_REMARKS,created_by,CREATED_DATE,MODIFIED_BY,MODIFIED_DATE,'MASTER' TYPE  from ${p_epsdl_sri_db}.sri_NAV_AUDIT_VSL_answers where q_type <> 'NAV_AUDIT_OFF' and w_business_dt='${business_date}'\n),\nMV_NAVI_AUDIT_QN_MASTER as \n(\nselect Q_NO,Q_TEXT,Q_OPTIONS,Q_TYPE,Q_ACTIVE,Q_SORT_NO,Q_CATEGORY,Q_CAT_SORT_NO,Q_REFERENCE from ${p_epsdl_sri_db}.sri_nav_audit_qn_master where  w_business_dt='${business_date}'\n)\n\n\nselect \nMV_NAVI_AUDIT_MAIN.audit_id,\nMV_NAVI_AUDIT_MAIN.created_by,\nMV_NAVI_AUDIT_MAIN.vessel_code,\nvessel.fleet as fleet_type,\nMV_NAVI_AUDIT_MAIN.TO_DATE,\nvessel.Vessel_name,\ncoalesce(MV_NAVI_AUDIT_QN_MASTER.q_no,'') as q_no,\ncoalesce(MV_NAVI_AUDIT_QN_MASTER.q_type,'') as q_type,\ncase  when MV_NAVI_AUDIT_ANSWERS.Q_TYPE = 'NAV_AUDIT_OFF' then 'OFFICE' else 'MASTER' end as category,\ncase  when MV_NAVI_AUDIT_ANSWERS.Q_TYPE like 'NAV%' then 1 else 0 end  as NAV_FLAG,\nconcat(string(int(MV_NAVI_AUDIT_MAIN.AUDIT_ID)),string(MV_NAVI_AUDIT_MAIN.VESSEL_CODE)) as audit_vessel ,\nMV_NAVI_AUDIT_QN_MASTER.Q_CATEGORY,\ntrim(both ' ' from MV_NAVI_AUDIT_QN_MASTER.Q_CATEGORY) as trim_Q_CATEGORY,\nMV_NAVI_AUDIT_ANSWERS.Q_ANSWER,\nsubstr(MV_NAVI_AUDIT_QN_MASTER.Q_TEXT , 1 , 100)  as Q_TEXT,\nMV_NAVI_AUDIT_QN_MASTER.Q_REFERENCE,\nvessel.fleet_type as TECH_MANAGER,\ncase  when upper(MV_NAVI_AUDIT_ANSWERS.Q_REMARKS) like 'SAILING%' then 'SAILING' else 'PORT' end  as sailing_port_flag,\nvessel.vessel_id,\nMV_NAVI_AUDIT_MAIN.w_x_custom,\nMV_NAVI_AUDIT_MAIN.w_job_instance_id,\nMV_NAVI_AUDIT_MAIN.w_refresh_ts,\nMV_NAVI_AUDIT_MAIN.w_curr_rec_flg,\nMV_NAVI_AUDIT_MAIN.w_data_src_id,\nMV_NAVI_AUDIT_MAIN.w_location,\nMV_NAVI_AUDIT_MAIN.w_batch_id,\nMV_NAVI_AUDIT_MAIN.w_business_dt as business_date,\nnull as c11\nfrom\nMV_NAVI_AUDIT_MAIN MV_NAVI_AUDIT_MAIN\nleft join\n(select * from ${p_epsdl_db}.dim_gl_vessel where w_data_src_id='MANUAL') vessel\non\nvessel.vessel_code=MV_NAVI_AUDIT_MAIN.vessel_code\nleft join\nMV_NAVI_AUDIT_ANSWERS MV_NAVI_AUDIT_ANSWERS\non\nMV_NAVI_AUDIT_MAIN.AUDIT_ID=MV_NAVI_AUDIT_ANSWERS.AUDIT_ID\nand\nMV_NAVI_AUDIT_MAIN.CREATED_BY=MV_NAVI_AUDIT_ANSWERS.CREATED_BY\nand \nMV_NAVI_AUDIT_MAIN.VESSEL_CODE=MV_NAVI_AUDIT_ANSWERS.VESSEL_CODE\nleft join\nMV_NAVI_AUDIT_QN_MASTER MV_NAVI_AUDIT_QN_MASTER\non\nMV_NAVI_AUDIT_ANSWERS.Q_NO=MV_NAVI_AUDIT_QN_MASTER.Q_NO\nwhere MV_NAVI_AUDIT_MAIN.TO_DATE IS NOT NULL\nand case  when MV_NAVI_AUDIT_ANSWERS.Q_TYPE like 'NAV%' then 1 else 0 end  = 1\nand vessel.Vessel_name not in ('CSAV RIO AYSEN', 'HYUNDAI LONG BEACH', 'HYUNDAI MERCURY', 'HYUNDAI TACOMA', 'LAKE KIVU', 'MORNING MIRACLE', 'PUSAN', 'TRIUMPH', 'ZIM HAMBURG', 'ZIM INDIA')"
+  additional_columns:
+  - name: "w_refresh_ts"
+    value: "current_timestamp"
+  - name: "business_date"
+    value: "'${business_date}'"
+  - name: "w_job_instance_id"
+    value: "${job_instance_id}"
+  - name: "w_batch_id"
+    value: "${batch_id}"
+  - name: "w_location"
+    value: "'ALL'"
+  - name: "w_source_system"
+    value: "'VLOG'"
+  incremental: false
+target:
+  primary_key_columns:
+  - "audit_id"
+  - "created_by"
+  - "vessel_code"
+  - "q_no"
+  - "q_type"
+  operation: "merge"
+  soft_delete: false
+  properties:
+    template: "default"
+    table: "${p_epsdl_db}.fact_nav_audit"
+    post_sql:
+    - "delete from ${p_epsdl_db}.dim_gl_vessel where vessel_id is null"
+  merge_columns:
+  - "FLEET_TYPE"
+  - "TO_DATE"
+  - "Vessel_name"
+  - "category"
+  - "NAV_FLAG"
+  - "audit_vessel"
+  - "Q_CATEGORY"
+  - "trim_Q_CATEGORY"
+  - "Q_ANSWER"
+  - "Q_TEXT"
+  - "Q_REFERENCE"
+  - "TECH_MANAGER"
+  - "sailing_port_flag"
+  - "vessel_id"
+  endpoint: "lo_delta_tables"
